@@ -1,0 +1,122 @@
+ Specifikace C# léto
+======================
+
+Celá aplikace slouží k obsluze, prezentaci dat
+a automatickému ovládání IOT zařízení pro jednoho uživatele.
+
+Součástí C# backendu je:
+ - Autentifikace uživatele
+ - Registrace zařízení
+ - Nastavení uživatelských pravidel
+ - Delegování signálů mezi zařízeními (MQTT)
+ - Prezentace dat jako JSON přes REST api
+
+
+ Uživatelské účty
+------------------
+
+V aplikaci je jen jeden uživatel, ten si může změnit přihlašovací 
+jméno a heslo po té, co se autentifikuje.
+
+Autentifikace probíhá přes REST api. Když uživatel pošle správné
+údaje, dostane JWT token.
+
+ IOT Zařízení
+--------------
+Zařízení představuje jedenoho IP klienta.
+Každé zařízení může mít na sobě několik Rozhranní.
+
+Zařízení musí mít nějaký UUID. Stačí libovolný řetězec dost dlouhý
+na to, aby se do něj nikdo jiný netrefil.
+
+Poznámka k zabezpečení!
+ aby aplikace mohla běžet bezpečně, předpokládá se, že síť, na které
+ zařízení jsou, je zabezpečená a soukromá.
+ Taky předpokládáme, že všichni klienti na síti jsou zcela důvěryhodní.
+ To jsou dost blbé  předpoklady, ale díky nim se vyhnu spoustě
+ složitých případů a bezpečnostních schémat, která bych jinak musel
+ implementovat.
+
+Zařízení má uživatelský alias, ten je možné změnit
+posláním řetězce na MQTT topic "dev/<UUID>/alias".
+Alias nesmí začínat "dev/".
+
+Každé Rozhranní má pevný identifikátor (IID), kterým je číslo od 0
+do počtu rozhranní + alias, který je možné změnit publikováním lib.
+řetězce na topic "dev/<UUID>/<IID>/alias".
+
+
+Jsou dva druhy Rozhranní: PŘEPÍNAČ a SONDA
+
+PŘEPÍNAČ - Z pravidla se jedná o relé nebo stykač.
+    Pro každý přepínač zařízení poslouchá MQTT topic "dev/<UUID>/<IID>"
+    a "<device alias>/<iface alias>".
+    Přijatá data interpretuje následovně:
+        0 . . . . přepni do zapnuté polohy
+        1 . . . . přepni do vypnuté polohy
+
+SONDA - Jde o měřící zařízení, např. teploměr, vlhkoměr.
+    Pro každou svou sondu zařízení publikuje v pravidelných intervalech
+    naměřenou hodnotu na topic "dev/<UUID>/<IID>"
+    a "<device alias>/<iface alias>".
+    Čísla mohou být celá nebo desetiná s tečkou.
+
+* Registrace *
+Zařízení se registrují jednoduše, přes REST api. Zařízení pošle požadavek
+ve kterém vyzradí svoje UUID a svá rozhranní, a jako odpověď dostane IP
+adresu a port MQTT serveru.
+
+Další komunikace probíhá přes MQTT.
+
+
+ Nastavení uživatelských pravidel
+----------------------------------
+
+Uživatel může přes REST nastavit hodnotu jakéhokoliv přepínače jako
+funkci hodnot jiných přepínačů, sond, nebo systémového času
+s rozlišením na sekundy.
+
+Funkce se zapisuje výrazem s operátory:
+(precedence jde po řádcích sestupně)
+
+ * / %              Násobení, dělení, zbytek po dělení
+ + -                Sčítání, odčítání
+ == != > < >= <=    Porovnávání
+ &&                 Logický and
+ ||                 Logický or
+
+a volání funkcí:
+
+exp(x)    = e^x
+log(x)    = přirozený logaritmus x
+log(x, b) = logaritmus x při základu b
+pow(x, y) = x^y
+time()    = systémový čas
+floor(x)  = dolní celá část x
+ceil(x)   = horní celá část x
+abs(x)    = absolutní hodnota x
+if(x,a,b) = ternární operátor (floor(x+0.5) != 0 ? a : b)
+[<string>] = hodnota MQTT topic, např. [dev/0001/1]
+
+
+ Delegování signálů
+--------------------
+Výrazy se každou sekundu vyhodnotí, a jejich hodnoty se zveřejní na MQTT.
+
+
+ Prezentace JSONu + zbytek api
+-------------------------------
+Konkrétní routy souvisí hlavně v s front-end aplikací, která zatím používá
+dummy storage. Toto je pouze orientační, může se změnit:
+
+GET /api/devices - vrátí pole se všemi zařízeními
+GET /api/device/<UUID> - podle UUID vrátí jedno zařízení s kompletními informacemi
+GET /api/device/<UUID>/<IID> - vrátí hodnotu daného rozhranní
+GET /api/device/<UUID>/<IID>/history - vrátí historii hodnot daného rozhranní,
+                                     v těle parametry, použije se k malování grafů
+
+POST /api/auth - v těle dotazu jsou údaje, vrátí JWT token
+POST /api/credentials - v těle nové přihlašovací údaje, vrátí nový JWT token
+POST /api/device/<UUID>/alias - změní alias daného zařízení
+POST /api/device/<UUID>/<IID>/alias - změní alias daného rozhranní
+POST /api/device/<UUID>/<IID>/expr - změní výraz pro výpočet hodnoty daného spínače

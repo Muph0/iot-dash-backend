@@ -1,0 +1,5 @@
+
+1. database
+2. backend <-> DB
+3. rest API
+4. front end model
