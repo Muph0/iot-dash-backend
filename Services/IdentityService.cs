@@ -54,14 +54,13 @@ namespace IotDash.Services {
 
         public async Task<AuthenticationResult> RefreshTokenAsync(string token, string refreshToken) {
 
-            var (validatedToken, errors) = GetPrincipalFromToken(token);
+            var (validatedToken, errors) = GetPrincipalFromExpiredToken(token);
 
             if (validatedToken == null) {
                 return AuthenticationResult.Fail(errors);
             }
 
-            var expiryDateUnix = long.Parse(validatedToken.GetClaim(JwtRegisteredClaimNames.Exp));
-            var expiryDateUtc = DateTime.UnixEpoch.AddSeconds(expiryDateUnix);
+            var expiryDateUtc = validatedToken.GetExpiryDate();
 
             // JWT must be expired
             if (expiryDateUtc > DateTime.UtcNow) {
@@ -126,11 +125,13 @@ namespace IotDash.Services {
         }
 
 
-        private (ClaimsPrincipal, IEnumerable<string>) GetPrincipalFromToken(string jwt) {
+        private (ClaimsPrincipal, IEnumerable<string>) GetPrincipalFromExpiredToken(string jwt) {
 
             var tokenHandler = new JwtSecurityTokenHandler();
             try {
-                var principal = tokenHandler.ValidateToken(jwt, _tokenValidationParameters, out var validatedToken);
+                var parameters = _tokenValidationParameters.Clone();
+                parameters.ValidateLifetime = false;
+                var principal = tokenHandler.ValidateToken(jwt, parameters, out var validatedToken);
                 return (principal, null);
             } catch (SecurityTokenException ex) {
                 return (null, ex.Data.Keys.Cast<string>().Prepend("Invalid token."));
@@ -139,7 +140,7 @@ namespace IotDash.Services {
 
         private bool IsJwtWithValidSecurityAlgorithm(SecurityToken validatedToken) {
             return (validatedToken is JwtSecurityToken validJwt) &&
-                validJwt.Header.Alg.Equals(_jwtSettings.ValidAlgorithm, StringComparison.InvariantCultureIgnoreCase);
+                validJwt.Header.Alg.Equals(_jwtSettings.Algorithm, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private async Task<AuthenticationResult> GenerateTokenPairForUserAsync(IdentityUser user) {
@@ -172,5 +173,8 @@ namespace IotDash.Services {
             return AuthenticationResult.Success(tokenHandler.WriteToken(token), refreshToken.Token);
         }
 
+        public async Task<IdentityUser?> GetUserByIdAsync(Guid userId) {
+            return await _dataContext.Users.AsNoTracking().SingleOrDefaultAsync(u => u.Id == userId.ToString());
+        }
     }
 }

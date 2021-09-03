@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace IotDash.Services {
 
-    public class MemoryDeviceStore : IDeviceStore {
+    public class InMemoryDeviceStore : IDeviceStore {
 
         private readonly List<Device> _devices;
 
-        public MemoryDeviceStore() {
+        public InMemoryDeviceStore() {
             _devices = new();
             for (var i = 0; i < 5; i++) {
                 _devices.Add(new Device {
@@ -25,7 +25,7 @@ namespace IotDash.Services {
             return Task.FromResult(true);
         }
 
-        public Task<Device> GetByIdAsync(Guid deviceId) {
+        public Task<Device?> GetByIdAsync(Guid deviceId) {
             return Task.FromResult(_devices.SingleOrDefault(d => d.Id == deviceId));
         }
 
@@ -47,18 +47,22 @@ namespace IotDash.Services {
 
         public async Task<bool> DeleteAsync(Guid deviceId) {
 
-            Device device = await GetByIdAsync(deviceId);
-            return _devices.Remove(device);
-        }
-
-        public async Task<bool> UserOwnsDevice(string userId, Guid deviceId) {
-            var device = await GetByIdAsync(deviceId);
-
+            Device? device = await GetByIdAsync(deviceId);
             if (device == null) {
                 return false;
             }
 
-            return device.OwnerId == userId;
+            return _devices.Remove(device);
+        }
+
+        public async Task<Device?> UserOwnsDeviceAsync(Guid userId, Guid deviceId) {
+            var device = await GetByIdAsync(deviceId);
+
+            if (device == null || device.OwnerId != userId.ToString()) {
+                return null;
+            }
+
+            return device;
         }
     }
 

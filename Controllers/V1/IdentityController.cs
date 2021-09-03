@@ -1,13 +1,15 @@
 using IotDash.Contracts.V1;
 using IotDash.Domain;
+using IotDash.Extensions;
 using IotDash.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-
 
 
 namespace IotDash.Controllers.V1 {
@@ -69,12 +71,20 @@ namespace IotDash.Controllers.V1 {
             });
         }
 
-        [HttpGet(ApiRoutes.Identity.GetAllUsers)]
+        [Authorize]
+        [HttpGet(ApiRoutes.Identity.Me)]
         public async Task<IActionResult> GetAllUsers() {
 
-            return Ok(
-                (_identityService as IdentityService)._userManager.Users.Select(u => new { u.Email }).ToList()
-            );
+            ClaimsPrincipal token = HttpContext.User;
+
+            Guid userId = (Guid)token.GetUserId();
+
+            var user = await _identityService.GetUserByIdAsync(userId);
+
+            return Ok(new {
+                timeRemaining = (token.GetExpiryDate() - DateTime.UtcNow).ToString(),
+                user = user,
+            });
         }
     }
 }

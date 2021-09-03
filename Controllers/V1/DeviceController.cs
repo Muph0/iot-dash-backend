@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace IotDash.Controllers.V1 {
@@ -25,7 +26,6 @@ namespace IotDash.Controllers.V1 {
         [HttpGet(ApiRoutes.Device.GetAll)]
         public async Task<IActionResult> GetAll() {
             IReadOnlyList<Device> allDevices = await _devices.GetAllAsync();
-
             return Ok(allDevices);
         }
 
@@ -45,8 +45,8 @@ namespace IotDash.Controllers.V1 {
 
             Device device = new() {
                 Id = Guid.NewGuid(),
-                Alias = deviceRequest.Name,
-                OwnerId = (Guid)HttpContext.GetUserId(),
+                Alias = deviceRequest.HardwareId,
+                OwnerId = HttpContext.GetUserId().ToString(),
             };
 
             await _devices.CreateAsync(device);
@@ -60,13 +60,14 @@ namespace IotDash.Controllers.V1 {
         [HttpPut(ApiRoutes.Device.Update)]
         public async Task<IActionResult> Update([FromRoute] Guid deviceId, [FromBody] UpdateDeviceRequest request) {
 
-            bool userOwnsDevice = await _devices.UserOwnsDevice(HttpContext.GetUserId(), deviceId);
+            Guid userId = (Guid)HttpContext.GetUserId();
 
-            if (!userOwnsDevice) {
+            Device? device = await _devices.UserOwnsDeviceAsync(userId, deviceId);
+
+            if (device == null) {
                 return BadRequest(new { error = "You do not own this device." });
             }
 
-            Device device = await _devices.GetByIdAsync(deviceId);
             device.Alias = request.Name;
 
             bool updated = await _devices.UpdateAsync(device);
@@ -81,9 +82,16 @@ namespace IotDash.Controllers.V1 {
         [HttpDelete(ApiRoutes.Device.Delete)]
         public async Task<IActionResult> Delete([FromRoute] Guid deviceId) {
 
-            bool userOwnsDevice = await _devices.UserOwnsDevice(HttpContext.GetUserId(), deviceId);
+            Guid? n_userId = HttpContext.GetUserId();
+            if (n_userId == null) {
+                return BadRequest();
+            }
 
-            if (!userOwnsDevice) {
+            Guid userId = (Guid)n_userId;
+
+            var device = await _devices.UserOwnsDeviceAsync(userId, deviceId);
+
+            if (device == null) {
                 return BadRequest(new { error = "You do not own this device." });
             }
 

@@ -20,7 +20,7 @@ namespace IotDash.Services {
             return await _dataContext.Devices.ToListAsync();
         }
 
-        public async Task<Device> GetByIdAsync(Guid deviceId) {
+        public async Task<Device?> GetByIdAsync(Guid deviceId) {
             return await _dataContext.Devices.SingleOrDefaultAsync(d => d.Id == deviceId);
         }
 
@@ -32,13 +32,13 @@ namespace IotDash.Services {
         }
 
         public async Task<bool> DeleteAsync(Guid deviceId) {
-            Device device = await GetByIdAsync(deviceId);
+            Device? device = await GetByIdAsync(deviceId);
 
             if (device == null) {
                 return false;
             }
 
-            _dataContext.Remove(device);
+            _dataContext.Devices.Remove(device);
             await _dataContext.SaveChangesAsync();
             return true;
         }
@@ -50,13 +50,14 @@ namespace IotDash.Services {
             return createdCount > 0;
         }
 
-        public async Task<bool> UserOwnsDevice(string userId, Guid deviceId) {
-            Device device = await _dataContext.Devices.AsNoTracking().SingleOrDefaultAsync(d => d.Id == deviceId);
+        public async Task<Device?> UserOwnsDeviceAsync(Guid userId, Guid deviceId) {
+            Device device = await _dataContext.Devices.SingleOrDefaultAsync(d => d.Id == deviceId);
 
-            if (device == null) { 
-                return false; }
+            if (device == null || device.OwnerId != userId.ToString()) { 
+                return null; 
+            }
 
-            return device.OwnerId == userId;
+            return device;
         }
     }
 

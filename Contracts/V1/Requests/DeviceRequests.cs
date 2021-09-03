@@ -7,7 +7,13 @@ namespace IotDash.Contracts.V1 {
 
     public class CreateDeviceRequest {
         [Required]
-        public string Name { get; set; }
+        public string HardwareId { get; set; }
+
+        
+    }
+
+    public class CreateInterfaceRequest {
+
     }
 
     public class UpdateDeviceRequest {

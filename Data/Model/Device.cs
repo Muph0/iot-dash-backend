@@ -17,7 +17,8 @@ namespace IotDash.Data.Model {
         [Column(TypeName = "TEXT")]
         public string? Expression { get; set; }
 
-        public Guid OwnerId { get; set; }
+        [MaxLength(36)]
+        public string OwnerId { get; set; }
 
         [ForeignKey(nameof(OwnerId))]
         public IdentityUser Owner { get; set; }

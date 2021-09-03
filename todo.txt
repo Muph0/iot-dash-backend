@@ -2,4 +2,17 @@
 1. database
 2. backend <-> DB
 3. rest API
-4. front end model
+ + validate JWT based on "id" (Auth)
+
+ Device controller:
+    - register device
+        - send interfaces
+    - retrieve device info
+    - retrieve interfaces
+    - device & interface aliases
+ MqttService:
+    - update interface values
+    - create interface history (later)
+    - make interface values available for controllers
+
+4. front end model -> openapi-generator

@@ -40,10 +40,10 @@ namespace IotDash.Contracts.V1 {
         public static class Identity {
             public const string Base = ApiRoutes.Base + "/identity";
 
+            public const string Me = Base;
             public const string Login = Base + "/login";
             public const string Register = Base + "/register";
             public const string Refresh = Base + "/refresh";
-            public const string GetAllUsers = Base + "/users";
         }
 
     }

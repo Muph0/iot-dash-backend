@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IotDash.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210902121910_Initial")]
-    partial class Initial
+    [Migration("20210902142922_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -25,15 +25,18 @@ namespace IotDash.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("Expression")
-                        .HasColumnType("TEXT");
+                    b.Property<string>("Alias")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("longtext");
+                    b.Property<string>("Expression")
+                        .HasMaxLength(65536)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("OwnerId")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
 
                     b.HasKey("Id");
 
@@ -57,12 +60,14 @@ namespace IotDash.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("JwtId")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<bool>("Used")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.HasKey("Token");
@@ -283,7 +288,9 @@ namespace IotDash.Migrations
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });

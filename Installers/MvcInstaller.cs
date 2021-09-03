@@ -1,11 +1,14 @@
 using IotDash.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace IotDash.Installers {
@@ -20,30 +23,43 @@ namespace IotDash.Installers {
             var jwtSettings = JwtSettings.LoadFrom(configuration);
             services.AddSingleton(jwtSettings);
 
+
             TokenValidationParameters validationParameters = new() {
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
                 ValidateIssuer = false,
                 ValidateAudience = false,
-                RequireExpirationTime = false,
+                RequireExpirationTime = true,
                 ValidateLifetime = true,
-                ValidAlgorithms = new[] { jwtSettings.ValidAlgorithm }
+                ValidAlgorithms = new[] { jwtSettings.Algorithm },
+                ClockSkew = jwtSettings.ClockSkew,
             };
 
             services.AddSingleton(validationParameters);
-            services.AddAuthentication(conf => {
-                conf.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                conf.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                conf.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            services.AddAuthentication(opt => {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer(conf => {
-                conf.SaveToken = true;
-                conf.TokenValidationParameters = validationParameters;
+            .AddJwtBearer(opt => {
+                opt.SaveToken = true;
+                opt.TokenValidationParameters = validationParameters;
             });//*/
 
-            // Add swagger
-            services.AddSwaggerGen(conf => {
-                conf.SwaggerDoc("v1", new OpenApiInfo { Title = "IOT Dash", Version = "v1" });
+            // configure authorization
+            services.AddAuthorization(opt => {
+                opt.AddPolicy(nameof(Authorization.Policies.Default), Authorization.Policies.Default);
+
+                var defualtPolicy = opt.GetPolicy(nameof(Authorization.Policies.Default));
+                Debug.Assert(defualtPolicy != null);
+                opt.DefaultPolicy = defualtPolicy;
+            });//*/
+
+            services.AddScoped<IAuthorizationHandler, Authorization.UserExistsHandler>();
+
+            // Add swagger (with JWT bearer support)
+            services.AddSwaggerGen(opt => {
+                opt.SwaggerDoc("v1", new OpenApiInfo { Title = "IOT Dash", Version = "v1" });
 
                 // configure swagger for JWT
                 var bearerScheme = new OpenApiSecurityScheme {
@@ -58,7 +74,7 @@ namespace IotDash.Installers {
 
                 var security = new OpenApiSecurityRequirement {
                     {
-                        new OpenApiSecurityScheme() { 
+                        new OpenApiSecurityScheme() {
                             Reference = new() {
                                 Id = "Bearer",
                                 Type = ReferenceType.SecurityScheme
@@ -68,8 +84,8 @@ namespace IotDash.Installers {
                     }
                 };
 
-                conf.AddSecurityDefinition("Bearer", bearerScheme);
-                conf.AddSecurityRequirement(security);
+                opt.AddSecurityDefinition("Bearer", bearerScheme);
+                opt.AddSecurityRequirement(security);
             });
         }
     }

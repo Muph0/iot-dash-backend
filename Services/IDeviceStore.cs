@@ -8,11 +8,11 @@ namespace IotDash.Services {
     public interface IDeviceStore {
 
         Task<IReadOnlyList<Device>> GetAllAsync();
-        Task<Device> GetByIdAsync(Guid deviceId);
+        Task<Device?> GetByIdAsync(Guid deviceId);
         Task<bool> CreateAsync(Device deviceToCreate);
         Task<bool> UpdateAsync(Device deviceToUpdate);
         Task<bool> DeleteAsync(Guid deviceId);
-        Task<bool> UserOwnsDevice(string v, Guid deviceId);
+        Task<Device?> UserOwnsDeviceAsync(Guid userId, Guid deviceId);
     }
 
 }
