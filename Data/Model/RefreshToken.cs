@@ -18,6 +18,9 @@ namespace IotDash.Data.Model {
 
         public string UserId { get; set; }
         [ForeignKey(nameof(UserId))]
-        public IdentityUser User { get; set; }
+        public virtual IdentityUser User { get; set; }
+
+
+        public string _JsonTrap => throw new Exception("This object should not be passed to clients.");
     }
 }

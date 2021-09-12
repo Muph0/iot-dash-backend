@@ -15,6 +15,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using IotDash.Installers;
 using IotDash.Settings;
+using System.Diagnostics;
+using System.Threading;
 
 namespace IotDash {
     public class Startup {
@@ -26,12 +28,20 @@ namespace IotDash {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
+            try {
+                services.InstallServicesInAssembly(Configuration);
+            } catch (Exception ex) {
+                var logger = new Services.MyConsoleLoggerProvider().CreateLogger(nameof(Startup));
 
-            services.InstallServicesInAssembly(Configuration);
+                logger.LogCritical(ex, "Exception thrown during configuration.");
+                Environment.Exit(1);
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
+
+            app.UseHttpsRedirection();
 
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
@@ -44,16 +54,17 @@ namespace IotDash {
                 });
             }
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-
-            app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints => {
-                endpoints.MapControllers();
-            });
+            // build the request pipeline
+            {
+                app.UseStaticFiles();
+                app.UseRouting();
+                app.UseMiddleware<ApiErrorReporting>(env);
+                app.UseAuthentication();
+                app.UseAuthorization();
+                app.UseEndpoints(endpoints => {
+                    endpoints.MapControllers();
+                });
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ namespace IotDash.Settings {
 
     public abstract class Settings {
 
-        public static T LoadFrom<T>(IConfiguration configuration) where T : Settings, new() {
+        public static T LoadFrom<T>(IConfiguration configuration, string? path = null) where T : new() {
             T result = new();
             string sectionName = typeof(T).Name;
 
@@ -18,12 +18,17 @@ namespace IotDash.Settings {
                 sectionName = sectionName.Substring(0, sectionName.Length - nameof(Settings).Length);
             }
 
+            IConfiguration parentSection = configuration;
+            if (path != null) {
+                parentSection = configuration.GetSection(path);
+            }
+
             List<string> errors = new();
-            if (configuration.GetChildren().All(kv => kv.Key != sectionName)) {
+            if (parentSection.GetChildren().All(kv => kv.Key != sectionName)) {
                 errors.Add($"Section \"{sectionName}\" doesn't exist.");
             }
 
-            var section = configuration.GetSection(sectionName);
+            var section = parentSection.GetSection(sectionName);
             CheckBindCompatibility(typeof(T), section, errors);
 
             if (errors.Count != 0) {

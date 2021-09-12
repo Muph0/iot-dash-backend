@@ -16,3 +16,9 @@
     - make interface values available for controllers
 
 4. front end model -> openapi-generator
+
+%%%%%%%%%%%%%%%
+
+- resolve dependency on Hosted service (IMqttClientService)
+        see: https://stackoverflow.com/questions/52862130/asp-net-core-2-1-cannot-access-database-context-from-a-hosted-service
+- finish expr evaluation

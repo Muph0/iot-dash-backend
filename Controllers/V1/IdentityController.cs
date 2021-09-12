@@ -1,12 +1,15 @@
+using IotDash.Contracts;
 using IotDash.Contracts.V1;
 using IotDash.Domain;
 using IotDash.Extensions;
 using IotDash.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -16,75 +19,50 @@ namespace IotDash.Controllers.V1 {
 
     public class IdentityController : Controller {
 
-        private readonly IIdentityService _identityService;
-        public IdentityController(IIdentityService identityService) {
-            _identityService = identityService;
+        private readonly IIdentityService identity;
+        private readonly IUserStore users;
+
+        public IdentityController(IIdentityService identity, IUserStore users) {
+            this.identity = identity;
+            this.users = users;
         }
 
         [HttpPost(ApiRoutes.Identity.Register)]
+        [Produces(MimeType.Application_JSON, Type = typeof(AuthResponse))]
         public async Task<IActionResult> Register([FromBody] UserRegistrationRequest request) {
 
             if (!ModelState.IsValid) {
-                return BadRequest(new AuthFailResponse {
-                    Errors = ModelState.Values.SelectMany(v => v.Errors.Select(err => err.ErrorMessage))
-                }); ;
+                return AuthResponse.BadRequest(ModelState.Values.SelectMany(v => v.Errors.Select(err => err.ErrorMessage)));
             }
 
-            AuthenticationResult authResult = await _identityService.RegisterAsync(request.Email, request.Password);
-
-            if (!authResult.IsSuccess) {
-                return BadRequest(new AuthFailResponse {
-                    Errors = authResult.Errors
-                });
-            }
-
-            return Ok(new AuthSuccessResponse {
-                Token = authResult.Token,
-                RefreshToken = authResult.RefreshToken,
-            });
+            var authResult = await identity.RegisterAsync(request.Email, request.Password);
+            return authResult.AsOkOrBadRequest();
         }
 
         [HttpPost(ApiRoutes.Identity.Login)]
+        [Produces(MimeType.Application_JSON, Type = typeof(AuthResponse))]
         public async Task<IActionResult> Login([FromBody] UserLoginRequest request) {
 
-            AuthenticationResult authResult = await _identityService.LoginAsync(request.Email, request.Password);
-            return GenerateAuthenticationResponse(authResult);
+            var authResult = await identity.LoginAsync(request.Email, request.Password);
+            return authResult.AsOkOrBadRequest();
         }
 
         [HttpPost(ApiRoutes.Identity.Refresh)]
         public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request) {
 
-            AuthenticationResult authResult = await _identityService.RefreshTokenAsync(request.Token, request.RefreshToken);
-            return GenerateAuthenticationResponse(authResult);
-        }
-
-        private IActionResult GenerateAuthenticationResponse(AuthenticationResult authResult) {
-            if (!authResult.IsSuccess) {
-                return BadRequest(new AuthFailResponse {
-                    Errors = authResult.Errors
-                });
-            }
-
-            return Ok(new AuthSuccessResponse {
-                Token = authResult.Token,
-                RefreshToken = authResult.RefreshToken,
-            });
+            var authResult = await identity.RefreshTokenAsync(request.Token, request.RefreshToken);
+            return authResult.AsOkOrBadRequest();
         }
 
         [Authorize]
         [HttpGet(ApiRoutes.Identity.Me)]
-        public async Task<IActionResult> GetAllUsers() {
+        [Produces(MimeType.Application_JSON, Type = typeof(Contracts.V1.Model.User))]
+        public Task<IActionResult> GetAllUsers() {
 
             ClaimsPrincipal token = HttpContext.User;
+            var user = HttpContext.Features.GetRequired<IdentityUser>();
 
-            Guid userId = (Guid)token.GetUserId();
-
-            var user = await _identityService.GetUserByIdAsync(userId);
-
-            return Ok(new {
-                timeRemaining = (token.GetExpiryDate() - DateTime.UtcNow).ToString(),
-                user = user,
-            });
+            return Task.FromResult<IActionResult>(Ok(user.ToContract()));
         }
     }
 }

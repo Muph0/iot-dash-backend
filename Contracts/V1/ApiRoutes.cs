@@ -17,7 +17,7 @@ namespace IotDash.Contracts.V1 {
         public const string Base = Root + "/" + Version;
 
         public static class Device {
-            public const string deviceId = "{deviceId}";
+            public const string deviceId = "{" + nameof(deviceId) + ":Guid}";
             public const string Base = ApiRoutes.Base + "/device";
 
             public const string GetAll = Base + "s";
@@ -27,13 +27,13 @@ namespace IotDash.Contracts.V1 {
             public const string Delete = Base + "/" + deviceId;
 
             public static class Interface {
-                public const string ifaceId = "{ifaceId}";
-                public const string Base = Device.Base + "/interface";
+                public const string ifaceId = "{" + nameof(ifaceId) + ":int}";
+                public const string Base = Device.Get;
 
-                public const string GetAll = Base + "s";
                 public const string Get = Base + "/" + ifaceId;
+                public const string Update = Get;
                 public const string ReadValue = Get + "/value";
-                
+
             }
         }
 

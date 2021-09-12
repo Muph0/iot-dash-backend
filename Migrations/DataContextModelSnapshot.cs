@@ -17,7 +17,7 @@ namespace IotDash.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
                 .HasAnnotation("ProductVersion", "5.0.9");
 
-            modelBuilder.Entity("IotDash.Data.Model.Device", b =>
+            modelBuilder.Entity("IotDash.Data.Model.IotDevice", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -27,9 +27,9 @@ namespace IotDash.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
-                    b.Property<string>("Expression")
-                        .HasMaxLength(65536)
-                        .HasColumnType("TEXT");
+                    b.Property<string>("IpAddress")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("OwnerId")
                         .IsRequired()
@@ -41,6 +41,35 @@ namespace IotDash.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("Devices");
+                });
+
+            modelBuilder.Entity("IotDash.Data.Model.IotInterface", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("DeviceId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Alias")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Expression")
+                        .HasMaxLength(65536)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Kind")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Value")
+                        .HasColumnType("double");
+
+                    b.HasKey("Id", "DeviceId");
+
+                    b.HasIndex("DeviceId");
+
+                    b.ToTable("Interfaces");
                 });
 
             modelBuilder.Entity("IotDash.Data.Model.RefreshToken", b =>
@@ -271,7 +300,7 @@ namespace IotDash.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("IotDash.Data.Model.Device", b =>
+            modelBuilder.Entity("IotDash.Data.Model.IotDevice", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Owner")
                         .WithMany()
@@ -280,6 +309,17 @@ namespace IotDash.Migrations
                         .IsRequired();
 
                     b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("IotDash.Data.Model.IotInterface", b =>
+                {
+                    b.HasOne("IotDash.Data.Model.IotDevice", "Device")
+                        .WithMany("Interfaces")
+                        .HasForeignKey("DeviceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Device");
                 });
 
             modelBuilder.Entity("IotDash.Data.Model.RefreshToken", b =>
@@ -342,6 +382,11 @@ namespace IotDash.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("IotDash.Data.Model.IotDevice", b =>
+                {
+                    b.Navigation("Interfaces");
                 });
 #pragma warning restore 612, 618
         }
