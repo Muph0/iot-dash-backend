@@ -10,8 +10,11 @@ namespace IotDash.Contracts.V1.Model {
             this.user = user;
         }
 
+        [Required]
         public string Email => user.Email;
+        [Required]
         public string Id => user.Id;
+        [Required]
         public string UserName => user.UserName;
     }
 }

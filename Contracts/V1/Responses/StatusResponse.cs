@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -13,11 +14,12 @@ namespace IotDash.Contracts.V1 {
 
     public abstract class StatusResponse<TValue, TInherited> : IStatusResponse where TInherited : StatusResponse<TValue, TInherited>, new() {
 
+        [Required]
         public bool Success { get; private init; }
         public IEnumerable<string>? Errors { get; private init; }
         
         [JsonIgnore]
-        public virtual TValue? Value { get; protected set; }
+        public TValue? Value { get; private set; }
         object? IStatusResponse.Value => this.Value;
 
         public static TInherited Succeed(TValue value) {
@@ -57,19 +59,19 @@ namespace IotDash.Contracts.V1 {
         #region Instance_IActionResult_Factories
         public BadRequestObjectResult AsBadRequest() {
             Debug.Assert(!Success);
-            return BadRequest(Errors);
+            return new BadRequestObjectResult(this);
         }
         public NotFoundObjectResult AsNotFound() {
             Debug.Assert(!Success);
-            return NotFound(Errors);
+            return new NotFoundObjectResult(this);
         }
         public NoContentResult AsNoContent() {
             Debug.Assert(Success);
-            return NoContent();
+            return new NoContentResult();
         }
         public OkObjectResult AsOk() {
             Debug.Assert(Success && Value != null);
-            return Ok(this.Value);
+            return new OkObjectResult(this);
         }
         public IActionResult AsOkOrBadRequest() {
             if (Success) {

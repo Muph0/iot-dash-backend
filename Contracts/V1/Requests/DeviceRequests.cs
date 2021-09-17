@@ -6,20 +6,20 @@ namespace IotDash.Contracts.V1 {
 
     public class DeviceCreateRequest {
 
+        [Required]
         public string HwId { get; set; }
+        [Required]
         public string OwnerEmail { get; set; }
 
 
         [ValidAlias]
         [MaxLength(ContractedConstraints.AliasMaxLength)]
         public string? Alias { get; internal set; }
-        public IEnumerable<CreateInterfaceRequest> Interfaces { get; set; }
+        [Required]
+        public IEnumerable<InterfaceCreateRequest> Interfaces { get; set; }
     }
 
 
-    public enum InterfaceKind {
-        Probe, Switch
-    }
 
     public class DevicePatchRequest {
 

@@ -1,4 +1,5 @@
 using IotDash.Contracts.V1;
+using IotDash.Contracts.V1.Model;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

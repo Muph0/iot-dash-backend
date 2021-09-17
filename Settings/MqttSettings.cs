@@ -16,7 +16,10 @@ namespace IotDash.Settings {
         public class BrokerHostSettings {
             public string Host { set; get; }
             public int Port { set; get; }
-            public int? MaxReconnectionAttempts { get; set; } = 5;
+            public int? MaxReconnectionAttempts { get; set; } = -1;
+
+            public bool ExceededMaxAttempts(int reconnectionAttempts)
+                => reconnectionAttempts >= MaxReconnectionAttempts && MaxReconnectionAttempts >= 0;
         }
 
         public ClientSettings Client { get; set; }

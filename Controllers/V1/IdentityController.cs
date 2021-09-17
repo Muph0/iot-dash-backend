@@ -48,6 +48,7 @@ namespace IotDash.Controllers.V1 {
         }
 
         [HttpPost(ApiRoutes.Identity.Refresh)]
+        [Produces(MimeType.Application_JSON, Type = typeof(AuthResponse))]
         public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request) {
 
             var authResult = await identity.RefreshTokenAsync(request.Token, request.RefreshToken);

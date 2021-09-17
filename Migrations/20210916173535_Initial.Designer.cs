@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IotDash.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210912112957_Initial")]
+    [Migration("20210916173535_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

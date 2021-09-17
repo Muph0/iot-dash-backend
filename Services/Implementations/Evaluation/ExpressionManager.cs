@@ -54,7 +54,7 @@ namespace IotDash.Services {
 
         public async Task RefreshInterface(IServiceProvider provider, IotInterface iface) {
 
-            if (iface.Kind == Contracts.V1.InterfaceKind.Switch) {
+            if (iface.Kind == Contracts.V1.Model.InterfaceKind.Switch) {
                 var key = (iface.DeviceId, iface.Id);
 
                 if (managedInterfaces.TryGetValue(key, out var mgr)) {

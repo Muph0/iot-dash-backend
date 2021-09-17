@@ -200,7 +200,7 @@ namespace IotDash.Services {
         }
 
         public async Task HandleDisconnectedAsync(MqttClientDisconnectedEventArgs eventArgs) {
-            if (reconnectionAttempts >= appSettings.Broker.MaxReconnectionAttempts
+            if (appSettings.Broker.ExceededMaxAttempts(reconnectionAttempts)
                 || lifetime.ApplicationStopping.IsCancellationRequested) return;
 
             reconnectionAttempts++;
@@ -209,7 +209,7 @@ namespace IotDash.Services {
                 await Task.Delay(TimeSpan.FromSeconds(5));
                 await client.ConnectAsync(clientOptions);
             } catch (Exception e) {
-                if (reconnectionAttempts >= appSettings.Broker.MaxReconnectionAttempts) {
+                if (appSettings.Broker.ExceededMaxAttempts(reconnectionAttempts)) {
                     logger.LogCritical(e, $"Connection to MQTT broker failed after {reconnectionAttempts} attempts.");
                     lifetime.StopApplication();
                 }

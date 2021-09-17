@@ -27,9 +27,15 @@ namespace IotDash.Installers {
             services.AddControllers(opt => {
             });
 
+            SwaggerSettings swagg = SwaggerSettings.Load(configuration);
+
             // Add swagger (with JWT bearer support)
             services.AddSwaggerGen(opt => {
                 opt.SwaggerDoc("v1", new OpenApiInfo { Title = "IOT Dash", Version = "v1" });
+
+                opt.AddServer(new OpenApiServer {
+                    Url = swagg.Server
+                });
 
                 // configure swagger for JWT
                 var bearerScheme = new OpenApiSecurityScheme {

@@ -1,22 +1,12 @@
-using IotDash.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using IotDash.Installers;
 using IotDash.Settings;
-using System.Diagnostics;
-using System.Threading;
 
 namespace IotDash {
     public class Startup {
@@ -56,11 +46,13 @@ namespace IotDash {
 
             // build the request pipeline
             {
+                app.UseCorsOptions();
                 app.UseStaticFiles();
                 app.UseRouting();
                 app.UseMiddleware<ApiErrorReporting>(env);
                 app.UseAuthentication();
                 app.UseAuthorization();
+                app.UseMiddleware<AllowOriginMiddleware>();
                 app.UseEndpoints(endpoints => {
                     endpoints.MapControllers();
                 });

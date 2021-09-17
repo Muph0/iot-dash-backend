@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using IotDash.Contracts.V1.Model;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace IotDash.Contracts.V1 {
-    public class CreateInterfaceRequest : InterfacePatchRequest {
+    public class InterfaceCreateRequest : InterfacePatchRequest {
 
-        [JsonConverter(typeof(JsonStringEnumConverter))]
+        [Required]
         public InterfaceKind Kind { get; set; }
     }
 
