@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IotDash.Contracts.V1.Model {
 
+    /// <summary>
+    /// Represents a user.
+    /// </summary>
     public class User {
         protected readonly IdentityUser user;
 

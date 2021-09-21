@@ -39,14 +39,15 @@ Devices have one or more interfaces. For example: a thermometer combined with a 
 >
 > Interfaces cannot communicate with the rest of the world on their own, so that's why they are managed by a *device*.
 
-For selected interfaces, the backend logs their state in specified intervals and keeps history logs of some density for specified amounts of time. 
-
-## Interface control
+For selected interfaces, the backend logs their state in specified intervals and keeps history logs of some density for specified amounts of time.
 
 ## User accounts
 Each user can manage only devices which were registered by them.
 
 ## History logging
+The app logs history of selected MQTT topics.
+This history data is then presented over REST API.
+For detail, see `TODO` ref REST
 
 
 # Usage
@@ -103,10 +104,20 @@ This is a default configuration file with commentary
       "Id": "5eb020f043ba8930506acbdd"
     },
   },
+
+  // Configuration for Microsoft logging
   "Logging": {
+
     "LogLevel": {
+      // Log levels for different namespaces. Key is a namespace,
+      // value is logging level. All messages from and above given
+      // level will be logged.
+      //
+      // Valid levels are: 'Trace', 'Debug', 'Information',
+      //                   'Warning', 'Error', 'Critical'
+      // (in ascending order)
       "Default": "Information",
-      "Microsoft": "Information",
+      "Microsoft": "Warning",
       "Microsoft.Hosting.Lifetime": "Information",
     }
   },
@@ -117,7 +128,5 @@ This is a default configuration file with commentary
 
 ## Run
 
-# Http API
-
-## Routes
-## Authentication
+To run the app, currently the only option is to build it yourself via .NET CLI.
+You will need .NET 5.0 SDK installed.

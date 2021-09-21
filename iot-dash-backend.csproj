@@ -6,6 +6,7 @@
     <RootNamespace>IotDash</RootNamespace>
     <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
     <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

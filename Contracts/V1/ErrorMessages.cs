@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 
 namespace IotDash.Contracts.V1 {
+
+    /// <summary>
+    /// Static collection of REST API error messages.
+    /// </summary>
     internal struct Error {
 
         #region Login_Registration_Related

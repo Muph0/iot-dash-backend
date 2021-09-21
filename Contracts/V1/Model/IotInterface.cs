@@ -4,6 +4,10 @@ using System.Text.Json.Serialization;
 
 namespace IotDash.Contracts.V1.Model {
 
+    /// <summary>
+    /// Enumeration of different interface types as presented over Rest API.
+    /// </summary>
+
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum InterfaceKind {
         Probe, 
@@ -23,6 +27,9 @@ namespace IotDash.Contracts.V1.Model {
         }
     }
 
+    /// <summary>
+    /// Represents an interface of an IOT device.
+    /// </summary>
     public class IotInterface {
         protected readonly Data.Model.IotInterface iface;
 

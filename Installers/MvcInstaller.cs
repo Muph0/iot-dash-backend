@@ -12,7 +12,9 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace IotDash.Installers {
@@ -31,7 +33,16 @@ namespace IotDash.Installers {
 
             // Add swagger (with JWT bearer support)
             services.AddSwaggerGen(opt => {
-                opt.SwaggerDoc("v1", new OpenApiInfo { Title = "IOT Dash", Version = "v1" });
+                opt.SwaggerDoc("v1", new OpenApiInfo { 
+                    Title = "IOT Dashboard backend API", 
+                    Version = "v1",
+                    Description = "IOT device management with MQTT and ASP.NET",
+                });
+
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                opt.IncludeXmlComments(xmlPath);
 
                 opt.AddServer(new OpenApiServer {
                     Url = swagg.Server

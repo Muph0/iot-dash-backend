@@ -36,8 +36,8 @@ namespace IotDash.Installers {
             services.AddHostedService(p => p.GetRequiredService<IHostedHistoryService>());
 
             // Add settings
-            var historySettings = Settings.HistorySettings.LoadFrom(configuration);
-            services.AddSingleton(historySettings);
+            //var historySettings = Settings.HistorySettings.LoadFrom(configuration);
+            //services.AddSingleton(historySettings);
         }
     }
 

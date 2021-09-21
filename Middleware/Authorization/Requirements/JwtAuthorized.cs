@@ -17,8 +17,15 @@ using IotDash.Extensions.Context;
 
 namespace IotDash.Authorization.Requirements {
 
+
+    /// <summary>
+    /// Authorization requirement that checks succeeds if JWT subject is a valid user.
+    /// </summary>
     class JwtAuthorized : IAuthorizationRequirement {
 
+        /// <summary>
+        /// Handler for <see cref="JwtAuthorized"/>
+        /// </summary>
         public class Handler : AuthorizationHandler<JwtAuthorized> {
 
             private readonly IUserStore users;

@@ -8,6 +8,9 @@ using System.Reflection;
 
 namespace IotDash.Contracts.V1 {
 
+    /// <summary>
+    /// Extension class for converting <see cref="IotDash.Data.Model"/> objects to their REST API counterparts.
+    /// </summary>
     public static class DataModelToContractMapping {
 
         public static IotDevice ToContract(this Data.Model.IotDevice device) {

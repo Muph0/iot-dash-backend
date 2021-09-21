@@ -5,7 +5,7 @@ using System.Linq;
 namespace IotDash.Contracts.V1.Model {
 
     /// <summary>
-    /// Represents a device as it is presented over REST API.
+    /// Represents an IOT device, as presented over Rest API.
     /// </summary>
     public class IotDevice {
         protected readonly Data.Model.IotDevice device;

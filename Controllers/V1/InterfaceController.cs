@@ -36,6 +36,10 @@ namespace IotDash.Controllers.V1 {
             this.history = history;
         }
 
+        /// <summary>
+        /// Get information about the specific interface.
+        /// </summary>
+        /// <returns>The interface information.</returns>
         [Authorize(Policy = nameof(Policies.AuthorizedInterfaceAccess))]
         [HttpGet(ApiRoutes.Device.Interface.Get)]
         [Produces(MimeType.Application_JSON, Type = typeof(Contracts.V1.Model.IotInterface))]
@@ -47,6 +51,11 @@ namespace IotDash.Controllers.V1 {
             );
         }
 
+        /// <summary>
+        /// Create a new interface.
+        /// </summary>
+        /// <param name="request">Interface creation request.</param>
+        /// <returns>The created interface and Location header with the interface uri.</returns>
         [Authorize(Policy = nameof(Policies.AuthorizedDeviceAccess))]
         [HttpPost(ApiRoutes.Device.Interface.Create)]
         [Produces(MimeType.Application_JSON, Type = typeof(IEnumerable<Contracts.V1.InterfaceResponse>))]
@@ -62,7 +71,11 @@ namespace IotDash.Controllers.V1 {
             return InterfaceResponse.Ok(newIface.ToContract());
         }
 
-
+        /// <summary>
+        /// Update one or more fields of the specified interface.
+        /// </summary>
+        /// <param name="request">Update request. At least one field must be specified.</param>
+        /// <returns>The updated interface.</returns>
         [Authorize(Policy = nameof(Policies.AuthorizedOwnInterfaceAccess))]
         [HttpPatch(ApiRoutes.Device.Interface.Update)]
         [Produces(MimeType.Application_JSON, Type = typeof(InterfaceResponse))]
@@ -92,11 +105,14 @@ namespace IotDash.Controllers.V1 {
             return InterfaceResponse.Ok(iface.ToContract());
         }
 
-
+        /// <summary>
+        /// Delete a specific interface.
+        /// </summary>
+        /// <returns>No content.</returns>
         [Authorize(Policy = nameof(Policies.AuthorizedOwnInterfaceAccess))]
         [HttpDelete(ApiRoutes.Device.Interface.Delete)]
         [Produces(MimeType.Application_JSON, Type = typeof(InterfaceResponse))]
-        public async Task<IActionResult> DeleteInterface([FromBody] InterfacePatchRequest request) {
+        public async Task<IActionResult> DeleteInterface() {
 
             var iface = HttpContext.Features.GetRequired<IotInterface>();
 
@@ -107,7 +123,11 @@ namespace IotDash.Controllers.V1 {
             return InterfaceResponse.NoContent();
         }
 
-
+        /// <summary>
+        /// Get interface history over a specified time period with given point density.
+        /// </summary>
+        /// <param name="request">Time period information with point density.</param>
+        /// <returns>List of data points.</returns>
         [Authorize(Policy = nameof(Policies.AuthorizedOwnInterfaceAccess))]
         [HttpPost(ApiRoutes.Device.Interface.History)]
         [Produces(MimeType.Application_JSON, Type = typeof(HistoryResponse))]
@@ -123,7 +143,11 @@ namespace IotDash.Controllers.V1 {
             return HistoryResponse.Ok(results.Select(r => r.ToContract()));
         }
 
-
+        /// <summary>
+        /// Will be removed.
+        /// </summary>
+        /// <returns></returns>
+        [Obsolete]
         [Authorize(Policy = nameof(Policies.AuthorizedOwnInterfaceAccess))]
         [HttpPut(ApiRoutes.Device.Interface.History)]
         public async Task<IActionResult> GenerateHistory() {

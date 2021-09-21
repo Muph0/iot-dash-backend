@@ -8,8 +8,10 @@ using IotDash.Extensions.Error;
 using IotDash.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,24 +20,32 @@ using System.Threading.Tasks;
 
 namespace IotDash.Controllers.V1 {
 
-
+    /// <summary>
+    /// REST API for managing <see cref="IotDevice"/>s.
+    /// </summary>
     public class DeviceController : Controller {
 
         private IDeviceStore devices;
         private IInterfaceStore interfaces;
         private IIdentityService identity;
         private IUserStore users;
+        private ILogger logger;
 
         public string BaseUrl => $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
 
         public DeviceController(IDeviceStore devices, IIdentityService identity, IInterfaceStore interfaces,
-                IUserStore users) {
+                IUserStore users, ILogger<DeviceController> logger) {
             this.devices = devices;
             this.interfaces = interfaces;
             this.identity = identity;
             this.users = users;
+            this.logger = logger;
         }
 
+        /// <summary>
+        /// Get complete list of all registered devices.
+        /// </summary>
+        /// <returns>A list of <see cref="Contracts.V1.Model.IotDevice"/>.</returns>
         [Authorize(Policy = nameof(Policies.Authorized))]
         [HttpGet(ApiRoutes.Device.GetAll)]
         [Produces("application/json", Type = typeof(IEnumerable<Contracts.V1.Model.IotDevice>))]
@@ -44,6 +54,10 @@ namespace IotDash.Controllers.V1 {
             return Ok(allDevices.Select(d => d.ToContract()));
         }
 
+        /// <summary>
+        /// Get details about the specified device.
+        /// </summary>
+        /// <returns><see cref="Contracts.V1.Model.IotDeviceWInterfaces"/></returns>
         [Authorize(Policy = nameof(Policies.AuthorizedDeviceAccess))]
         [HttpGet(ApiRoutes.Device.Get)]
         [Produces("application/json", Type = typeof(Contracts.V1.Model.IotDeviceWInterfaces))]
@@ -53,6 +67,11 @@ namespace IotDash.Controllers.V1 {
             return Task.FromResult<IActionResult>(Ok(device.ToContractDetail()));
         }
 
+        /// <summary>
+        /// Create a device from the given request.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [Authorize(Policy = nameof(Policies.Authorized))]
         [HttpPost(ApiRoutes.Device.Create)]
         [Produces("application/json", Type = typeof(DeviceResponse))]
@@ -62,11 +81,7 @@ namespace IotDash.Controllers.V1 {
                 return DeviceResponse.BadRequest(ModelState.ErrorMessages());
             }
 
-            var owner = await users.GetByEmailAsync(request.OwnerEmail);
-
-            if (owner == null) {
-                return DeviceResponse.BadRequest(Error.NoSuchUser());
-            }
+            var owner = HttpContext.Features.GetRequired<IdentityUser>();
 
             IotDevice newDevice = new() {
                 Id = Guid.NewGuid(),
@@ -90,6 +105,11 @@ namespace IotDash.Controllers.V1 {
             return DeviceResponse.Created(locationUri, newDevice.ToContract());
         }
 
+        /// <summary>
+        /// Update one or more fields of the device.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [Authorize(Policy = nameof(Policies.AuthorizedOwnDeviceAccess))]
         [HttpPatch(ApiRoutes.Device.Update)]
         [Produces("application/json", Type = typeof(DeviceResponse))]
@@ -125,6 +145,10 @@ namespace IotDash.Controllers.V1 {
             return DeviceResponse.Ok(device.ToContract());
         }
 
+        /// <summary>
+        /// Delete the device
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Policy = nameof(Policies.AuthorizedOwnDeviceAccess))]
         [HttpDelete(ApiRoutes.Device.Delete)]
         [Produces("application/json", Type = typeof(DeviceResponse))]

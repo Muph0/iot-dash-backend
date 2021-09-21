@@ -13,8 +13,14 @@ using System.Linq;
 
 namespace IotDash.Authorization.Requirements {
 
+    /// <summary>
+    /// <see cref="IAuthorizationRequirement"/> that succeeds if the Http route contains a valid interface.
+    /// </summary>
     class RouteInterfaceExists : IAuthorizationRequirement {
 
+        /// <summary>
+        /// Handler for <see cref="RouteInterfaceExists"/>.
+        /// </summary>
         public class Handler : AuthorizationHandler<RouteInterfaceExists> {
 
             private readonly IInterfaceStore interfaces;

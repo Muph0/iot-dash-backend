@@ -21,8 +21,15 @@ using System.Linq;
 
 namespace IotDash.Authorization.Requirements {
 
+
+    /// <summary>
+    /// <see cref="IAuthorizationRequirement"/> that succeeds if Http route contains a valid device.
+    /// </summary>
     class RouteDeviceExists : IAuthorizationRequirement {
 
+        /// <summary>
+        /// Handler for <see cref="RouteDeviceExists"/>
+        /// </summary>
         public class Handler : AuthorizationHandler<RouteDeviceExists> {
 
             private readonly IDeviceStore devices;

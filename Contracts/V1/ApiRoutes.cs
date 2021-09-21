@@ -7,8 +7,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+/// <summary>
+/// Contained types are presented over REST API v1.
+/// </summary>
 namespace IotDash.Contracts.V1 {
 
+    /// <summary>
+    /// Static collection of all http routes.
+    /// </summary>
     public static class ApiRoutes {
 
         public const string Root = "api";

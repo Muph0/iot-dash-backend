@@ -4,6 +4,9 @@ using System.Text.Json.Serialization;
 
 namespace IotDash.Contracts.V1.Model {
 
+    /// <summary>
+    /// Represents a measurement event in time.
+    /// </summary>
     public class HistoryEntry {
 
         private Data.Model.HistoryEntry entry;
