@@ -59,7 +59,7 @@ namespace IotDash.Parsing {
             Define(new("floor", 1, args => Math.Floor(args[0])));
             Define(new("ceil", 1, args => Math.Ceiling(args[0])));
             Define(new("abs", 1, args => Math.Abs(args[0])));
-            Define(new("if", 3, args => Math.Floor(args[0] + 0.5) != 0 ? args[1] : args[2]));
+            Define(new("if", 3, args => EvaluatingVisitor.dbool(args[0]) ? args[1] : args[2]));
         }
     }
 

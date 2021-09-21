@@ -15,7 +15,32 @@ namespace IotDash.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
-                .HasAnnotation("ProductVersion", "5.0.9");
+                .HasAnnotation("ProductVersion", "5.0.10");
+
+            modelBuilder.Entity("IotDash.Data.Model.HistoryEntry", b =>
+                {
+                    b.Property<int>("InterfaceId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("DeviceId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("When")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<double>("Average")
+                        .HasColumnType("double");
+
+                    b.Property<double>("Max")
+                        .HasColumnType("double");
+
+                    b.Property<double>("Min")
+                        .HasColumnType("double");
+
+                    b.HasKey("InterfaceId", "DeviceId", "When");
+
+                    b.ToTable("History");
+                });
 
             modelBuilder.Entity("IotDash.Data.Model.IotDevice", b =>
                 {
@@ -28,13 +53,15 @@ namespace IotDash.Migrations
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("IpAddress")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("OwnerId")
                         .IsRequired()
                         .HasMaxLength(36)
                         .HasColumnType("varchar(36)");
+
+                    b.Property<bool>("Virtual")
+                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("Id");
 
@@ -61,6 +88,9 @@ namespace IotDash.Migrations
 
                     b.Property<int>("Kind")
                         .HasColumnType("int");
+
+                    b.Property<bool>("LogHistory")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<double>("Value")
                         .HasColumnType("double");
@@ -298,6 +328,17 @@ namespace IotDash.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("IotDash.Data.Model.HistoryEntry", b =>
+                {
+                    b.HasOne("IotDash.Data.Model.IotInterface", "Interface")
+                        .WithMany()
+                        .HasForeignKey("InterfaceId", "DeviceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Interface");
                 });
 
             modelBuilder.Entity("IotDash.Data.Model.IotDevice", b =>

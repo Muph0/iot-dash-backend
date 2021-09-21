@@ -57,14 +57,14 @@ namespace IotDash.Services {
         private readonly MqttSettings appSettings;
         private readonly ILogger logger;
         private readonly IHostApplicationLifetime lifetime;
-        private readonly IHostedExpressionManager interfaceManager;
+        private readonly IHostedEvaluationService interfaceManager;
         private int reconnectionAttempts = 0;
         private readonly Dictionary<string, SubscribedTopic> subscriptions = new();
         private readonly IServiceScopeFactory factory;
 
         public MqttNet_MqttClientService(
                 MqttSettings settings, IMqttClientOptions mqttOptions, ILogger<MqttNet_MqttClientService> logger,
-                IMqttClientOptions options, IHostApplicationLifetime lifetime, IHostedExpressionManager interfaceManager,
+                IMqttClientOptions options, IHostApplicationLifetime lifetime, IHostedEvaluationService interfaceManager,
                 IServiceProvider provider) {
 
             client = new MqttFactory().CreateMqttClient();
@@ -118,16 +118,30 @@ namespace IotDash.Services {
         }
 
         private async Task Subscribe(params string[] topics) {
-            await client.SubscribeAsync(topics.Select(name => new MqttTopicFilter {
-                Topic = name,
-                QualityOfServiceLevel = MqttQualityOfServiceLevel.AtLeastOnce
-            }).ToArray());
-            logger.LogInformation($"Subscribed to {(string.Join(", ", topics.Select(t => $"'{t}'")))} topics.");
+            if (topics.Length == 0) return;
+            string message = $"Subscribing to {(string.Join(", ", topics.Select(t => $"'{t}'")))} topic(s): ";
+            try {
+                var topicFilters = topics.Select(name => new MqttTopicFilter {
+                    Topic = name,
+                    QualityOfServiceLevel = MqttQualityOfServiceLevel.AtLeastOnce
+                }).ToArray();
+                await client.SubscribeAsync(topicFilters);
+                logger.LogDebug(message + "ok.");
+
+            } catch (Exception e) {
+                logger.LogError(e, message + "failed.");
+            }
         }
 
         private async Task Unsubscribe(params string[] topics) {
-            await client.UnsubscribeAsync(topics);
-            logger.LogInformation($"Unsubscribed from {(string.Join(", ", topics.Select(t => $"'{t}'")))} topics.");
+            if (topics.Length == 0) return;
+            string message = $"Unsubscribing from {(string.Join(", ", topics.Select(t => $"'{t}'")))} topic(s): ";
+            try {
+                await client.UnsubscribeAsync(topics);
+                logger.LogDebug(message + "ok.");
+            } catch (Exception e) {
+                logger.LogError(e, message + "failed.");
+            }
         }
 
         public async Task Publish(string topic, string value) {
@@ -144,11 +158,14 @@ namespace IotDash.Services {
                 messagesToSendQueue.Enqueue(msg);
                 return;
             }
-
+            string message = $"Publishing '{msg.Topic}': '{Encoding.UTF8.GetString(msg.Payload)}' ";
             try {
                 await client.PublishAsync(msg);
+                logger.LogDebug(message + "ok.");
             } catch (MqttCommunicationException ex) {
                 messagesToSendQueue.Enqueue(msg);
+            } catch (Exception e) {
+                logger.LogError(e, message + "failed.");
             }
         }
 
@@ -159,22 +176,35 @@ namespace IotDash.Services {
 
             logger.LogTrace($"Received: '{topic}': '{payload}'");
 
-            if (subscriptions.TryGetValue(topic, out var sub)) {
-                using (var scope = factory.CreateScope()) {
-                    await sub.OnMessageReceived(scope.ServiceProvider, eventArgs);
+            try {
+                if (subscriptions.TryGetValue(topic, out var sub)) {
+                    using (var scope = factory.CreateScope()) {
+                        await sub.OnMessageReceived(scope.ServiceProvider, eventArgs);
+
+                        var db = scope.ServiceProvider.GetRequiredService<Data.DataContext>();
+                        await db.SaveChangesAsync();
+                    }
                 }
+            } catch (Exception e) {
+                logger.LogCritical(e, $"Unhandled exception during MQTT topic event: '{topic}': '{payload}'");
             }
         }
 
         public async Task HandleConnectedAsync(MqttClientConnectedEventArgs eventArgs) {
-            logger.LogInformation($"Connection with broker established.");
-            reconnectionAttempts = 0;
+            try {
+                logger.LogInformation($"Connection with broker established.");
+                reconnectionAttempts = 0;
 
-            // resubscribe to subscribed topics
-            await SubscribeToRegisteredTopics();
+                // resubscribe to subscribed topics
+                await SubscribeToRegisteredTopics();
 
-            // send queued messages
-            await SendQueuedMessages();
+                // send queued messages
+                await SendQueuedMessages();
+
+
+            } catch (Exception e) {
+                logger.LogCritical(e, $"Unhandled exception during MQTT connect event.");
+            }
         }
 
         private async Task SubscribeToRegisteredTopics() {
@@ -200,19 +230,27 @@ namespace IotDash.Services {
         }
 
         public async Task HandleDisconnectedAsync(MqttClientDisconnectedEventArgs eventArgs) {
-            if (appSettings.Broker.ExceededMaxAttempts(reconnectionAttempts)
-                || lifetime.ApplicationStopping.IsCancellationRequested) return;
-
-            reconnectionAttempts++;
-            logger.LogError($"No connection to MQTT broker, attempting to reconnect... (attempt {reconnectionAttempts})");
             try {
-                await Task.Delay(TimeSpan.FromSeconds(5));
-                await client.ConnectAsync(clientOptions);
-            } catch (Exception e) {
-                if (appSettings.Broker.ExceededMaxAttempts(reconnectionAttempts)) {
-                    logger.LogCritical(e, $"Connection to MQTT broker failed after {reconnectionAttempts} attempts.");
-                    lifetime.StopApplication();
+                if (lifetime.ApplicationStopping.IsCancellationRequested) return;
+
+                reconnectionAttempts++;
+
+                string reason = eventArgs.Reason.ToString();
+                logger.LogError(eventArgs.Exception, $"Disconnected from MQTT broker ({reason}) attempting to reconnect... (attempt {reconnectionAttempts})");
+
+                try {
+                    await Task.Delay(TimeSpan.FromSeconds(5));
+                    await client.ConnectAsync(clientOptions);
+                } catch (MqttCommunicationException e) {
+                    if (appSettings.Broker.ExceededMaxAttempts(reconnectionAttempts)) {
+                        logger.LogCritical(e, $"Connection to MQTT broker failed after {reconnectionAttempts} attempts.");
+                        lifetime.StopApplication();
+                    }
                 }
+
+
+            } catch (Exception e) {
+                logger.LogCritical(e, $"Unhandled exception during MQTT disconnect event.");
             }
         }
         public async Task StopAsync(CancellationToken cancellationToken) {

@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace IotDash.Contracts.V1.Model {
 
+    /// <summary>
+    /// Represents a device as it is presented over REST API.
+    /// </summary>
     public class IotDevice {
         protected readonly Data.Model.IotDevice device;
 
@@ -15,7 +18,9 @@ namespace IotDash.Contracts.V1.Model {
         public Guid Id => device.Id;
         public string? Alias => device.Alias;
         [Required]
-        public string IpAddress => device.IpAddress;
+        public string? IpAddress => device.IpAddress;
+        [Required]
+        public bool Virtual => device.Virtual;
         [Required]
         public string OwnerId => device.OwnerId;
         [Required]

@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Identity;
 using IotDash.Data.Model;
 using IotDash.Contracts.V1;
 using IotDash.Exceptions;
+using IotDash.Extensions.Context;
+using Microsoft.Extensions.Logging;
+using System.Linq;
 
 namespace IotDash.Authorization.Requirements {
 
@@ -15,36 +18,44 @@ namespace IotDash.Authorization.Requirements {
         public class Handler : AuthorizationHandler<RouteInterfaceExists> {
 
             private readonly IInterfaceStore interfaces;
+            private readonly ILogger logger;
 
-            public Handler(IInterfaceStore interfaces) {
+            public Handler(IInterfaceStore interfaces, ILogger<Handler> logger) {
                 this.interfaces = interfaces;
+                this.logger = logger;
             }
 
             protected override async Task HandleRequirementAsync(AuthorizationHandlerContext authContext, RouteInterfaceExists requirement) {
 
-                var context = authContext.GetHttpContext();
+                try {
 
-                if (authContext.HasFailed) {
-                    return;
-                }
+                    var context = authContext.GetHttpContext();
 
-                IdentityUser user = context.Features.GetRequired<IdentityUser>();
-                IotDevice device = context.Features.GetRequired<IotDevice>();
+                    if (authContext.HasFailed) {
+                        return;
+                    }
 
-                var ifaceIdStr = context.GetFromRoute<string>(nameof(ApiRoutes.Device.Interface.ifaceId));
-                Debug.Assert(ifaceIdStr != null, this.GetType().Name + " requirement on bad route.");
+                    IdentityUser user = context.Features.GetRequired<IdentityUser>();
+                    IotDevice device = context.Features.GetRequired<IotDevice>();
 
-                if (!int.TryParse(ifaceIdStr, out int ifaceId)) {
-                    throw new BadRequestException("Interface id must be a number.");
-                }
+                    var ifaceIdStr = context.GetFromRoute<string>(nameof(ApiRoutes.Device.Interface.ifaceId));
+                    Debug.Assert(ifaceIdStr != null, this.GetType().Name + " requirement on bad route.");
 
-                var iface = await interfaces.GetByKeyAsync((device.Id, ifaceId));
+                    if (!int.TryParse(ifaceIdStr, out int ifaceId)) {
+                        throw new BadRequestException("Interface id must be a number.");
+                    }
 
-                if (iface != null) {
-                    context.Features.Set(iface);
-                    authContext.Succeed(requirement);
-                } else {
-                    throw new ResourceNotFoundException("Given interface does not exist.");
+                    var iface = await interfaces.GetByKeyAsync((device.Id, ifaceId));
+
+                    if (iface != null) {
+                        context.Features.Set(iface);
+                        authContext.Succeed(requirement);
+                    } else {
+                        throw new ResourceNotFoundException("Given interface does not exist.");
+                    }
+
+                } finally {
+                    logger.LogTrace($"Requirement {(authContext.PendingRequirements.Any(r => r == requirement) ? "failed" : "succeeded")}.");
                 }
             }
         }

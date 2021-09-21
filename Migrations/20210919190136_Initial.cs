@@ -66,6 +66,23 @@ namespace IotDash.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "HistoryEntry",
+                columns: table => new
+                {
+                    InterfaceId = table.Column<int>(type: "int", nullable: false),
+                    DeviceId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    When = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Min = table.Column<double>(type: "double", nullable: false),
+                    Max = table.Column<double>(type: "double", nullable: false),
+                    Average = table.Column<double>(type: "double", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HistoryEntry", x => new { x.InterfaceId, x.DeviceId, x.When });
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -201,6 +218,7 @@ namespace IotDash.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     OwnerId = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    Virtual = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     IpAddress = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
@@ -337,6 +355,9 @@ namespace IotDash.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "HistoryEntry");
 
             migrationBuilder.DropTable(
                 name: "Interfaces");

@@ -3,6 +3,8 @@ using IotDash.Contracts.V1;
 using IotDash.Data;
 using IotDash.Data.Model;
 using IotDash.Extensions;
+using IotDash.Extensions.Context;
+using IotDash.Extensions.Error;
 using IotDash.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -77,13 +79,7 @@ namespace IotDash.Controllers.V1 {
             int ifaceIdCounter = 0;
             foreach (var ifaceReq in request.Interfaces) {
 
-                IotInterface newIface = new() {
-                    Id = ifaceIdCounter++,
-                    DeviceId = newDevice.Id,
-                    Alias = ifaceReq.Alias,
-                    Kind = ifaceReq.Kind,
-                };
-
+                IotInterface newIface = ifaceReq.CreateModel(newDevice.Id, ifaceIdCounter++);
                 await interfaces.CreateAsync(newIface);
             }
 
@@ -91,7 +87,7 @@ namespace IotDash.Controllers.V1 {
             Debug.Assert(written);
 
             var locationUri = BaseUrl + "/" + ApiRoutes.Device.Get.Replace(ApiRoutes.Device.deviceId, newDevice.Id.ToString());
-            return Created(locationUri, DeviceResponse.Ok(newDevice.ToContract()));
+            return DeviceResponse.Created(locationUri, newDevice.ToContract());
         }
 
         [Authorize(Policy = nameof(Policies.AuthorizedOwnDeviceAccess))]

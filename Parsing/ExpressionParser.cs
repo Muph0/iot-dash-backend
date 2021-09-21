@@ -29,16 +29,37 @@ namespace IotDash.Parsing {
         private static Parser<char, Func<IExpr, IExpr>> Unary(Parser<char, UnaryOp.Types> op)
             => op.Select<Func<IExpr, IExpr>>(type => o => new UnaryOp(type, o));
 
+
+        private static readonly Parser<char, Func<IExpr, IExpr>> Neg
+            = Unary(Tok("-").ThenReturn(UnaryOp.Types.Neg));
+
+        private static readonly Parser<char, Func<IExpr, IExpr, IExpr>> Mul
+            = Binary(Tok("*").ThenReturn(BinaryOp.Types.Mul));
+        private static readonly Parser<char, Func<IExpr, IExpr, IExpr>> Div
+            = Binary(Tok("/").ThenReturn(BinaryOp.Types.Div));
+        private static readonly Parser<char, Func<IExpr, IExpr, IExpr>> Mod
+            = Binary(Tok("mod").ThenReturn(BinaryOp.Types.Mod));
+
         private static readonly Parser<char, Func<IExpr, IExpr, IExpr>> Add
             = Binary(Tok("+").ThenReturn(BinaryOp.Types.Add));
         private static readonly Parser<char, Func<IExpr, IExpr, IExpr>> Sub
             = Binary(Tok("-").ThenReturn(BinaryOp.Types.Sub));
-        private static readonly Parser<char, Func<IExpr, IExpr, IExpr>> Mul
-            = Binary(Tok("*").ThenReturn(BinaryOp.Types.Mul));
-        private static readonly Parser<char, Func<IExpr, IExpr, IExpr>> Div
-            = Binary(Tok("*").ThenReturn(BinaryOp.Types.Div));
-        private static readonly Parser<char, Func<IExpr, IExpr>> Neg
-            = Unary(Tok("-").ThenReturn(UnaryOp.Types.Neg));
+
+        private static readonly Parser<char, Func<IExpr, IExpr, IExpr>> Equal
+            = Binary(Tok("=").ThenReturn(BinaryOp.Types.Equal));
+        private static readonly Parser<char, Func<IExpr, IExpr, IExpr>> Greater
+            = Binary(Tok(">").ThenReturn(BinaryOp.Types.Greater));
+        private static readonly Parser<char, Func<IExpr, IExpr, IExpr>> Less
+            = Binary(Tok("<").ThenReturn(BinaryOp.Types.Less));
+        private static readonly Parser<char, Func<IExpr, IExpr, IExpr>> GreaterEq
+            = Binary(Tok(">=").ThenReturn(BinaryOp.Types.GreaterEq));
+        private static readonly Parser<char, Func<IExpr, IExpr, IExpr>> LessEq
+            = Binary(Tok("<=").ThenReturn(BinaryOp.Types.LessEq));
+
+        private static readonly Parser<char, Func<IExpr, IExpr, IExpr>> LAnd
+            = Binary(Tok("and").ThenReturn(BinaryOp.Types.LAnd));
+        private static readonly Parser<char, Func<IExpr, IExpr, IExpr>> LOr
+            = Binary(Tok("or").ThenReturn(BinaryOp.Types.LOr));
 
         private static readonly Parser<char, IExpr> Literal
             = Tok(Num)
@@ -69,8 +90,11 @@ namespace IotDash.Parsing {
                 new[]
                 {
                     Operator.Prefix(Neg),
-                    Operator.InfixL(Mul),
-                    Operator.InfixL(Add)
+                    Operator.InfixL(Mul).And(Operator.InfixL(Div)).And(Operator.InfixL(Mod)),
+                    Operator.InfixL(Add).And(Operator.InfixL(Sub)),
+                    Operator.InfixL(Equal).And(Operator.InfixL(Less)).And(Operator.InfixL(Greater)).And(Operator.InfixL(LessEq)).And(Operator.InfixL(GreaterEq)),
+                    Operator.InfixL(LAnd),
+                    Operator.InfixL(LOr),
                 }
             )
         ).Labelled("expression");

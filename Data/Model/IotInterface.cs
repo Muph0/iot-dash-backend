@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace IotDash.Data.Model {
 
-    public class IotInterface {
+    public class IotInterface : ModelObject {
 
         public int Id { get; set; }
         public Guid DeviceId { get; set; }
@@ -27,15 +27,23 @@ namespace IotDash.Data.Model {
         [ForeignKey(nameof(DeviceId))]
         public virtual IotDevice Device { get; set; }
 
+        public bool LogHistory { get; set; } = false;
 
-        public string _JsonTrap => throw new Exception("This object should not be passed to clients.");
+        internal string GetStandardTopic() {
+            return $"dev/{DeviceId}/{Id}";
+        }
 
-        public override string ToString()
-            => string.Join(", ", typeof(IotInterface).GetProperties()
-                .Where(p => !p.Name.StartsWith("_") && p.GetCustomAttribute<ForeignKeyAttribute>() == null)
-                .Select(p => $"{p.Name}={{{p.GetValue(this)}}}"));
+        internal string? GetAliasTopic() {
+            if (Alias == null | Device.Alias == null) {
+                return null;
+            }
 
+            return $"{Device.Alias}/{Alias}";
+        }
 
+        internal (Guid, int) GetKey() {
+            return (DeviceId, Id);
+        }
     }
 
 }

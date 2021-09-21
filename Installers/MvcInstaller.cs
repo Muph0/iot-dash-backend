@@ -27,7 +27,7 @@ namespace IotDash.Installers {
             services.AddControllers(opt => {
             });
 
-            SwaggerSettings swagg = SwaggerSettings.Load(configuration);
+            SwaggerSettings swagg = SwaggerSettings.LoadFrom(configuration);
 
             // Add swagger (with JWT bearer support)
             services.AddSwaggerGen(opt => {

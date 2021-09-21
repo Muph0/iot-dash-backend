@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace IotDash.Contracts.V1 {
     internal struct Error {
@@ -17,6 +18,8 @@ namespace IotDash.Contracts.V1 {
         public static string RefreshTokenExpired() => "Refresh token is expired.";
         public static string RefreshTokenUsedAlready() => "Refresh token has been used.";
         public static string RefreshTokenJwtMismatch() => "Refresh token does not match this JWT.";
+        public static string InterfaceAlreadyExists() => "Interface with specified id already exists on this device.";
+        public static string ExpressionOnReadOnlyIface() => "Read only interfaces cannot have an expression.";
         #endregion
     }
 }

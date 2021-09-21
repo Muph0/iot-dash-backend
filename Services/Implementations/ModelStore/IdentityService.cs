@@ -6,6 +6,7 @@ using IotDash.Data;
 using IotDash.Data.Model;
 using IotDash.Domain;
 using IotDash.Extensions;
+using IotDash.Extensions.Context;
 using IotDash.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -130,14 +131,14 @@ namespace IotDash.Services.Implementations {
             return deleted;
         }
 
-        private (ClaimsPrincipal, IEnumerable<string>) GetPrincipalFromExpiredToken(string jwt) {
+        private (ClaimsPrincipal?, IEnumerable<string>) GetPrincipalFromExpiredToken(string jwt) {
 
             var tokenHandler = new JwtSecurityTokenHandler();
             try {
                 var parameters = tokenValidationParameters.Clone();
                 parameters.ValidateLifetime = false;
                 var principal = tokenHandler.ValidateToken(jwt, parameters, out var validatedToken);
-                return (principal, null);
+                return (principal, Enumerable.Empty<string>());
             } catch (SecurityTokenException ex) {
                 return (null, ex.Data.Keys.Cast<string>().Prepend("Invalid token."));
             }

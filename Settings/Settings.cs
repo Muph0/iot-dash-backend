@@ -5,14 +5,15 @@ using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Collections.Generic;
 using IotDash.Extensions;
+using IotDash.Extensions.Nullables;
 
 namespace IotDash.Settings {
 
-    public abstract class Settings {
+    public abstract class Settings<TInherited> where TInherited : Settings<TInherited>, new() {
 
-        public static T LoadFrom<T>(IConfiguration configuration, string? path = null) where T : new() {
-            T result = new();
-            string sectionName = typeof(T).Name;
+        public static TInherited LoadFrom(IConfiguration configuration, string? path = null) {
+            TInherited result = new();
+            string sectionName = typeof(TInherited).Name;
 
             if (sectionName.EndsWith(nameof(Settings))) {
                 sectionName = sectionName.Substring(0, sectionName.Length - nameof(Settings).Length);
@@ -29,7 +30,7 @@ namespace IotDash.Settings {
             }
 
             var section = parentSection.GetSection(sectionName);
-            CheckBindCompatibility(typeof(T), section, errors);
+            CheckBindCompatibility(typeof(TInherited), section, errors);
 
             if (errors.Count != 0) {
                 throw new FormatException("Bad settings format.\n" + string.Join('\n', errors));

@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 
-namespace IotDash.Extensions {
+namespace IotDash.Extensions.Nullables {
     public static class NullableExtensions {
 
         public static bool IsNullable(this PropertyInfo property) =>

@@ -40,20 +40,28 @@ namespace IotDash.Contracts.V1 {
 
         #region Static_IActionResult_Factories
         public static BadRequestObjectResult BadRequest(IEnumerable<string> errors)
-            => new BadRequestObjectResult(Fail(errors));
+            => Fail(errors).AsBadRequest();
         public static BadRequestObjectResult BadRequest(string error)
-            => new BadRequestObjectResult(Fail(error));
+            => Fail(error).AsBadRequest();
+
+        public static ConflictObjectResult Conflict(IEnumerable<string> errors)
+            => Fail(errors).AsConflict();
+        public static ConflictObjectResult Conflict(string error)
+            => Fail(error).AsConflict();
 
         public static NotFoundObjectResult NotFound(IEnumerable<string> errors)
-            => new NotFoundObjectResult(Fail(errors));
+            => Fail(errors).AsNotFound();
         public static NotFoundObjectResult NotFound(string error)
-            => new NotFoundObjectResult(Fail(error));
+            => Fail(error).AsNotFound();
 
         public static NoContentResult NoContent()
             => new NoContentResult();
 
         public static OkObjectResult Ok(TValue value)
-            => new OkObjectResult(Succeed(value));
+            => Succeed(value).AsOk();
+
+        public static IActionResult Created(string locationUri, TValue value)
+            => new CreatedAtRouteResult(locationUri, value);
         #endregion
 
         #region Instance_IActionResult_Factories
@@ -64,6 +72,10 @@ namespace IotDash.Contracts.V1 {
         public NotFoundObjectResult AsNotFound() {
             Debug.Assert(!Success);
             return new NotFoundObjectResult(this);
+        }
+        public ConflictObjectResult AsConflict() {
+            Debug.Assert(!Success);
+            return new ConflictObjectResult(this);
         }
         public NoContentResult AsNoContent() {
             Debug.Assert(Success);

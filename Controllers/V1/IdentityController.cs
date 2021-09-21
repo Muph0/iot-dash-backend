@@ -2,6 +2,7 @@ using IotDash.Contracts;
 using IotDash.Contracts.V1;
 using IotDash.Domain;
 using IotDash.Extensions;
+using IotDash.Extensions.Context;
 using IotDash.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -27,6 +28,11 @@ namespace IotDash.Controllers.V1 {
             this.users = users;
         }
 
+        /// <summary>
+        /// Register a new user with the given credentials.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost(ApiRoutes.Identity.Register)]
         [Produces(MimeType.Application_JSON, Type = typeof(AuthResponse))]
         public async Task<IActionResult> Register([FromBody] UserRegistrationRequest request) {
@@ -39,6 +45,11 @@ namespace IotDash.Controllers.V1 {
             return authResult.AsOkOrBadRequest();
         }
 
+        /// <summary>
+        /// Get a new authorization token for the user.
+        /// </summary>
+        /// <param name="request">Credentials of the user to log-in.</param>
+        /// <returns>New token pair wrapped in <see cref="AuthResponse"/>.</returns>
         [HttpPost(ApiRoutes.Identity.Login)]
         [Produces(MimeType.Application_JSON, Type = typeof(AuthResponse))]
         public async Task<IActionResult> Login([FromBody] UserLoginRequest request) {
@@ -47,6 +58,11 @@ namespace IotDash.Controllers.V1 {
             return authResult.AsOkOrBadRequest();
         }
 
+        /// <summary>
+        /// Provide a new token pair in exchange for a valid refresh token and an expired JWT token.
+        /// </summary>
+        /// <param name="request">Token pair consisting of a valid refresh token and an expired JWT token.</param>
+        /// <returns>New token pair wrapped in <see cref="AuthResponse"/>.</returns>
         [HttpPost(ApiRoutes.Identity.Refresh)]
         [Produces(MimeType.Application_JSON, Type = typeof(AuthResponse))]
         public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request) {
@@ -55,6 +71,10 @@ namespace IotDash.Controllers.V1 {
             return authResult.AsOkOrBadRequest();
         }
 
+        /// <summary>
+        /// Get information about the authorization token bearer.
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         [HttpGet(ApiRoutes.Identity.Me)]
         [Produces(MimeType.Application_JSON, Type = typeof(Contracts.V1.Model.User))]

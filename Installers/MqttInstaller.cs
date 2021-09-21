@@ -15,8 +15,8 @@ namespace IotDash.Installers {
 
             services.AddSingleton(settings);
 
-            services.AddSingleton<IHostedExpressionManager, ExpressionManager>();
-            services.AddHostedService(p => p.GetRequiredService<IHostedExpressionManager>());
+            services.AddSingleton<IHostedEvaluationService, EvaluatorsManager>();
+            services.AddHostedService(p => p.GetRequiredService<IHostedEvaluationService>());
 
             services.AddSingleton<IHostedMqttClient, MqttNet_MqttClientService>();
             services.AddHostedService(p => p.GetRequiredService<IHostedMqttClient>());

@@ -36,7 +36,7 @@ namespace IotDash {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
 
-                SwaggerSettings swagg = SwaggerSettings.Load(Configuration);
+                SwaggerSettings swagg = SwaggerSettings.LoadFrom(Configuration);
 
                 app.UseSwagger(options => { options.RouteTemplate = swagg.JsonRoute; });
                 app.UseSwaggerUI(c => {
@@ -52,7 +52,6 @@ namespace IotDash {
                 app.UseMiddleware<ApiErrorReporting>(env);
                 app.UseAuthentication();
                 app.UseAuthorization();
-                app.UseMiddleware<AllowOriginMiddleware>();
                 app.UseEndpoints(endpoints => {
                     endpoints.MapControllers();
                 });

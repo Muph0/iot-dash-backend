@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IotDash.Data.Model {
-    public class RefreshToken {
+    public class RefreshToken : ModelObject {
 
         [Key]
         public string Token { get; set; }
@@ -19,8 +19,5 @@ namespace IotDash.Data.Model {
         public string UserId { get; set; }
         [ForeignKey(nameof(UserId))]
         public virtual IdentityUser User { get; set; }
-
-
-        public string _JsonTrap => throw new Exception("This object should not be passed to clients.");
     }
 }

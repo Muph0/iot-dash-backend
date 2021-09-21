@@ -15,15 +15,14 @@ namespace IotDash.Services.Implementations.ModelStore {
 
         private readonly DataContext db;
         private readonly ILogger logger;
-        private readonly IHostedExpressionManager expressions;
+        private readonly IHostedEvaluationService expressions;
         private readonly IServiceProvider provider;
 
-        public InterfaceEntityStore(DataContext db, ILogger<InterfaceEntityStore> logger, IHostedExpressionManager expressionManager, IServiceProvider provider) {
+        public InterfaceEntityStore(DataContext db, ILogger<InterfaceEntityStore> logger, IHostedEvaluationService evalMgr, IServiceProvider provider) {
             this.db = db;
             this.logger = logger;
-            this.expressions = expressionManager;
+            this.expressions = evalMgr;
             this.provider = provider;
-            db.RegisterTracker(this);
         }
 
         public async Task CreateAsync(IotInterface ifaceToCreate) {
@@ -57,23 +56,5 @@ namespace IotDash.Services.Implementations.ModelStore {
             return affected > 0;
         }
 
-        public Task OnSaveChangesAsync(IEnumerable<EntityEntry<IotInterface>> changed) {
-            
-            foreach (var ifaceEntry in changed) {
-
-                var alias = ifaceEntry.Property(nameof(IotInterface.Alias));
-                var expression = ifaceEntry.Property(nameof(IotInterface.Expression));
-
-                if (alias.IsModified) {
-                    // TODO: rename references
-                }
-
-                if (expression.IsModified || alias.IsModified) {
-                    expressions.RefreshInterface(provider, ifaceEntry.Entity);
-                }
-            }
-
-            return Task.CompletedTask;
-        }
     }
 }

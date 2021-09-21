@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace IotDash.Data.Model {
 
-    public class IotDevice {
+    public class IotDevice : ModelObject {
 
         [Key]
         public Guid Id { get; set; }
@@ -23,16 +23,11 @@ namespace IotDash.Data.Model {
         [ForeignKey(nameof(OwnerId))]
         public virtual IdentityUser Owner { get; set; }
 
+        public bool Virtual { get; set; }
+
         public virtual ICollection<IotInterface> Interfaces { get; set; }
 
-        public string IpAddress { get; set; }
-
-        public string _JsonTrap => throw new Exception("This object should not be passed to clients.");
-
-        public override string ToString()
-            => string.Join(", ", typeof(IotDevice).GetProperties()
-                .Where(p => !p.Name.StartsWith("_") && p.GetCustomAttribute<ForeignKeyAttribute>() == null)
-                .Select(p => $"{p.Name}={{{p.GetValue(this)}}}"));
+        public string? IpAddress { get; set; }
 
     }
 

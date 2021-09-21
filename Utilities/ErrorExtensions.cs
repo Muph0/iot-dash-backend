@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace IotDash.Extensions {
+namespace IotDash.Extensions.Error {
     public static class ErrorExtensions {
 
         public static IEnumerable<string> ErrorMessages(this ModelStateDictionary ModelState) {

@@ -32,7 +32,10 @@ namespace IotDash.Contracts.V1 {
 
                 public const string Get = Base + "/" + ifaceId;
                 public const string Update = Get;
+                public const string Create = Base + "/interface";
+                public const string Delete = Get;
                 public const string ReadValue = Get + "/value";
+                public const string History = Get + "/history";
 
             }
         }

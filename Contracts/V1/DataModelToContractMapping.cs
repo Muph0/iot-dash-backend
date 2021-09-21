@@ -24,5 +24,9 @@ namespace IotDash.Contracts.V1 {
         public static User ToContract(this Microsoft.AspNetCore.Identity.IdentityUser user) {
             return new User(user);
         }
+
+        public static HistoryEntry ToContract(this Data.Model.HistoryEntry entry) {
+            return new HistoryEntry(entry);
+        }
     }
 }

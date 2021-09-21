@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IotDash.Settings {
 
-    public class MqttSettings : Settings {
+    public class MqttSettings : Settings<MqttSettings> {
         public class ClientSettings {
             public string Id { set; get; }
         }
@@ -19,16 +19,12 @@ namespace IotDash.Settings {
             public int? MaxReconnectionAttempts { get; set; } = -1;
 
             public bool ExceededMaxAttempts(int reconnectionAttempts)
-                => reconnectionAttempts >= MaxReconnectionAttempts && MaxReconnectionAttempts >= 0;
+                => reconnectionAttempts >= MaxReconnectionAttempts && MaxReconnectionAttempts > 0;
         }
 
         public ClientSettings Client { get; set; }
         public CredentialsSettings? Credentials { get; set; }
         public BrokerHostSettings Broker { get; set; }
-
-        public static MqttSettings LoadFrom(IConfiguration configuration) {
-            return LoadFrom<MqttSettings>(configuration);
-        }
     }
 
 }

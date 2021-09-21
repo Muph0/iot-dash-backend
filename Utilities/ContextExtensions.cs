@@ -9,7 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 
-namespace IotDash.Extensions {
+namespace IotDash.Extensions.Context {
     public static class ContextExtensions {
 
         public static string? GetUserId(this HttpContext httpContext) {

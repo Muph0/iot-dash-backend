@@ -13,6 +13,7 @@ using IotDash.Services;
 using IotDash.Extensions;
 using IotDash.Exceptions;
 using System.Linq;
+using IotDash.Extensions.Context;
 
 namespace IotDash.Authorization.Requirements {
 

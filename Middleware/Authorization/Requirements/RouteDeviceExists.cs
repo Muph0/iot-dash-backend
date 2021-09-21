@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Routing;
 using IotDash.Contracts.V1;
 using IotDash.Data.Model;
 using IotDash.Exceptions;
+using IotDash.Extensions.Context;
+using System.Linq;
 
 namespace IotDash.Authorization.Requirements {
 
@@ -24,34 +26,42 @@ namespace IotDash.Authorization.Requirements {
         public class Handler : AuthorizationHandler<RouteDeviceExists> {
 
             private readonly IDeviceStore devices;
+            private readonly ILogger logger;
 
-            public Handler(IDeviceStore devices) {
+            public Handler(IDeviceStore devices, ILogger<Handler> logger) {
                 this.devices = devices;
+                this.logger = logger;
             }
 
             protected override async Task HandleRequirementAsync(AuthorizationHandlerContext authContext, RouteDeviceExists requirement) {
 
-                var context = authContext.GetHttpContext();
+                try {
 
-                if (authContext.HasFailed) {
-                    return;
-                }
+                    var context = authContext.GetHttpContext();
 
-                var user = context.Features.GetRequired<IdentityUser>();
-                var deviceIdStr = context.GetFromRoute<string>(nameof(ApiRoutes.Device.deviceId));
-                Debug.Assert(deviceIdStr != null, this.GetType().Name + " requirement on bad route.");
+                    if (authContext.HasFailed) {
+                        return;
+                    }
 
-                if (!Guid.TryParse(deviceIdStr, out Guid deviceId)) {
-                    throw new BadRequestException("Device Id in bad format.");
-                }
+                    var user = context.Features.GetRequired<IdentityUser>();
+                    var deviceIdStr = context.GetFromRoute<string>(nameof(ApiRoutes.Device.deviceId));
+                    Debug.Assert(deviceIdStr != null, this.GetType().Name + " requirement on bad route.");
 
-                var device = await devices.GetByKeyAsync(deviceId);
+                    if (!Guid.TryParse(deviceIdStr, out Guid deviceId)) {
+                        throw new BadRequestException("Device Id in bad format.");
+                    }
 
-                if (device != null) {
-                    context.Features.Set(device);
-                    authContext.Succeed(requirement);
-                } else {
-                    throw new ResourceNotFoundException("Given device does not exist.");
+                    var device = await devices.GetByKeyAsync(deviceId);
+
+                    if (device != null) {
+                        context.Features.Set(device);
+                        authContext.Succeed(requirement);
+                    } else {
+                        throw new ResourceNotFoundException("Given device does not exist.");
+                    }
+
+                } finally {
+                    logger.LogTrace($"Requirement {(authContext.PendingRequirements.Any(r => r == requirement) ? "failed" : "succeeded")}.");
                 }
             }
         }

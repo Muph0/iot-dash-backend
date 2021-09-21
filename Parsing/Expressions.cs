@@ -64,7 +64,10 @@ namespace IotDash.Parsing.Expressions {
     }
 
     class BinaryOp : IExpr {
-        public enum Types { Add, Sub, Mul, Div }
+        public enum Types { Add, Sub, Mul, Div, Less, Greater, LessEq, GreaterEq, LAnd, LOr,
+            Equal,
+            Mod
+        }
 
         public Types Type { get; }
         public IExpr Left { get; }

@@ -1,4 +1,5 @@
 ﻿using IotDash.Contracts.V1.Model;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -7,6 +8,16 @@ namespace IotDash.Contracts.V1 {
 
         [Required]
         public InterfaceKind Kind { get; set; }
+
+        public Data.Model.IotInterface CreateModel(Guid deviceId, int ifaceId) {
+            return new() {
+                Id = ifaceId,
+                Alias = Alias,
+                DeviceId = deviceId,
+                Expression = Expression,
+                Kind = Kind,
+            };
+        }
     }
 
     public class InterfacePatchRequest {
@@ -18,6 +29,8 @@ namespace IotDash.Contracts.V1 {
         [ValidExpression]
         [MaxLength(ContractedConstraints.ExpressionMaxLength)]
         public string? Expression { get; set; }
+
+        public bool? LogHistory { get; set; }
     }
 
 }

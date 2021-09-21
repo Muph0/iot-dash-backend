@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
+using IotDash.Services.Implementations.ModelStore;
+using IotDash.Services.Implementations;
 
 namespace IotDash.Installers {
 
@@ -24,10 +25,19 @@ namespace IotDash.Installers {
                 .AddEntityFrameworkStores<DataContext>();
 
             // Add model services
-            services.AddScoped<IDeviceStore, Services.Implementations.ModelStore.DeviceEntityStore>();
-            services.AddScoped<IInterfaceStore, Services.Implementations.ModelStore.InterfaceEntityStore>();
-            services.AddScoped<IUserStore, Services.Implementations.ModelStore.UserManagerWrapper>();
-            services.AddScoped<IIdentityService, Services.Implementations.IdentityService>();
+            services.AddScoped<IDeviceStore, DeviceEntityStore>();
+            services.AddScoped<IInterfaceStore, InterfaceEntityStore>();
+            services.AddScoped<IUserStore, UserManagerWrapper>();
+            services.AddScoped<IIdentityService, IdentityService>();
+            services.AddScoped<IHistoryStore, HistoryEntryStore>();
+
+            // Add history service
+            services.AddSingleton<IHostedHistoryService, HistoryWritersManager>();
+            services.AddHostedService(p => p.GetRequiredService<IHostedHistoryService>());
+
+            // Add settings
+            var historySettings = Settings.HistorySettings.LoadFrom(configuration);
+            services.AddSingleton(historySettings);
         }
     }
 

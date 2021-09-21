@@ -70,7 +70,7 @@ namespace IotDash.Services.Implementations {
         /// A flag indicating whether authorization has succeeded.
         /// This value is <value>true</value> when the user fulfills the policy otherwise <value>false</value>.
         /// </returns>
-        public async Task<AuthorizationResult> AuthorizeAsync(ClaimsPrincipal user, object resource, IEnumerable<IAuthorizationRequirement> requirements) {
+        public async Task<AuthorizationResult> AuthorizeAsync(ClaimsPrincipal user, object? resource, IEnumerable<IAuthorizationRequirement> requirements) {
             if (requirements == null) {
                 throw new ArgumentNullException(nameof(requirements));
             }
@@ -103,7 +103,7 @@ namespace IotDash.Services.Implementations {
         /// A flag indicating whether authorization has succeeded.
         /// This value is <value>true</value> when the user fulfills the policy otherwise <value>false</value>.
         /// </returns>
-        public async Task<AuthorizationResult> AuthorizeAsync(ClaimsPrincipal user, object resource, string policyName) {
+        public async Task<AuthorizationResult> AuthorizeAsync(ClaimsPrincipal user, object? resource, string policyName) {
             if (policyName == null) {
                 throw new ArgumentNullException(nameof(policyName));
             }

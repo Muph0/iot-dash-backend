@@ -11,12 +11,12 @@ using TValue = System.Double;
 namespace IotDash.Parsing {
 
     class InterfaceEvaluationContext {
-        public InterfaceEvaluationContext(Dictionary<string, TopicHandler>? topics) {
+        public InterfaceEvaluationContext(Dictionary<string, TopicValueSubscription>? topics) {
             Debug.Assert(topics != null);
             Topics = topics;
         }
 
-        public IReadOnlyDictionary<string, TopicHandler> Topics { get; init; }
+        public IReadOnlyDictionary<string, TopicValueSubscription> Topics { get; init; }
         public double DefaultValue => 0.0;
     }
 
@@ -45,13 +45,28 @@ namespace IotDash.Parsing {
             }
         }
 
+        internal static double dbool(bool x) {
+            return x ? 1 : 0;
+        }
+        internal static bool dbool(double x) {
+            return x != 0;
+        }
+
         TValue IRecursiveVisitor<TValue>.Visit(BinaryOp op, TValue left, TValue right) {
             switch (op.Type) {
                 case BinaryOp.Types.Add: return left + right;
                 case BinaryOp.Types.Sub: return left - right;
                 case BinaryOp.Types.Mul: return left * right;
-                case BinaryOp.Types.Div: return  left / right;
-                default: throw new NotImplementedException();
+                case BinaryOp.Types.Div: return left / right;
+                case BinaryOp.Types.Mod: return left % right;
+                case BinaryOp.Types.Equal: return dbool(left == right);
+                case BinaryOp.Types.Less: return dbool(left < right);
+                case BinaryOp.Types.Greater: return dbool(left > right);
+                case BinaryOp.Types.LessEq: return dbool(left <= right);
+                case BinaryOp.Types.GreaterEq: return dbool(left >= right);
+                case BinaryOp.Types.LAnd: return dbool(dbool(left) && dbool(right));
+                case BinaryOp.Types.LOr: return dbool(dbool(left) || dbool(right));
+                default: throw new NotImplementedException($"Operator {op.Type} not implemented.");
             }
         }
 

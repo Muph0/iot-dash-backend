@@ -11,6 +11,10 @@ namespace IotDash.Contracts.V1 {
         [Required]
         public string OwnerEmail { get; set; }
 
+        public string? IpAddress { get; set; }
+
+        public bool? Virtual { get; set; } = false;
+
 
         [ValidAlias]
         [MaxLength(ContractedConstraints.AliasMaxLength)]
