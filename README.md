@@ -47,7 +47,13 @@ Each user can manage only devices which were registered by them.
 ## History logging
 The app logs history of selected MQTT topics.
 This history data is then presented over REST API.
-For detail, see `TODO` ref REST
+For detail, see [REST API docs](https://muph0.github.io/iot-dash-backend/html/rest.html).
+
+## Further docs
+
+For detailed information, check out:
+ - [REST API documentation](https://muph0.github.io/iot-dash-backend/html/rest.html)
+ - [Generated class reference](https://muph0.github.io/iot-dash-backend/html/)
 
 
 # Usage
