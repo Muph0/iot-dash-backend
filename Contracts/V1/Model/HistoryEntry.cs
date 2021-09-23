@@ -15,9 +15,17 @@ namespace IotDash.Contracts.V1.Model {
             this.entry = entry;
         }
 
+
+        [Required]
         public DateTime Time => entry.When;
+
+        [Required]
         public double Min => entry.Min;
+
+        [Required]
         public double Max => entry.Max;
+
+        [Required]
         public double Average => entry.Average;
     }
 }

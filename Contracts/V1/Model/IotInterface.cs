@@ -27,6 +27,7 @@ namespace IotDash.Contracts.V1.Model {
         }
     }
 
+
     /// <summary>
     /// Represents an interface of an IOT device.
     /// </summary>
@@ -37,12 +38,18 @@ namespace IotDash.Contracts.V1.Model {
             this.iface = iface;
         }
 
+        [Required]
         public int Id => iface.Id;
+        
+        [Required]
         public Guid DeviceId => iface.DeviceId;
         public string? Alias => iface.Alias;
+        [Required]
         public InterfaceKind Kind => iface.Kind;
         public string? Expression => iface.Expression;
+        [Required]
         public double Value => iface.Value;
+        [Required]
         public bool LogHistory => iface.LogHistory;
     }
 }
