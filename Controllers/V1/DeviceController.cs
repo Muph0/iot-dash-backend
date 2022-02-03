@@ -116,6 +116,10 @@ namespace IotDash.Controllers.V1 {
         public async Task<IActionResult> PatchDevice([FromBody] DevicePatchRequest request) {
             var device = HttpContext.Features.GetRequired<IotDevice>();
 
+            if (!ModelState.IsValid) {
+                return DeviceResponse.BadRequest(ModelState.ErrorMessages());
+            }
+
             int changedFields = 0;
 
             if (request.Alias != null) {
@@ -137,11 +141,7 @@ namespace IotDash.Controllers.V1 {
                 return DeviceResponse.BadRequest(Error.NoModificationsInRequest());
             }
 
-            bool updated = await devices.SaveChangesAsync();
-            if (!updated) {
-                return DeviceResponse.NotFound(Error.DeviceAlreadyDeleted());
-            }
-
+            await devices.SaveChangesAsync();
             return DeviceResponse.Ok(device.ToContract());
         }
 

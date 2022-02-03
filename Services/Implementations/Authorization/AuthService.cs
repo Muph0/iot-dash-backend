@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace IotDash.Services.Implementations {
+namespace IotDash.Services.Auth {
     /// <summary>
     /// The default implementation of an <see cref="IAuthorizationService"/>.
     /// </summary>

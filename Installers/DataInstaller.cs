@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using IotDash.Services.Implementations.ModelStore;
-using IotDash.Services.Implementations;
+using IotDash.Services.ModelStore;
+using IotDash.Services.Implementations____;
 
 namespace IotDash.Installers {
 

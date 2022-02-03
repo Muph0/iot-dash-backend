@@ -21,7 +21,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Z.EntityFramework.Plus;
 
-namespace IotDash.Services.Implementations {
+namespace IotDash.Services.Implementations____ {
     internal class IdentityService : IIdentityService {
         //
         private readonly IUserStore users;

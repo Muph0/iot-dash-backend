@@ -1,0 +1,728 @@
+openapi: 3.0.1
+info:
+  title: IOT Dashboard backend API
+  description: IOT device management with MQTT and ASP.NET
+  version: v1
+servers:
+  - url: https://localhost:5001
+paths:
+  /api/v1/devices:
+    get:
+      tags:
+        - Device
+      summary: Get complete list of all registered devices.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IotDevice'
+  '/api/v1/device/{deviceId}':
+    get:
+      tags:
+        - Device
+      summary: Get details about the specified device.
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IotDeviceWInterfaces'
+    patch:
+      tags:
+        - Device
+      summary: Update one or more fields of the device.
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevicePatchRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/DevicePatchRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/DevicePatchRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceResponse'
+    delete:
+      tags:
+        - Device
+      summary: Delete the device
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceResponse'
+  /api/v1/device:
+    post:
+      tags:
+        - Device
+      summary: Create a device from the given request.
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceCreateRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/DeviceCreateRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/DeviceCreateRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceResponse'
+  /api/v1/identity/register:
+    post:
+      tags:
+        - Identity
+      summary: Register a new user with the given credentials.
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistrationRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistrationRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/UserRegistrationRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+  /api/v1/identity/login:
+    post:
+      tags:
+        - Identity
+      summary: Get a new authorization token for the user.
+      requestBody:
+        description: Credentials of the user to log-in.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLoginRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UserLoginRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/UserLoginRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+  /api/v1/identity/refresh:
+    post:
+      tags:
+        - Identity
+      summary: Provide a new token pair in exchange for a valid refresh token and an expired JWT token.
+      requestBody:
+        description: Token pair consisting of a valid refresh token and an expired JWT token.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+  /api/v1/identity:
+    get:
+      tags:
+        - Identity
+      summary: Get information about the authorization token bearer.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  '/api/v1/device/{deviceId}/{ifaceId}':
+    get:
+      tags:
+        - Interface
+      summary: Get information about the specific interface.
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: ifaceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IotInterface'
+    patch:
+      tags:
+        - Interface
+      summary: Update one or more fields of the specified interface.
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: ifaceId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Update request. At least one field must be specified.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InterfacePatchRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/InterfacePatchRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/InterfacePatchRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InterfaceResponse'
+    delete:
+      tags:
+        - Interface
+      summary: Delete a specific interface.
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: ifaceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InterfaceResponse'
+  '/api/v1/device/{deviceId}/interface':
+    post:
+      tags:
+        - Interface
+      summary: Create a new interface.
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Interface creation request.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InterfaceCreateRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/InterfaceCreateRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/InterfaceCreateRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InterfaceResponse'
+  '/api/v1/device/{deviceId}/{ifaceId}/history':
+    post:
+      tags:
+        - Interface
+      summary: Get interface history over a specified time period with given point density.
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: ifaceId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Time period information with point density.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HistoryRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/HistoryRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/HistoryRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoryResponse'
+    put:
+      tags:
+        - Interface
+      summary: Will be removed.
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: ifaceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+      deprecated: true
+components:
+  schemas:
+    AuthResponse:
+      required:
+        - success
+      type: object
+      properties:
+        success:
+          type: boolean
+          readOnly: true
+        errors:
+          type: array
+          items:
+            type: string
+          nullable: true
+          readOnly: true
+        token:
+          type: string
+          description: Newly issued JWT token.
+          nullable: true
+          readOnly: true
+        refreshToken:
+          type: string
+          description: One-time use refresh token.
+          nullable: true
+          readOnly: true
+      additionalProperties: false
+      description: Represents result of an authentication
+    DeviceCreateRequest:
+      required:
+        - hwId
+        - interfaces
+      type: object
+      properties:
+        hwId:
+          type: string
+          description: An identifier that is unique for that fabrication of the device.
+        ipAddress:
+          type: string
+          description: IP address the device can be found on.
+          nullable: true
+        alias:
+          maxLength: 256
+          type: string
+          description: Alias that the device uses for an MQTT the default topic name.
+          nullable: true
+          readOnly: true
+        interfaces:
+          type: array
+          items:
+            $ref: '#/components/schemas/InterfaceCreateRequest'
+          description: Collection of interfaces to be created.
+      additionalProperties: false
+      description: REST API model of a device creation request.
+    DevicePatchRequest:
+      type: object
+      properties:
+        alias:
+          maxLength: 256
+          type: string
+          nullable: true
+        ownerEmail:
+          type: string
+          nullable: true
+      additionalProperties: false
+    DeviceResponse:
+      required:
+        - success
+      type: object
+      properties:
+        success:
+          type: boolean
+          readOnly: true
+        errors:
+          type: array
+          items:
+            type: string
+          nullable: true
+          readOnly: true
+        device:
+          $ref: '#/components/schemas/IotDevice'
+      additionalProperties: false
+    HistoryEntry:
+      required:
+        - average
+        - max
+        - min
+        - time
+      type: object
+      properties:
+        time:
+          type: string
+          format: date-time
+          readOnly: true
+        min:
+          type: number
+          format: double
+          readOnly: true
+        max:
+          type: number
+          format: double
+          readOnly: true
+        average:
+          type: number
+          format: double
+          readOnly: true
+      additionalProperties: false
+      description: Represents a measurement event in time.
+    HistoryRequest:
+      type: object
+      properties:
+        from:
+          type: string
+          description: Start of the time interval.
+          format: date-time
+        to:
+          type: string
+          description: End of the time interval.
+          format: date-time
+        pointCount:
+          type: integer
+          description: "Maximum number of points in the interval. If exceeded,\r\npoins will be recalculated to uniformly cover the interval."
+          format: int32
+      additionalProperties: false
+      description: REST model of a history query. Represents a time interval with point density information.
+    HistoryResponse:
+      required:
+        - success
+      type: object
+      properties:
+        success:
+          type: boolean
+          readOnly: true
+        errors:
+          type: array
+          items:
+            type: string
+          nullable: true
+          readOnly: true
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/HistoryEntry'
+          nullable: true
+          readOnly: true
+      additionalProperties: false
+    InterfaceCreateRequest:
+      required:
+        - kind
+      type: object
+      properties:
+        alias:
+          maxLength: 256
+          type: string
+          nullable: true
+        expression:
+          maxLength: 4096
+          type: string
+          nullable: true
+        logHistory:
+          type: boolean
+          nullable: true
+        kind:
+          $ref: '#/components/schemas/InterfaceKind'
+      additionalProperties: false
+    InterfaceKind:
+      enum:
+        - Probe
+        - Switch
+      type: string
+      description: Enumeration of different interface types as presented over Rest API.
+    InterfacePatchRequest:
+      type: object
+      properties:
+        alias:
+          maxLength: 256
+          type: string
+          nullable: true
+        expression:
+          maxLength: 4096
+          type: string
+          nullable: true
+        logHistory:
+          type: boolean
+          nullable: true
+      additionalProperties: false
+    InterfaceResponse:
+      required:
+        - success
+      type: object
+      properties:
+        success:
+          type: boolean
+          readOnly: true
+        errors:
+          type: array
+          items:
+            type: string
+          nullable: true
+          readOnly: true
+        interface:
+          $ref: '#/components/schemas/IotInterface'
+      additionalProperties: false
+    IotDevice:
+      required:
+        - id
+        - interfaceCount
+        - ipAddress
+        - ownerId
+        - virtual
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        alias:
+          type: string
+          nullable: true
+          readOnly: true
+        ipAddress:
+          type: string
+          readOnly: true
+        virtual:
+          type: boolean
+          readOnly: true
+        ownerId:
+          type: string
+          readOnly: true
+        interfaceCount:
+          type: integer
+          format: int32
+          readOnly: true
+      additionalProperties: false
+      description: 'Represents an IOT device, as presented over Rest API.'
+    IotDeviceWInterfaces:
+      required:
+        - id
+        - interfaceCount
+        - interfaces
+        - ipAddress
+        - ownerId
+        - virtual
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        alias:
+          type: string
+          nullable: true
+          readOnly: true
+        ipAddress:
+          type: string
+          readOnly: true
+        virtual:
+          type: boolean
+          readOnly: true
+        ownerId:
+          type: string
+          readOnly: true
+        interfaceCount:
+          type: integer
+          format: int32
+          readOnly: true
+        interfaces:
+          type: array
+          items:
+            $ref: '#/components/schemas/IotInterface'
+          readOnly: true
+      additionalProperties: false
+      description: 'Represents an IOT device, with information about all interfaces included.'
+    IotInterface:
+      required:
+        - deviceId
+        - id
+        - kind
+        - logHistory
+        - value
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          readOnly: true
+        deviceId:
+          type: string
+          format: uuid
+          readOnly: true
+        alias:
+          type: string
+          nullable: true
+          readOnly: true
+        kind:
+          $ref: '#/components/schemas/InterfaceKind'
+        expression:
+          type: string
+          nullable: true
+          readOnly: true
+        value:
+          type: number
+          format: double
+          readOnly: true
+        logHistory:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
+      description: Represents an interface of an IOT device.
+    RefreshTokenRequest:
+      required:
+        - refreshToken
+        - token
+      type: object
+      properties:
+        token:
+          type: string
+        refreshToken:
+          type: string
+      additionalProperties: false
+    User:
+      required:
+        - email
+        - id
+        - userName
+      type: object
+      properties:
+        email:
+          type: string
+          readOnly: true
+        id:
+          type: string
+          readOnly: true
+        userName:
+          type: string
+          readOnly: true
+      additionalProperties: false
+      description: Represents a user.
+    UserLoginRequest:
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      additionalProperties: false
+    UserRegistrationRequest:
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      additionalProperties: false
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      description: "JWT Authorization header using the bearer scheme.\r\nEnter 'Bearer' [space] and then your valid token in the text input below."
+      name: Authorization
+      in: header
+security:
+  - Bearer: [ ]

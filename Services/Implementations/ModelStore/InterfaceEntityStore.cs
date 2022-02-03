@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace IotDash.Services.Implementations.ModelStore {
+namespace IotDash.Services.ModelStore {
 
     internal class InterfaceEntityStore : IInterfaceStore {
 

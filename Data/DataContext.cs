@@ -5,7 +5,7 @@ using IotDash.Data.Model;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
-using IotDash.Services.Implementations.ModelStore;
+using IotDash.Services.ModelStore;
 using IotDash.Services;
 using System.Collections.Generic;
 using System.Linq;

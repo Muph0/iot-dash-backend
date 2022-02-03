@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace IotDash.Services.Implementations.ModelStore {
+namespace IotDash.Services.ModelStore {
     internal class UserManagerWrapper : IUserStore {
 
         private readonly UserManager<IdentityUser> userManager;

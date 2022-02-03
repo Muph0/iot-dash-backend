@@ -72,18 +72,19 @@ namespace IotDash.Services {
             public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter) {
                 var (level, color) = logLevelTags[logLevel];
                 level = (level + ':').PadRight(5) + ' ';
-                var pad = new string(' ', level.Length);
+                var pad = new string(' ', 4);
 
                 lock (provider.consoleLock) {
                     Console.ForegroundColor = ConsoleColor.DarkGray;
                     Console.WriteLine(categoryName + ":");
+                    Console.Write($"[{DateTime.Now.ToLongTimeString()}] ");
                     Console.ForegroundColor = color;
                     Console.Write(level);
                     Console.ResetColor();
                     Console.WriteLine(formatter(state, exception));
 
                     if (exception != null) {
-                        Console.WriteLine(pad + exception.Message);
+                        Console.WriteLine(pad + "Reason: " + exception.Message);
 #if DEBUG
                         bool debug = true;
 #else
