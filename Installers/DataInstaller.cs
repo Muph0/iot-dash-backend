@@ -25,17 +25,12 @@ namespace IotDash.Installers {
                 .AddEntityFrameworkStores<DataContext>();
 
             // Add model services
-            services.AddScoped<IDeviceStore, DeviceEntityStore>();
             services.AddScoped<IInterfaceStore, InterfaceEntityStore>();
             services.AddScoped<IUserStore, UserManagerWrapper>();
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IHistoryStore, HistoryEntryStore>();
 
-            // Add history service
-            services.AddSingleton<IHostedHistoryService, HistoryWritersManager>();
-            services.AddHostedService(p => p.GetRequiredService<IHostedHistoryService>());
-
-            // Add settings
+            // TODO: Add settings
             //var historySettings = Settings.HistorySettings.LoadFrom(configuration);
             //services.AddSingleton(historySettings);
         }

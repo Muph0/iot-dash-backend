@@ -1,10 +1,12 @@
 using IotDash.Domain;
-using IotDash.Extensions;
+using IotDash.Utils;
+using IotDash.JsonConverters;
 using IotDash.Services;
 using IotDash.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -25,16 +27,31 @@ namespace IotDash.Installers {
 
         public void InstallServices(IServiceCollection services, IConfiguration configuration) {
 
-            // Register controllers
+            ////////////////
+            // Controllers
+
             services.AddControllers(opt => {
+
+            }).AddJsonOptions(opt => {
+                opt.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
             });
 
-            SwaggerSettings swagg = SwaggerSettings.LoadFrom(configuration);
 
+            ////////////////
             // Add swagger (with JWT bearer support)
+
+            SwaggerSettings swagg = SwaggerSettings.LoadFrom(configuration);
             services.AddSwaggerGen(opt => {
-                opt.SwaggerDoc("v1", new OpenApiInfo { 
-                    Title = "IOT Dashboard backend API", 
+
+                opt.CustomOperationIds((desc) => {
+                    if (desc.ActionDescriptor is ControllerActionDescriptor ctrlDesc) {
+                        return ctrlDesc.ActionName;
+                    }
+                    return null;
+                });
+
+                opt.SwaggerDoc("v1", new OpenApiInfo {
+                    Title = "IOT Dashboard backend API",
                     Version = "v1",
                     Description = "IOT device management with MQTT and ASP.NET",
                 });

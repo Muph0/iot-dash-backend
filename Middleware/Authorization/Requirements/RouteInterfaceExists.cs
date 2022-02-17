@@ -2,14 +2,15 @@
 using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using IotDash.Services;
-using IotDash.Extensions;
+using IotDash.Utils;
 using Microsoft.AspNetCore.Identity;
 using IotDash.Data.Model;
 using IotDash.Contracts.V1;
 using IotDash.Exceptions;
-using IotDash.Extensions.Context;
+using IotDash.Utils.Context;
 using Microsoft.Extensions.Logging;
 using System.Linq;
+using System;
 
 namespace IotDash.Authorization.Requirements {
 
@@ -34,7 +35,6 @@ namespace IotDash.Authorization.Requirements {
             protected override async Task HandleRequirementAsync(AuthorizationHandlerContext authContext, RouteInterfaceExists requirement) {
 
                 try {
-
                     var context = authContext.GetHttpContext();
 
                     if (authContext.HasFailed) {
@@ -42,16 +42,15 @@ namespace IotDash.Authorization.Requirements {
                     }
 
                     IdentityUser user = context.Features.GetRequired<IdentityUser>();
-                    IotDevice device = context.Features.GetRequired<IotDevice>();
 
-                    var ifaceIdStr = context.GetFromRoute<string>(nameof(ApiRoutes.Device.Interface.ifaceId));
+                    var ifaceIdStr = context.GetFromRoute<string>(nameof(ApiRoutes.Interface.ifaceId));
                     Debug.Assert(ifaceIdStr != null, this.GetType().Name + " requirement on bad route.");
 
-                    if (!int.TryParse(ifaceIdStr, out int ifaceId)) {
-                        throw new BadRequestException("Interface id must be a number.");
+                    if (!Guid.TryParse(ifaceIdStr, out var ifaceId)) {
+                        throw new BadRequestException("Interface id must be a GUID.");
                     }
 
-                    var iface = await interfaces.GetByKeyAsync((device.Id, ifaceId));
+                    var iface = await interfaces.GetByKeyAsync(ifaceId);
 
                     if (iface != null) {
                         context.Features.Set(iface);

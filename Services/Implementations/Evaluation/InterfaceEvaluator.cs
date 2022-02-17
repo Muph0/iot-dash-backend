@@ -1,119 +1,99 @@
+﻿using IotDash.Data.Model;
+using IotDash.Domain.Events;
+using IotDash.Domain.Mediator;
 using IotDash.Parsing;
 using IotDash.Parsing.Expressions;
-using IotDash.Services;
+using IotDash.Services.Domain;
+using IotDash.Services.Messaging;
+using IotDash.Services.Mqtt;
+using IotDash.Utils.Threading;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using MQTTnet;
 using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using System.Linq;
-using MQTTnet;
-using IotDash.Domain;
-using System.Diagnostics;
-using IotDash.Data.Model;
-using Microsoft.Extensions.Logging;
 
-namespace IotDash.Domain {
 
-    internal interface IManagedEvaluator : IDisposable {
-        Task Evaluate(IServiceProvider scope);
-    }
+namespace IotDash.Services.Evaluation {
+    internal sealed class InterfaceEvaluator : IDisposable, IMqttSubscriber, IInterfaceEvaluationContext {
 
-    internal class InterfaceEvaluator : IManagedEvaluator {
-
+        private readonly SubscriptionGuard guard = new();
+        private readonly IotInterface entity;
+        private readonly IServiceScope scope;
+        private readonly ILogger<InterfaceEvaluator> logger;
+        private readonly AMqttMediator mqtt;
         private readonly IExpr expressionTree;
-        private readonly IHostedMqttClient mqttClient;
-        private readonly (Guid, int) ifaceKey;
-        private readonly Dictionary<string, TopicValueSubscription> handlers;
-        private readonly IEnumerable<string> outputTopics;
-        private readonly ILogger logger;
-        private double Value;
 
-        public (Guid, int) Key => ifaceKey;
+        public double? Value { get; private set; }
 
-        public InterfaceEvaluator(IServiceProvider provider, IExpr expressionTree, IotInterface iface, IEnumerable<TopicValueSubscription> handlers) {
-            this.expressionTree = expressionTree;
-
-            this.outputTopics = (new string?[] { iface.GetStandardTopic(), iface.GetAliasTopic() }).Where(s => s != null).Cast<string>();
-            this.mqttClient = provider.GetRequiredService<IHostedMqttClient>();
-
+        public InterfaceEvaluator(IotInterface iface, IServiceScope scope) {
+            var provider = scope.ServiceProvider;
+            this.entity = iface;
+            this.scope = scope;
             this.logger = provider.GetRequiredService<ILogger<InterfaceEvaluator>>();
+            this.mqtt = provider.GetRequiredService<AMqttMediator>();
 
-            this.ifaceKey = (iface.DeviceId, iface.Id);
-            this.handlers = handlers.ToDictionary(h => {
-                // exclude self-reference updates
-                if (!outputTopics.Contains(h.Topic.Name)) {
-                    h.ValueUpdated += OnSubValueUpdated;
-                }
-                return h.Topic.Name;
-            });
-        }
 
-        public static async Task<InterfaceEvaluator> Create(IServiceProvider provider, IotInterface iface) {
             if (iface.Expression == null) {
-                throw new ArgumentException("Cannot manage interface with no expression.");
+                throw new ArgumentException("Cannot evaluate interface withou an expression.");
             }
 
-            var mqttClient = provider.GetRequiredService<IHostedMqttClient>();
-            var expressionTree = ExpressionsParser.ParseOrThrow(iface.Expression);
+            this.expressionTree = ExpressionsParser.ParseOrThrow(iface.Expression);
 
-            HashSet<string> usedTopics = new();
-            expressionTree.Traverse(expr => _ = expr is TopicRef topicRef && usedTopics.Add(topicRef.Topic));
+            ISet<string> referencedTopics = new HashSet<string>();
+            expressionTree.Traverse(expr => _ = expr is TopicRef topicRef && referencedTopics.Add(topicRef.Topic));
 
-            var handlers = await Task.WhenAll(usedTopics.Select(async name => {
-                var topic = await mqttClient.GetTopic(name);
-                return new TopicValueSubscription(provider, topic);
-            }));
-
-            InterfaceEvaluator result = new(provider, expressionTree, iface, handlers);
-
-            if (handlers.Length == 0) {
-                await result.Evaluate(provider);
-            }
-
-            return result;
-        }
-
-        private async Task OnSubValueUpdated(TopicUpdateEventArgs args) {
-            if (((TopicValueSubscription)args.Subscriber).IsValueChanged) {
-                await Evaluate(args.Context);
+            foreach (var t in referencedTopics) {
+                mqtt.Subscribe(t, this, guard);
             }
         }
 
-        public async Task Evaluate(IServiceProvider provider) {
-            var ifaceStore = provider.GetRequiredService<IInterfaceStore>();
-
-            var badHandlers = handlers.Values.Where(h => h.Value == null && !outputTopics.Contains(h.Topic.Name));
-            if (badHandlers.Any()) {
-                var topicNames = string.Join(", ", badHandlers.Select(h => $"'{h.Topic.Name}'"));
-                logger.LogDebug($"Suspending evaluation due to missing topic(s) {topicNames}.");
-                return;
+        async Task ITarget<string, MqttApplicationMessage>.OnReceive(object? sender, MqttApplicationMessage message) {
+            bool changed = Evaluate();
+            if (changed) {
+                await Publish();
             }
+        }
 
-            var iface = await ifaceStore.GetByKeyAsync(ifaceKey);
-            Debug.Assert(iface != null);
 
-            Debug.Assert(expressionTree != null);
-            var result = expressionTree.Evaluate(new InterfaceEvaluationContext(handlers));
+        double IInterfaceEvaluationContext.GetValue(string topic) {
+            var lastMsg = mqtt.GetRetained(topic);
+            double value = 0;
+            if (lastMsg != null)
+                double.TryParse(lastMsg.ConvertPayloadToString(), out value);
 
-            if (Value != result) {
-                Value = result;
+            return value;
+        }
 
-                iface.Value = Value;
-                await ifaceStore.SaveChangesAsync();
+        /// <summary>
+        /// Evaluate the interface and store the result in <see cref="Value"/>.
+        /// </summary>
+        /// <returns>True if value has changed.</returns>
+        public bool Evaluate() {
+            var newValue = expressionTree.Evaluate(this);
 
-                foreach (var topic in outputTopics) {
-                    await mqttClient.Publish(topic, Value.ToString());
-                }
+            if (Value != newValue) {
+                Value = newValue;
+                return true;
             }
+            return false;
+        }
 
+        /// <summary>
+        /// Publish the <see cref="Value"/> over MQTT.
+        /// </summary>
+        /// <returns></returns>
+        public Task Publish() {
+            if (Value == null) throw new InvalidOperationException("There is no value to publish.");
+            return mqtt.Send(this.entity.GetTopicName(), this, this.Value.ToString());
         }
 
         public void Dispose() {
-            if (handlers != null) {
-                foreach (var sub in handlers.Values) {
-                    sub.Dispose();
-                }
-            }
+            guard.Dispose();
         }
     }
 }

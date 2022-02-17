@@ -10,10 +10,10 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using IotDash.Services;
-using IotDash.Extensions;
+using IotDash.Utils;
 using IotDash.Exceptions;
 using System.Linq;
-using IotDash.Extensions.Context;
+using IotDash.Utils.Context;
 
 namespace IotDash.Authorization.Requirements {
 

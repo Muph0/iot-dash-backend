@@ -1,24 +1,6 @@
 
-1. database
-2. backend <-> DB
-3. rest API
- + validate JWT based on "id" (Auth)
+- port HistoryWriter to new mediator
+	- shutdown old mediator
+- port InterfaceEvaluator to new mediator
 
- Device controller:
-    - register device
-        - send interfaces
-    - retrieve device info
-    - retrieve interfaces
-    - device & interface aliases
- MqttService:
-    - update interface values
-    - create interface history (later)
-    - make interface values available for controllers
 
-4. front end model -> openapi-generator
-
-%%%%%%%%%%%%%%%
-
-- resolve dependency on Hosted service (IMqttClientService)
-        see: https://stackoverflow.com/questions/52862130/asp-net-core-2-1-cannot-access-database-context-from-a-hosted-service
-- finish expr evaluation

@@ -34,12 +34,8 @@ namespace IotDash.Services {
         Task<bool> DeleteByKeyAsync(TKey entityId);
     }
 
-    public interface IDeviceStore : IModelStore<IotDevice, Guid> {
-        Task<IotDevice?> UserOwnsDeviceAsync(Guid userId, Guid deviceId);
-    }
-
-    public interface IInterfaceStore : IModelStore<IotInterface, (Guid, int)> {
-        Task<IReadOnlyList<IotInterface>> GetAllByDeviceAsync(Guid deviceId);
+    public interface IInterfaceStore : IModelStore<IotInterface, Guid> {
+        
     }
 
     public interface IIdentityService {

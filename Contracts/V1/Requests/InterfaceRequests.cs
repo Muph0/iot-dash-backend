@@ -1,4 +1,5 @@
 ﻿using IotDash.Contracts.V1.Model;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
@@ -7,13 +8,13 @@ namespace IotDash.Contracts.V1 {
     public class InterfaceCreateRequest : InterfacePatchRequest {
 
         [Required]
-        public InterfaceKind Kind { get; set; }
+        public new InterfaceKind Kind { get; set; }
 
-        public Data.Model.IotInterface CreateModel(Guid deviceId, int ifaceId) {
+        public Data.Model.IotInterface CreateModel(Guid ifaceId, IdentityUser owner) {
             return new() {
+                OwnerId = owner.Id,
                 Id = ifaceId,
-                Alias = Alias,
-                DeviceId = deviceId,
+                Topic = Topic,
                 Expression = Expression,
                 Kind = Kind,
             };
@@ -24,13 +25,15 @@ namespace IotDash.Contracts.V1 {
 
         [ValidAlias]
         [MaxLength(ContractedConstraints.AliasMaxLength)]
-        public string? Alias { get; set; }
+        public string? Topic { get; set; }
 
         [ValidExpression]
         [MaxLength(ContractedConstraints.ExpressionMaxLength)]
         public string? Expression { get; set; }
 
-        public bool? LogHistory { get; set; }
+        public bool? HistoryEnabled { get; set; }
+
+        public InterfaceKind? Kind { get; set; }
     }
 
 }

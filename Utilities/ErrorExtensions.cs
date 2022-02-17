@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace IotDash.Extensions.Error {
-    public static class ErrorExtensions {
+namespace IotDash.Utils.Error {
+    internal static class ErrorExtensions {
 
         public static IEnumerable<string> ErrorMessages(this ModelStateDictionary ModelState) {
             return ModelState.Select(kv => $"{kv.Key}: {string.Join(", ", kv.Value.Errors.Select(err => err.ErrorMessage))}");

@@ -15,21 +15,17 @@ namespace IotDash.Services.ModelStore {
 
         private readonly DataContext db;
         private readonly ILogger logger;
-        private readonly IHostedEvaluationService expressions;
-        private readonly IServiceProvider provider;
 
-        public InterfaceEntityStore(DataContext db, ILogger<InterfaceEntityStore> logger, IHostedEvaluationService evalMgr, IServiceProvider provider) {
+        public InterfaceEntityStore(DataContext db, ILogger<InterfaceEntityStore> logger) {
             this.db = db;
             this.logger = logger;
-            this.expressions = evalMgr;
-            this.provider = provider;
         }
 
         public async Task CreateAsync(IotInterface ifaceToCreate) {
             await db.Interfaces.AddAsync(ifaceToCreate);
         }
 
-        public async Task<bool> DeleteByKeyAsync((Guid, int) key) {
+        public async Task<bool> DeleteByKeyAsync(Guid key) {
             var iface = await GetByKeyAsync(key);
             if (iface == null) {
                 return false;
@@ -42,13 +38,8 @@ namespace IotDash.Services.ModelStore {
             return await db.Interfaces.ToListAsync();
         }
 
-        public async Task<IReadOnlyList<IotInterface>> GetAllByDeviceAsync(Guid deviceId) {
-            return await db.Interfaces.Where(i => i.DeviceId == deviceId).ToListAsync();
-        }
-
-        public async Task<IotInterface?> GetByKeyAsync((Guid, int) key) {
-            var (deviceId, Id) = key;
-            return await db.Interfaces.SingleOrDefaultAsync(i => i.DeviceId == deviceId && i.Id == Id);
+        public async Task<IotInterface?> GetByKeyAsync(Guid key) {
+            return await db.Interfaces.SingleOrDefaultAsync(i => i.Id == key);
         }
 
         public async Task<bool> SaveChangesAsync() {

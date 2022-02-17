@@ -1,3 +1,4 @@
+using IotDash.Data.Model;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -7,9 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-/// <summary>
-/// Contained types are presented over REST API v1.
-/// </summary>
 namespace IotDash.Contracts.V1 {
 
     /// <summary>
@@ -22,29 +20,23 @@ namespace IotDash.Contracts.V1 {
 
         public const string Base = Root + "/" + Version;
 
-        public static class Device {
-            public const string deviceId = "{" + nameof(deviceId) + ":Guid}";
-            public const string Base = ApiRoutes.Base + "/device";
 
-            public const string GetAll = Base + "s";
-            public const string Get = Base + "/" + deviceId;
+        public static class Interface {
+            public const string ifaceId = "{" + nameof(ifaceId) + ":Guid}";
+            public const string Base = ApiRoutes.Base + "/interface";
+
+            public const string Get = Base + "/" + ifaceId;
+            public const string Update = Get;
             public const string Create = Base;
-            public const string Update = Base + "/" + deviceId;
-            public const string Delete = Base + "/" + deviceId;
+            public const string Delete = Get;
+            public const string ReadValue = Get + "/value";
+            public const string History = Get + "/history";
 
-            public static class Interface {
-                public const string ifaceId = "{" + nameof(ifaceId) + ":int}";
-                public const string Base = Device.Get;
-
-                public const string Get = Base + "/" + ifaceId;
-                public const string Update = Get;
-                public const string Create = Base + "/interface";
-                public const string Delete = Get;
-                public const string ReadValue = Get + "/value";
-                public const string History = Get + "/history";
-
+            internal static string GetUri(IotInterface newIface) {
+                return Get.Replace(ifaceId, newIface.Id.ToString());
             }
         }
+
 
         public static class Identity {
             public const string Base = ApiRoutes.Base + "/identity";

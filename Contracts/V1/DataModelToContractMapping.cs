@@ -13,13 +13,6 @@ namespace IotDash.Contracts.V1 {
     /// </summary>
     public static class DataModelToContractMapping {
 
-        public static IotDevice ToContract(this Data.Model.IotDevice device) {
-            return new IotDevice(device);
-        }
-        public static IotDeviceWInterfaces ToContractDetail(this Data.Model.IotDevice device) {
-            return new IotDeviceWInterfaces(device);
-        }
-
         public static IotInterface ToContract(this Data.Model.IotInterface iface) {
             return new IotInterface(iface);
         }

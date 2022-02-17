@@ -1,8 +1,8 @@
 using IotDash.Contracts;
 using IotDash.Contracts.V1;
 using IotDash.Domain;
-using IotDash.Extensions;
-using IotDash.Extensions.Context;
+using IotDash.Utils;
+using IotDash.Utils.Context;
 using IotDash.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;

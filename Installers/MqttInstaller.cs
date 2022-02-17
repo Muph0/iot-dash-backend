@@ -1,25 +1,24 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using IotDash.Services;
 using MQTTnet.Client.Options;
 using IotDash.Settings;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
+using IotDash.Services.Messaging.Implementation;
+using IotDash.Services.Mqtt;
+using IotDash.Services.Mqtt.Implementation;
+using IotDash.Domain.Mediator;
 
 namespace IotDash.Installers {
 
     internal class MqttInstaller : IInstaller {
         public void InstallServices(IServiceCollection services, IConfiguration configuration) {
 
+            ////////////////
+            // Mqtt client options & app settings
+
             MqttSettings settings = MqttSettings.LoadFrom(configuration);
-
             services.AddSingleton(settings);
-
-            services.AddSingleton<IHostedEvaluationService, EvaluatorsManager>();
-            services.AddHostedService(p => p.GetRequiredService<IHostedEvaluationService>());
-
-            services.AddSingleton<IHostedMqttClient, MqttNet_MqttClientService>();
-            services.AddHostedService(p => p.GetRequiredService<IHostedMqttClient>());
 
             services.AddSingleton(provider => {
                 var options = new MqttClientOptionsBuilder();
@@ -34,7 +33,17 @@ namespace IotDash.Installers {
                 return options.Build();
             });
 
+            ////////////////
+            // Mqtt Client service
+
+            // old
+            //services.AddSingleton<IHostedMqttClient, MqttNetMqttClientService>();
+            //services.AddHostedService(p => p.GetRequiredService<IHostedMqttClient>());
+
+            // new
+            services.AddSingleton<HostedMqttService>();
+            services.AddHostedService(p => p.GetRequiredService<HostedMqttService>());
+            services.AddSingleton<AMqttMediator>(p => p.GetRequiredService<HostedMqttService>().Mediator);
         }
     }
-
 }

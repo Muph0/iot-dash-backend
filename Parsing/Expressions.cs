@@ -6,12 +6,6 @@ using System.Linq;
 using IotDash.Parsing.Expressions;
 using TValue = System.Double;
 
-namespace IotDash.Parsing {
-
-    
-
-}
-
 
 namespace IotDash.Parsing.Expressions {
 
@@ -20,7 +14,7 @@ namespace IotDash.Parsing.Expressions {
         void Traverse(Action<IExpr> visitor)
             => Traverse(new PreorderVisitor(visitor));
 
-        TValue Evaluate(InterfaceEvaluationContext context) {
+        TValue Evaluate(IInterfaceEvaluationContext context) {
             var visitor = new EvaluatingVisitor(context);
             Traverse(visitor);
             return visitor.Result;

@@ -17,7 +17,7 @@ namespace IotDash.Contracts.V1.Model {
 
 
         [Required]
-        public DateTime Time => entry.When;
+        public DateTime TimeUTC => entry.WhenUTC;
 
         [Required]
         public double Min => entry.Min;

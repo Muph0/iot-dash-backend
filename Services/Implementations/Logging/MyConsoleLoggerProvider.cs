@@ -73,22 +73,30 @@ namespace IotDash.Services {
                 var (level, color) = logLevelTags[logLevel];
                 level = (level + ':').PadRight(5) + ' ';
                 var pad = new string(' ', 4);
+                string messageContent = formatter(state, exception);
+                int categoryNamePad = 80;
+                int wideScreenBrk = 180;
 
                 lock (provider.consoleLock) {
                     Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.WriteLine(categoryName + ":");
+                    if (Console.WindowWidth < wideScreenBrk) {
+                        Console.WriteLine(categoryName + ":");
+                        categoryNamePad = 0;
+                    } else {
+                        Console.Write((categoryName + ": ").PadRight(categoryNamePad));
+                    }
                     Console.Write($"[{DateTime.Now.ToLongTimeString()}] ");
                     Console.ForegroundColor = color;
                     Console.Write(level);
                     Console.ResetColor();
-                    Console.WriteLine(formatter(state, exception));
+                    Console.WriteLine(messageContent.Replace("\n", "\n".PadRight(categoryNamePad + 16)));
 
                     if (exception != null) {
                         Console.WriteLine(pad + "Reason: " + exception.Message);
 #if DEBUG
                         bool debug = true;
 #else
-                    bool debug = false;
+                        bool debug = false;
 #endif
                         if (debug && logLevel == LogLevel.Critical) {
                             Console.WriteLine(exception.StackTrace);

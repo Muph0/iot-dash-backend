@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace IotDash.Data.Model {
 
-    public class IotDevice : ModelObject {
+    public class IotDevice_deleted : ModelObject {
 
         [Key]
         public Guid Id { get; set; }

@@ -1,22 +1,33 @@
 using IotDash.Contracts.V1;
 using IotDash.Contracts.V1.Model;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
 
+
 namespace IotDash.Data.Model {
+
+    using MQTTInterface_KeyType = Guid;
 
     public class IotInterface : ModelObject {
 
-        public int Id { get; set; }
-        public Guid DeviceId { get; set; }
 
-        [MaxLength(255)]
-        public string? Alias { get; set; }
+        [Key]
+        public Guid Id { get; set; }
+
+        [MaxLength(IotDash.Data.Constraints.TopicMaxLength)]
+        public string? Topic { get; set; }
 
         public InterfaceKind Kind { get; set; }
+
+        [MaxLength(36)]
+        public string OwnerId { get; set; }
+
+        [ForeignKey(nameof(OwnerId))]
+        public virtual IdentityUser Owner { get; set; }
 
         [MaxLength(1 << 16)]
         [Column(TypeName = "TEXT")]
@@ -24,26 +35,23 @@ namespace IotDash.Data.Model {
 
         public double Value { get; set; }
 
-        [ForeignKey(nameof(DeviceId))]
-        public virtual IotDevice Device { get; set; }
+        public bool HistoryEnabled { get; set; } = false;
 
-        public bool LogHistory { get; set; } = false;
-
-        internal string GetStandardTopic() {
-            return $"dev/{DeviceId}/{Id}";
+        internal string GetTopicName() {
+            return Topic ?? $"interface/{Id}";
         }
 
-        internal string? GetAliasTopic() {
-            if (Alias == null | Device.Alias == null) {
-                return null;
-            }
+        public override string ToString() => $"MQTT[\"{GetTopicName()}\"]";
 
-            return $"{Device.Alias}/{Alias}";
-        }
+        /// <summary>
+        /// </summary>
+        /// <returns>true if this interface needs an <see cref="Services.Evaluation.InterfaceEvaluator0"/>.</returns>
+        internal bool NeedsEvaluator() => Kind == InterfaceKind.Switch && Expression != null;
 
-        internal (Guid, int) GetKey() {
-            return (DeviceId, Id);
-        }
+        /// <summary>
+        /// </summary>
+        /// <returns>true if this interface needs a <see cref="Services.History.HistoryWriter0"/>.</returns>
+        internal bool NeedsWriter() => HistoryEnabled;
     }
 
 }

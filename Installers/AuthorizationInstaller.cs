@@ -1,17 +1,9 @@
 using System.Diagnostics;
 using System.Linq;
-
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-using IotDash.Authorization.Requirements;
-using System;
-using System.Threading.Tasks;
-using System.Security.Claims;
-using System.Collections.Generic;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace IotDash.Installers {
 
@@ -45,7 +37,7 @@ namespace IotDash.Installers {
                         var handlerType = typeof(AuthorizationHandler<>).MakeGenericType(req);
                         return !services.Any(s =>
                             s.ServiceType == typeof(IAuthorizationHandler)
-                            && s.ImplementationType.IsAssignableTo(handlerType)
+                            && (s.ImplementationType?.IsAssignableTo(handlerType) ?? true) // TODO: resolve this mess
                             );
                     }).ToArray();
 
@@ -57,7 +49,7 @@ namespace IotDash.Installers {
                 opt.InvokeHandlersAfterFailure = false;
             });
 
-            //services.Replace<IAuthorizationEvaluator, Services.Implementations.AuthEvaluator>();
+            services.Replace<IAuthorizationEvaluator, Services.Auth.AuthEvaluator>();
             services.Replace<IAuthorizationService, Services.Auth.AuthService>();
         }
     }

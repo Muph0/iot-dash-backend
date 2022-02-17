@@ -1,6 +1,6 @@
 using IotDash.Exceptions;
-using IotDash.Extensions;
-using IotDash.Extensions.ObjectMapping;
+using IotDash.Utils;
+using IotDash.Utils.ObjectMapping;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;

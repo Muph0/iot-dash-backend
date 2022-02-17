@@ -4,8 +4,8 @@ using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Collections.Generic;
-using IotDash.Extensions;
-using IotDash.Extensions.Nullables;
+using IotDash.Utils;
+using IotDash.Utils.Nullables;
 
 namespace IotDash.Settings {
 

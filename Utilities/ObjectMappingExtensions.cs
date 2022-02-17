@@ -9,7 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Claims;
 
-namespace IotDash.Extensions.ObjectMapping {
+namespace IotDash.Utils.ObjectMapping {
     public static class ObjectMappingExtensions {
 
         public static IEnumerable<T> RecursiveEnumerate<T>(this T obj, Func<T, T?> next) {

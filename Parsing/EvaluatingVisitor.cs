@@ -10,24 +10,31 @@ using TValue = System.Double;
 
 namespace IotDash.Parsing {
 
-    class InterfaceEvaluationContext {
-        public InterfaceEvaluationContext(Dictionary<string, TopicValueSubscription>? topics) {
-            Debug.Assert(topics != null);
-            Topics = topics;
+    interface IInterfaceEvaluationContext {
+        TValue GetValue(string topic);
+    }
+
+    class InterfaceEvaluationContext : IInterfaceEvaluationContext {
+        public InterfaceEvaluationContext(Dictionary<string, TopicValueSubscription> topics) {
+            this.topics = topics;
         }
 
-        public IReadOnlyDictionary<string, TopicValueSubscription> Topics { get; init; }
-        public double DefaultValue => 0.0;
+        IReadOnlyDictionary<string, TopicValueSubscription> topics;
+        double defaultValue => 0.0;
+
+        double IInterfaceEvaluationContext.GetValue(string topic) {
+            return topics.ContainsKey(topic) ? topics[topic].Value ?? defaultValue : defaultValue;
+        }
     }
 
     class EvaluatingVisitor : IRecursiveVisitor<TValue> {
 
         List<TValue> IRecursiveVisitor<TValue>.stack => this.stack;
         private readonly List<TValue> stack = new();
-        private readonly InterfaceEvaluationContext context;
+        private readonly IInterfaceEvaluationContext context;
         public TValue Result => ((IRecursiveVisitor<TValue>)this).GetResult();
 
-        public EvaluatingVisitor(InterfaceEvaluationContext context) {
+        public EvaluatingVisitor(IInterfaceEvaluationContext context) {
             this.context = context;
         }
 
@@ -35,15 +42,14 @@ namespace IotDash.Parsing {
             return literal.Value;
         }
         TValue IRecursiveVisitor<TValue>.Visit(TopicRef topicRef) {
-            return context.Topics[topicRef.Topic].Value ?? context.DefaultValue;
+            return context.GetValue(topicRef.Topic);
         }
 
-        TValue IRecursiveVisitor<TValue>.Visit(UnaryOp op, TValue arg) {
-            switch (op.Type) {
-                case UnaryOp.Types.Neg: return -arg;
-                default: throw new NotImplementedException();
-            }
-        }
+        TValue IRecursiveVisitor<TValue>.Visit(UnaryOp op, TValue arg)
+            => op.Type switch {
+                UnaryOp.Types.Neg => -arg,
+                _ => throw new NotImplementedException(),
+            };
 
         internal static double dbool(bool x) {
             return x ? 1 : 0;
