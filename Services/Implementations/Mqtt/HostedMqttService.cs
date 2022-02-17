@@ -59,7 +59,7 @@ namespace IotDash.Services.Mqtt.Implementation {
             await Unwrapper.Stop();
             if (Client.IsConnected) {
                 logger.LogTrace("Closing connection.");
-                await Client.DisconnectAsync();
+                _ = Client.DisconnectAsync();
             }
             this.Dispose();
         }

@@ -42,7 +42,9 @@ namespace IotDash.Services.Mqtt.Implementation {
             using (await sem.LockAsync()) {
 
                 topics = topics.Where(t => subscribedTopics.Add(t)).ToArray();
+
                 if (!topics.Any()) return;
+                if (!client.IsConnected) return;
 
                 string message = $"Subscribing to topic(s) {string.Join(", ", topics)} ";
                 try {

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks;
@@ -39,7 +40,6 @@ namespace IotDash.Utils.Threading {
         public void Start(CancellationToken token) {
             if (!Running) {
                 this.token = token;
-                Running = true;
                 runningTask = runInternal();
             } else {
                 throw new InvalidOperationException("Cannot run twice.");
@@ -48,25 +48,26 @@ namespace IotDash.Utils.Threading {
 
         public Task Stop() {
             keepRunning = false;
-            return runningTask;
+            Unwrap(Task.CompletedTask);
+            //await runningTask;
+            return Task.CompletedTask;
         }
 
         private bool keepRunning = true;
-        private Task dequeueTask, runningTask;
+        private Task<Task> dequeueTask;
+        private Task runningTask;
         private async Task runInternal() {
+            Running = true;
             HashSet<Task> tasks = new();
             try {
                 while (!token.IsCancellationRequested && keepRunning) {
                     try {
 
                         dequeueTask = queue.ReceiveAsync(token);
-                        tasks.Add(dequeueTask);
-
-                        var any = await Task.WhenAny(tasks);
+                        var any = await Task.WhenAny(tasks.Append(dequeueTask));
 
                         if (any == dequeueTask) {
-                            tasks.Remove(dequeueTask);
-                            var newTask = await (Task<Task>)dequeueTask;
+                            var newTask = await dequeueTask;
                             tasks.Add(newTask);
                         } else {
                             // unwrap the task
