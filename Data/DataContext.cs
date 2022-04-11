@@ -21,7 +21,6 @@ namespace IotDash.Data {
         private readonly IServiceProvider provider;
         private readonly IMessageMediator mediator;
         private readonly ILogger<DataContext> logger;
-        ICollection<IModelTracker> modelTrackers = new HashSet<IModelTracker>(8);
 
         public DataContext(DbContextOptions<DataContext> options, IServiceProvider provider)
             : base(options) {
@@ -33,9 +32,6 @@ namespace IotDash.Data {
                 staticInit = false;
                 logger.LogInformation("Initialising database.");
             }
-
-            //RegisterTracker(eval);
-            //RegisterTracker(history);
         }
 
         public DbSet<IotInterface> Interfaces { get; set; }
@@ -48,35 +44,15 @@ namespace IotDash.Data {
             builder.Entity<HistoryEntry>().HasIndex(e => e.InterfaceId);
         }
 
-        public void RegisterTracker<TEntity>(IModelTracker<TEntity> tracker) where TEntity : class {
-            modelTrackers.Add(tracker);
-        }
-
-        bool saving = false;
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) {
 
-            if (!saving) {
-                //saving = true;
+            // new way
+            var entryGroups = ChangeTracker.Entries()
+                .Where(entry => entry.State != EntityState.Unchanged)
+                .GroupBy(entry => entry.Metadata.ClrType);
 
-                // old way
-                //foreach (var tracker in modelTrackers) {
-                //    var modified = ChangeTracker.Entries()
-                //        .Where(entry => entry.Metadata.ClrType == tracker.EntityType && entry.State != EntityState.Unchanged)
-                //        .ToList();
-                //    var evt = new Domain.Events.SaveChangesEventArgs(modified, provider);
-                //    await tracker.OnSaveChangesAsync(evt);
-                //}
-
-                // new way
-                var entryGroups = ChangeTracker.Entries()
-                    .Where(entry => entry.State != EntityState.Unchanged)
-                    .GroupBy(entry => entry.Metadata.ClrType);
-
-                foreach (var group in entryGroups) {
-                    await this.mediator.SendSaveChangesEventArgs(group.Key, this, group, provider);
-                }
-
-                //saving = false;
+            foreach (var group in entryGroups) {
+                await this.mediator.SendSaveChangesEventArgs(group.Key, this, group, provider);
             }
 
             var result = await base.SaveChangesAsync(cancellationToken);
