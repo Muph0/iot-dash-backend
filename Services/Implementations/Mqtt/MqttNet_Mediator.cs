@@ -40,8 +40,6 @@ namespace IotDash.Services.Mqtt.Implementation {
 
         protected override async Task MqttSend(string msgChannel, object sender, MqttApplicationMessage msg) {
 
-
-
             if (sender == serviceRoot) {
                 this.logger.LogTrace($"Receiving [\"{msg.Topic}\"]: \"{msg.ConvertPayloadToString()}\"");
                 await mediator.Send(msgChannel, sender, msg);
@@ -49,6 +47,9 @@ namespace IotDash.Services.Mqtt.Implementation {
                 this.logger.LogTrace($"Sending [\"{msg.Topic}\"]: \"{msg.ConvertPayloadToString()}\"");
                 await publisher.SendAsync(msg);
             }
+
+            // produce an application-level event
+            await messageMediator.Send(sender, msg);
         }
 
         void updateSubscriptionState(string topic) {
