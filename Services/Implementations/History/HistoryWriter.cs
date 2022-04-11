@@ -16,18 +16,17 @@ namespace IotDash.Services.History {
         private readonly IotInterface entity;
         private readonly IHistoryStore store;
         private readonly ILogger logger;
-        private readonly HostedHistoryService service;
 
         public HistoryWriter(IotInterface entity, IServiceScope scope) {
             var provider = scope.ServiceProvider;
             this.entity = entity;
             this.store = provider.GetRequiredService<IHistoryStore>();
             this.logger = provider.GetRequiredService<ILogger<HistoryWriter>>();
-            var mqtt = provider.GetRequiredService<AMqttMediator>();
+            var mqtt = provider.GetRequiredService<MqttMediator>();
             mqtt.Subscribe(entity.GetTopicName(), this, guard);
         }
 
-        public async Task OnReceive(object? sender, MqttApplicationMessage msg) {
+        async Task ITarget<string, MqttApplicationMessage>.OnReceive(object? sender, MqttApplicationMessage msg) {
 
             if (!double.TryParse(msg.ConvertPayloadToString(), out var val)) {
                 logger.LogError($"Failed to parse {msg.ToDebugString()} as double.");

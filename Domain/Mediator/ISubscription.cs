@@ -11,7 +11,7 @@ namespace IotDash.Domain.Mediator {
             where TChannelKey : notnull
             where TMsg : notnull {
         TChannelKey Channel { get; }
-        AMediator<TChannelKey, TMsg>? Mediator { get; }
+        AbstractMediator<TChannelKey, TMsg>? Mediator { get; }
         ITarget<TChannelKey, TMsg>? Target { get; }
         bool ISubscription.IsDisposed => Mediator == null;
     }

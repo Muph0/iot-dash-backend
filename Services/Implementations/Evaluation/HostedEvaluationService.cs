@@ -18,8 +18,8 @@ using System.Threading.Tasks;
 namespace IotDash.Services.Evaluation {
 
     internal sealed class HostedEvaluationService : AEntityManagerService<IotInterface, InterfaceEvaluator>, IHostedService, IServiceScope {
-        private readonly IMessageMediator mediator;
-        private readonly AMqttMediator mqtt;
+        private readonly MessageMediator mediator;
+        private readonly MqttMediator mqtt;
         private readonly SubscriptionGuard guard;
         private IServiceScope scope;
 
@@ -32,8 +32,8 @@ namespace IotDash.Services.Evaluation {
         public HostedEvaluationService(IServiceProvider provider) : base(
             provider.GetRequiredService<ILogger<HostedEvaluationService>>()
         ) {
-            this.mediator = provider.GetRequiredService<IMessageMediator>();
-            this.mqtt = provider.GetRequiredService<AMqttMediator>();
+            this.mediator = provider.GetRequiredService<MessageMediator>();
+            this.mqtt = provider.GetRequiredService<MqttMediator>();
             this.guard = new();
             var factory = provider.GetRequiredService<IServiceScopeFactory>();
             this.scope = factory.CreateScope();

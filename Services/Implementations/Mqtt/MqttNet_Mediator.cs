@@ -1,4 +1,5 @@
 ﻿using IotDash.Domain.Mediator;
+using IotDash.Services.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MQTTnet;
@@ -12,19 +13,21 @@ namespace IotDash.Services.Mqtt.Implementation {
 
 
 
-    internal sealed class MqttNet_Mediator : AMqttMediator {
+    internal sealed class MqttNet_Mediator : MqttMediator {
 
         private readonly SimpleMediator<string, MqttApplicationMessage> mediator = new();
         private readonly HostedMqttService serviceRoot;
+        private readonly MessageMediator messageMediator;
         private readonly MqttNet_Publisher publisher;
         private readonly MqttNet_Subscriber subscriber;
-        private readonly ILogger<AMqttMediator> logger;
+        private readonly ILogger<MqttMediator> logger;
 
         public MqttNet_Mediator(HostedMqttService serviceRoot, IServiceProvider provider) {
             this.publisher = serviceRoot.Publisher;
             this.subscriber = serviceRoot.Subscriber;
-            this.logger = provider.GetRequiredService<ILogger<AMqttMediator>>();
+            this.logger = provider.GetRequiredService<ILogger<MqttMediator>>();
             this.serviceRoot = serviceRoot;
+            this.messageMediator = provider.GetRequiredService<MessageMediator>();
         }
 
         public override int TargetCount => mediator.TargetCount;
@@ -37,12 +40,12 @@ namespace IotDash.Services.Mqtt.Implementation {
 
         protected override async Task MqttSend(string msgChannel, object sender, MqttApplicationMessage msg) {
 
-            if (sender == serviceRoot) {
 
+
+            if (sender == serviceRoot) {
                 this.logger.LogTrace($"Receiving [\"{msg.Topic}\"]: \"{msg.ConvertPayloadToString()}\"");
                 await mediator.Send(msgChannel, sender, msg);
             } else {
-
                 this.logger.LogTrace($"Sending [\"{msg.Topic}\"]: \"{msg.ConvertPayloadToString()}\"");
                 await publisher.SendAsync(msg);
             }

@@ -13,7 +13,7 @@ namespace IotDash.Installers {
         public void InstallServices(IServiceCollection services, IConfiguration configuration) {
 
             // Message mediator
-            services.AddSingleton<IMessageMediator, MessageMediator>();
+            services.AddSingleton<MessageMediator, MessageSimpleMediatorService>();
 
             // Add all entity managers
             services.AddAllImplementationsInAssembly<IEntityManagementService>(ServiceLifetime.Singleton);

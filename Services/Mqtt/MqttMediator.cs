@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace IotDash.Services.Mqtt {
-    abstract class AMqttMediator : AMediator<string, MqttApplicationMessage> {
+    abstract class MqttMediator : AbstractMediator<string, MqttApplicationMessage> {
         public abstract bool HasSubscribersOnTopic(string topic);
 
         private Dictionary<string, MqttApplicationMessage> retained = new();
@@ -39,9 +39,10 @@ namespace IotDash.Services.Mqtt {
         /// <summary>
         /// Builds a new application message with default parameters and broadcasts it.
         /// </summary>
-        /// <param name="topic"></param>
-        /// <param name=""></param>
-        /// <returns></returns>
+        /// <param name="topic">MQTT topic of the message.</param>
+        /// <param name="sender">Sender of the event.</param>
+        /// <param name="content">Payload of the message.</param>
+        /// <returns>Task which completes when the message is sent.</returns>
         public Task Send(string topic, object sender, string content) {
             var msg = new MqttApplicationMessageBuilder()
                 .WithAtLeastOnceQoS()

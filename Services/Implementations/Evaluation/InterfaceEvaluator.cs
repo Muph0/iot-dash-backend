@@ -25,7 +25,7 @@ namespace IotDash.Services.Evaluation {
         private readonly IotInterface entity;
         private readonly IServiceScope scope;
         private readonly ILogger<InterfaceEvaluator> logger;
-        private readonly AMqttMediator mqtt;
+        private readonly MqttMediator mqtt;
         private readonly IExpr expressionTree;
 
         public double? Value { get; private set; }
@@ -35,7 +35,7 @@ namespace IotDash.Services.Evaluation {
             this.entity = iface;
             this.scope = scope;
             this.logger = provider.GetRequiredService<ILogger<InterfaceEvaluator>>();
-            this.mqtt = provider.GetRequiredService<AMqttMediator>();
+            this.mqtt = provider.GetRequiredService<MqttMediator>();
 
 
             if (iface.Expression == null) {

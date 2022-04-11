@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace IotDash.Domain.Mediator {
 
 
-    abstract class AMediator<TChannelKey, TMsg> where TChannelKey : notnull where TMsg : notnull {
+    abstract class AbstractMediator<TChannelKey, TMsg> where TChannelKey : notnull where TMsg : notnull {
         public virtual void Subscribe(TChannelKey msgChannel, ITarget<TChannelKey, TMsg> target, out ISubscription subscription) {
             SubscribeInternal(msgChannel, target);
             var sub = new Subscription(msgChannel, this, target);
@@ -39,10 +39,10 @@ namespace IotDash.Domain.Mediator {
 
         private sealed class Subscription : ISubscription<TChannelKey, TMsg> {
             public TChannelKey Channel { get; }
-            public AMediator<TChannelKey, TMsg>? Mediator { get; private set; }
+            public AbstractMediator<TChannelKey, TMsg>? Mediator { get; private set; }
             public ITarget<TChannelKey, TMsg>? Target { get; private set; }
 
-            public Subscription(TChannelKey channel, AMediator<TChannelKey, TMsg> broker, ITarget<TChannelKey, TMsg> target) {
+            public Subscription(TChannelKey channel, AbstractMediator<TChannelKey, TMsg> broker, ITarget<TChannelKey, TMsg> target) {
                 Channel = channel;
                 Mediator = broker;
                 Target = target;

@@ -20,7 +20,7 @@ namespace IotDash.Services.History {
 
     internal sealed class HostedHistoryService : AEntityManagerService<IotInterface, HistoryWriter>, IHostedService, IServiceScope {
 
-        private readonly IMessageMediator mediator;
+        private readonly MessageMediator mediator;
         private readonly SubscriptionGuard guard;        
 
         public IServiceProvider ServiceProvider => scope.ServiceProvider;
@@ -32,7 +32,7 @@ namespace IotDash.Services.History {
         public HostedHistoryService(IServiceProvider provider) : base(
                 provider.GetRequiredService<ILogger<HostedHistoryService>>()
             ) {
-            this.mediator = provider.GetRequiredService<IMessageMediator>();
+            this.mediator = provider.GetRequiredService<MessageMediator>();
             this.guard = new();
             var factory = provider.GetRequiredService<IServiceScopeFactory>();
             this.scope = factory.CreateScope();

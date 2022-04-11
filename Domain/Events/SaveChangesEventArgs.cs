@@ -38,7 +38,7 @@ namespace IotDash.Domain.Events {
     }
 
     internal static class SaveChangesEventArgsExtension {
-        public static Task SendSaveChangesEventArgs(this IMessageMediator mediator, Type TEntity, object sender, IEnumerable<EntityEntry> entries, IServiceProvider scope) {
+        public static Task SendSaveChangesEventArgs(this MessageMediator mediator, Type TEntity, object sender, IEnumerable<EntityEntry> entries, IServiceProvider scope) {
             var eventType = typeof(Domain.Events.SaveChangesEventArgs<>).MakeGenericType(TEntity);
             object? message = Activator.CreateInstance(eventType, entries, scope);
             Debug.Assert(message != null);
@@ -46,5 +46,4 @@ namespace IotDash.Domain.Events {
             return mediator.Send(eventType, sender, message);
         }
     }
-
 }

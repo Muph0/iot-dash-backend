@@ -1,21 +1,18 @@
 ﻿using IotDash.Domain.Mediator;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace IotDash.Services.Messaging.Implementation {
 
 
-    internal sealed class MessageMediator : IMessageMediator {
+    internal sealed class MessageSimpleMediatorService : MessageMediator {
 
         private ILogger logger;
         private SimpleMediator<Type, object> mediator = new();
 
-        public MessageMediator(ILogger<MessageMediator> logger) {
+        public MessageSimpleMediatorService(ILogger<MessageSimpleMediatorService> logger) {
             this.logger = logger;
         }
 
@@ -26,12 +23,12 @@ namespace IotDash.Services.Messaging.Implementation {
         public override int TargetCountOnChannel(Type key) => mediator.TargetCountOnChannel(key);
 
         public override async Task Send(Type ch, object? sender, object msg) {
-            logger.LogTrace($"Sending {msg} to ->");
+            logger.LogTrace($"{sender} produced message {msg}");
 
             Type? type = ch;
             while (type != null) {
                 foreach (var target in mediator.GetChannelCopy(type)) {
-                    logger.LogTrace($"    -> {target}");
+                    logger.LogTrace($"Mediating {msg} -> {target}");
                     await target.OnReceive(sender, msg);
                 }
                 type = type.BaseType;

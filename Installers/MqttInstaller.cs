@@ -36,7 +36,7 @@ namespace IotDash.Installers {
             // new
             services.AddSingleton<HostedMqttService>();
             services.AddHostedService(p => p.GetRequiredService<HostedMqttService>());
-            services.AddSingleton<AMqttMediator>(p => p.GetRequiredService<HostedMqttService>().Mediator);
+            services.AddSingleton<MqttMediator>(p => p.GetRequiredService<HostedMqttService>().Mediator);
         }
     }
 }

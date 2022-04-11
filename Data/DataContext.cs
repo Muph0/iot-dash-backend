@@ -19,13 +19,13 @@ namespace IotDash.Data {
         static bool staticInit = true;
 
         private readonly IServiceProvider provider;
-        private readonly IMessageMediator mediator;
+        private readonly MessageMediator mediator;
         private readonly ILogger<DataContext> logger;
 
         public DataContext(DbContextOptions<DataContext> options, IServiceProvider provider)
             : base(options) {
             this.provider = provider;
-            this.mediator = provider.GetRequiredService<IMessageMediator>();
+            this.mediator = provider.GetRequiredService<MessageMediator>();
             this.logger = provider.GetRequiredService<ILogger<DataContext>>();
 
             if (staticInit) {

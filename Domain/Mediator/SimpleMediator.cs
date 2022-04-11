@@ -13,7 +13,7 @@ namespace IotDash.Domain.Mediator {
     /// </summary>
     /// <typeparam name="TChannelKey">Type of channel identifier.</typeparam>
     /// <typeparam name="TMsg">Type of message.</typeparam>
-    internal sealed class SimpleMediator<TChannelKey, TMsg> : AMediator<TChannelKey, TMsg> where TChannelKey : notnull {
+    internal sealed class SimpleMediator<TChannelKey, TMsg> : AbstractMediator<TChannelKey, TMsg> where TChannelKey : notnull {
 
         private Dictionary<TChannelKey, HashSet<ITarget<TChannelKey, TMsg>>> channels = new();
 
