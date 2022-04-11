@@ -29,7 +29,7 @@ namespace IotDash.Contracts.V1 {
             public const string Update = Get;
             public const string Create = Base;
             public const string Delete = Get;
-            public const string ReadValue = Get + "/value";
+            public const string Data = Get + "/datastream";
             public const string History = Get + "/history";
 
             internal static string GetUri(IotInterface newIface) {

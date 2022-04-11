@@ -53,7 +53,7 @@ namespace IotDash {
                 app.UseAuthorization();
                 app.UseEndpoints(endpoints => {
                     endpoints.MapControllers();
-                    endpoints.MapHub<ChartHub>(ApiRoutes.Interface.ReadValue);
+                    endpoints.MapHub<ChartHub>(ApiRoutes.Interface.Data);
                 });
             }
         }
