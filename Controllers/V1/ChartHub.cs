@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace IotDash.Controllers.V1 {
     public class ChartHub : Hub {
+        public const string MethodNewData = "newdata";
 
         public ChartHub() {
 

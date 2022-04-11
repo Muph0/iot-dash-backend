@@ -1,6 +1,4 @@
 
-- port HistoryWriter to new mediator
-	- shutdown old mediator
-- port InterfaceEvaluator to new mediator
+- unify evaluation and history under one entity management service <interface>
 
 
