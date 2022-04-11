@@ -33,13 +33,6 @@ namespace IotDash.Installers {
                 return options.Build();
             });
 
-            ////////////////
-            // Mqtt Client service
-
-            // old
-            //services.AddSingleton<IHostedMqttClient, MqttNetMqttClientService>();
-            //services.AddHostedService(p => p.GetRequiredService<IHostedMqttClient>());
-
             // new
             services.AddSingleton<HostedMqttService>();
             services.AddHostedService(p => p.GetRequiredService<HostedMqttService>());

@@ -7,6 +7,8 @@ using Microsoft.Extensions.Logging;
 using System;
 using IotDash.Installers;
 using IotDash.Settings;
+using IotDash.Controllers.V1;
+using IotDash.Contracts.V1;
 
 namespace IotDash {
     public class Startup {
@@ -44,13 +46,14 @@ namespace IotDash {
             // build the request pipeline
             {
                 app.UseStaticFiles();
-                app.UseCorsOptions();
+                app.UseCors(nameof(MvcInstaller.CorsPolicy));
                 app.UseRouting();
                 app.UseMiddleware<ApiErrorReporting>(env);
                 app.UseAuthentication();
                 app.UseAuthorization();
                 app.UseEndpoints(endpoints => {
                     endpoints.MapControllers();
+                    endpoints.MapHub<ChartHub>(ApiRoutes.Interface.ReadValue);
                 });
             }
         }

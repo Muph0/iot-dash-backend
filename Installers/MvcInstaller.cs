@@ -18,6 +18,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using SignalRSwaggerGen.Enums;
 
 namespace IotDash.Installers {
 
@@ -31,11 +32,12 @@ namespace IotDash.Installers {
             // Controllers
 
             services.AddControllers(opt => {
-
             }).AddJsonOptions(opt => {
                 opt.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
             });
 
+            // CORS
+            this.CorsPolicy(services, configuration);
 
             ////////////////
             // Add swagger (with JWT bearer support)
@@ -88,8 +90,24 @@ namespace IotDash.Installers {
                     }
                 };
 
+                opt.AddSignalRSwaggerGen(opt => {
+                    opt.AutoDiscover = AutoDiscover.MethodsAndParams;
+                });
+
                 opt.AddSecurityDefinition("Bearer", bearerScheme);
                 opt.AddSecurityRequirement(security);
+            });
+        }
+
+        public void CorsPolicy(IServiceCollection services, IConfiguration configuration) {
+
+            services.AddCors(opt => {
+                opt.AddPolicy(nameof(CorsPolicy), builder => builder
+                   .WithOrigins("http://localhost:4200")
+                   .AllowAnyMethod()
+                   .AllowAnyHeader()
+                   .AllowCredentials()
+                );
             });
         }
     }

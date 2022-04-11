@@ -69,7 +69,7 @@ namespace IotDash.Services.Mqtt.Implementation {
 
                 reconnectionAttempts++;
 
-                if (eventArgs.ClientWasConnected) {
+                if (eventArgs.ClientWasConnected || reconnectionAttempts > 1) {
                     string reason = eventArgs.Reason.ToString();
                     string msg = $"Disconnected from MQTT broker ({reason}) attempting to reconnect... (attempt {reconnectionAttempts})";
                     if (eventArgs.Reason == MqttClientDisconnectReason.NormalDisconnection) {
