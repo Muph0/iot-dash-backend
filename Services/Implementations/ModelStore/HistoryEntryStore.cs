@@ -25,7 +25,7 @@ namespace IotDash.Services.ModelStore {
                 double secondSize = (request.ToUTC - request.FromUTC).TotalSeconds / request.PointCount.Value;
 
                 var aggregated = from ent in db.History
-                                 where ent.WhenUTC >= request.FromUTC && ent.WhenUTC <= request.ToUTC
+                                 where ent.WhenUTC >= request.FromUTC && ent.WhenUTC <= request.ToUTC && ent.InterfaceId == iface.Id
                                  group ent by new {
                                      SecondScaled = Math.Floor(
                                         (EF.Functions.DateDiffDay(DateTime.UnixEpoch, ent.WhenUTC) * 24.0 * 3600.0

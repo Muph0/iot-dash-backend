@@ -132,10 +132,11 @@ namespace IotDash.Controllers.V1 {
             var iface = HttpContext.Features.GetRequired<IotInterface>();
 
             bool ok = await interfaces.DeleteByKeyAsync(iface.Id);
-            if (!(ok && await interfaces.SaveChangesAsync())) {
-                InterfaceResponse.NotFound(Error.DeviceAlreadyDeleted());
-            }
-            return InterfaceResponse.NoContent();
+            await interfaces.SaveChangesAsync();
+            
+            return ok
+                ? InterfaceResponse.Ok(iface.ToContract())
+                : InterfaceResponse.NotFound(Error.DeviceAlreadyDeleted());
         }
 
         /// <summary>

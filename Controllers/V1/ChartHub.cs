@@ -11,8 +11,11 @@ using System.Threading.Tasks;
 using IotDash.Authorization;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.SignalR;
+using SignalRSwaggerGen.Attributes;
 
 namespace IotDash.Controllers.V1 {
+
+    [SignalRHub(ApiRoutes.Events)]
     public class ChartHub : Hub {
         public const string MethodNewData = "newdata";
 

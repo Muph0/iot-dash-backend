@@ -49,7 +49,7 @@ namespace IotDash.Services.History {
             await store.CreateAsync(entry);
             await store.SaveChangesAsync();
 
-            await chartHub.Clients.All.SendAsync(ChartHub.MethodNewData, new Contracts.V1.Model.HistoryEntry(entry));
+            await chartHub.Clients.All.SendAsync(ChartHub.MethodNewData, new Contracts.V1.Model.HistoryEntryUpdate(entry));
         }
 
         public void Dispose() {

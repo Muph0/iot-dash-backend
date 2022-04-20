@@ -28,7 +28,7 @@ namespace IotDash.Services.Evaluation {
         private readonly MqttMediator mqtt;
         private readonly IExpr expressionTree;
 
-        public double? Value { get; private set; }
+        public double? Value { get; private set; } = null;
 
         public InterfaceEvaluator(IotInterface iface, IServiceScope scope) {
             var provider = scope.ServiceProvider;
@@ -53,6 +53,14 @@ namespace IotDash.Services.Evaluation {
         }
 
         async Task ITarget<string, MqttApplicationMessage>.OnReceive(object? sender, MqttApplicationMessage message) {
+            await this.Update();
+        }
+
+        /// <summary>
+        /// Evaluate and publish change
+        /// </summary>
+        /// <returns>Task that completes when published.</returns>
+        public async Task Update() {
             bool changed = Evaluate();
             if (changed) {
                 await Publish();
@@ -73,7 +81,7 @@ namespace IotDash.Services.Evaluation {
         /// Evaluate the interface and store the result in <see cref="Value"/>.
         /// </summary>
         /// <returns>True if value has changed.</returns>
-        public bool Evaluate() {
+        private bool Evaluate() {
             var newValue = expressionTree.Evaluate(this);
 
             if (Value != newValue) {
@@ -87,7 +95,7 @@ namespace IotDash.Services.Evaluation {
         /// Publish the <see cref="Value"/> over MQTT.
         /// </summary>
         /// <returns></returns>
-        public Task Publish() {
+        private Task Publish() {
             if (Value == null) throw new InvalidOperationException("There is no value to publish.");
             return mqtt.Send(this.entity.GetTopicName(), this, this.Value.ToString());
         }

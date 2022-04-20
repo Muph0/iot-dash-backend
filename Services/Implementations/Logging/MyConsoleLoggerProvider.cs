@@ -39,7 +39,9 @@ namespace IotDash.Services {
                 }
 
                 public void Dispose() {
-                    var scope = logger.scopes.Pop();
+                    if (logger.scopes.Count > 0) {
+                        var scope = logger.scopes.Pop();
+                    }
                 }
             }
 
@@ -79,12 +81,12 @@ namespace IotDash.Services {
 
                 lock (provider.consoleLock) {
                     Console.ForegroundColor = ConsoleColor.DarkGray;
-                    if (Console.WindowWidth < wideScreenBrk) {
-                        Console.WriteLine(categoryName + ":");
-                        categoryNamePad = 0;
-                    } else {
-                        Console.Write((categoryName + ": ").PadRight(categoryNamePad));
-                    }
+                    //if (Console.WindowWidth < wideScreenBrk) {
+                    Console.WriteLine(categoryName + ":");
+                    categoryNamePad = 0;
+                    //} else {
+                    //    Console.Write((categoryName + ": ").PadRight(categoryNamePad));
+                    //}
                     Console.Write($"[{DateTime.Now.ToLongTimeString()}] ");
                     Console.ForegroundColor = color;
                     Console.Write(level);

@@ -22,7 +22,7 @@ namespace IotDash.Contracts.V1 {
         public TValue? Value { get; private set; }
         object? IStatusResponse.Value => this.Value;
 
-        public static TInherited Succeed(TValue value) {
+        public static TInherited Succeed(TValue? value) {
             return new TInherited() {
                 Errors = Enumerable.Empty<string>(),
                 Success = true,
@@ -55,35 +55,39 @@ namespace IotDash.Contracts.V1 {
             => Fail(error).AsNotFound();
 
         public static NoContentResult NoContent()
-            => new NoContentResult();
+            => Succeed(default).AsNoContent();
 
         public static OkObjectResult Ok(TValue value)
             => Succeed(value).AsOk();
 
-        public static IActionResult Created(string locationUri, TValue value)
-            => new CreatedAtRouteResult(locationUri, value);
+        public static CreatedAtRouteResult Created(string locationUri, TValue value)
+            => Succeed(value).AsCreated(locationUri);
         #endregion
 
         #region Instance_IActionResult_Factories
-        public BadRequestObjectResult AsBadRequest() {
+        private BadRequestObjectResult AsBadRequest() {
             Debug.Assert(!Success);
             return new BadRequestObjectResult(this);
         }
-        public NotFoundObjectResult AsNotFound() {
+        private NotFoundObjectResult AsNotFound() {
             Debug.Assert(!Success);
             return new NotFoundObjectResult(this);
         }
-        public ConflictObjectResult AsConflict() {
+        private ConflictObjectResult AsConflict() {
             Debug.Assert(!Success);
             return new ConflictObjectResult(this);
         }
-        public NoContentResult AsNoContent() {
+        private NoContentResult AsNoContent() {
             Debug.Assert(Success);
             return new NoContentResult();
         }
-        public OkObjectResult AsOk() {
+        private OkObjectResult AsOk() {
             Debug.Assert(Success && Value != null);
             return new OkObjectResult(this);
+        }
+        private CreatedAtRouteResult AsCreated(string route ) {
+            Debug.Assert(Success && Value != null);
+            return new CreatedAtRouteResult(route, this);
         }
         public IActionResult AsOkOrBadRequest() {
             if (Success) {

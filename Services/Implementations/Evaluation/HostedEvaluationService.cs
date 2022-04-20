@@ -41,8 +41,7 @@ namespace IotDash.Services.Evaluation {
         }
 
         private Task HostedEvaluationService_AfterManagerUp(IotInterface entity, InterfaceEvaluator manager) {
-            manager.Evaluate();
-            return Task.CompletedTask;
+            return manager.Update();
         }
 
         public override Task OnReceive(object? sender, SaveChangesEventArgs<IotInterface> msg) {

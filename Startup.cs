@@ -8,7 +8,7 @@ using System;
 using IotDash.Installers;
 using IotDash.Settings;
 using IotDash.Controllers.V1;
-using IotDash.Contracts.V1;
+using IotDash.Utils;
 
 namespace IotDash {
     public class Startup {
@@ -53,7 +53,7 @@ namespace IotDash {
                 app.UseAuthorization();
                 app.UseEndpoints(endpoints => {
                     endpoints.MapControllers();
-                    endpoints.MapHub<ChartHub>(ApiRoutes.Interface.Data);
+                    endpoints.MapHub<ChartHub>();
                 });
             }
         }

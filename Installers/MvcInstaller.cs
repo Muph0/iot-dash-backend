@@ -90,12 +90,18 @@ namespace IotDash.Installers {
                     }
                 };
 
-                opt.AddSignalRSwaggerGen(opt => {
-                    opt.AutoDiscover = AutoDiscover.MethodsAndParams;
-                });
-
                 opt.AddSecurityDefinition("Bearer", bearerScheme);
                 opt.AddSecurityRequirement(security);
+
+                ////////////////
+                // SignalR
+                opt.AddSignalRSwaggerGen(signalropt => {
+                    signalropt.AutoDiscover = AutoDiscover.MethodsAndParams;
+                    signalropt.DisplayInDocument("v1");
+                    signalropt.ScanAssembly(typeof(Program).Assembly);
+                });
+                opt.DocumentFilter<Utils.SwaggerGen.CustomModelDocumentFilter<Contracts.V1.Model.HistoryEntryUpdate>>();
+
             });
         }
 
