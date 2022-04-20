@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace IotDash.Data.Model {
     public class HistoryEntry : ModelObject {
@@ -18,9 +19,12 @@ namespace IotDash.Data.Model {
             set => when = value.Kind == DateTimeKind.Unspecified ? DateTime.SpecifyKind(value, DateTimeKind.Utc) : value.ToUniversalTime();
         }
 
-        public double Min { get; set; }
-        public double Max { get; set; }
-        public double Average { get; set; }
+        [NotNull]
+        public double? Min { get; set; } = null;
+        [NotNull]
+        public double? Max { get; set; } = null;
+        [NotNull]
+        public double? Average { get; set; } = null;
 
         [ForeignKey(nameof(InterfaceId))]
         public virtual IotInterface Interface { get; set; }

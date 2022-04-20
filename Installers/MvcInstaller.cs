@@ -109,7 +109,7 @@ namespace IotDash.Installers {
 
             services.AddCors(opt => {
                 opt.AddPolicy(nameof(CorsPolicy), builder => builder
-                   .WithOrigins("http://localhost:4200")
+                   .WithOrigins("http://localhost:4200", "http://192.168.8.13:4200")
                    .AllowAnyMethod()
                    .AllowAnyHeader()
                    .AllowCredentials()

@@ -20,12 +20,12 @@ namespace IotDash.Contracts.V1.Model {
         public DateTime TimeUTC => entry.WhenUTC;
 
         [Required]
-        public double Min => entry.Min;
+        public double? Min => entry.Min;
 
         [Required]
-        public double Max => entry.Max;
+        public double? Max => entry.Max;
 
         [Required]
-        public double Average => entry.Average;
+        public double? Average => entry.Average;
     }
 }
