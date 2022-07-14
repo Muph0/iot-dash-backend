@@ -66,9 +66,9 @@ namespace IotDash.Services.Implementations____ {
             var expiryDateUtc = validatedToken.GetExpiryDate();
 
             // JWT must be expired
-            if (expiryDateUtc > DateTime.UtcNow) {
-                return AuthResponse.Fail(Error.JwtIsNotExpired((DateTime)expiryDateUtc));
-            }
+            //if (expiryDateUtc > DateTime.UtcNow) {
+            //    return AuthResponse.Fail(Error.JwtIsNotExpired((DateTime)expiryDateUtc));
+            //}
 
             var jti = validatedToken.GetClaim(JwtRegisteredClaimNames.Jti);
             var storedRefreshToken = await db.RefreshTokens.SingleOrDefaultAsync(t => t.Token == refreshToken);

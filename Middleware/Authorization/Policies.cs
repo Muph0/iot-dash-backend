@@ -30,7 +30,7 @@ namespace IotDash.Authorization {
 
 
         /// <summary>
-        /// Adds the <see cref="JwtAuthorized"/>, <see cref="RouteDeviceExists"/>, <see cref="RouteInterfaceExists"/>
+        /// Adds the <see cref="JwtAuthorized"/>, <see cref="RouteInterfaceExists"/>
         /// requirements to given policy builder.
         /// </summary>
         /// <param name="policy">Builder to add to.</param>
@@ -41,7 +41,7 @@ namespace IotDash.Authorization {
 
 
         /// <summary>
-        /// Adds the <see cref="JwtAuthorized"/>, <see cref="RouteDeviceExists"/>, <see cref="RouteInterfaceExists"/>
+        /// Adds the <see cref="JwtAuthorized"/>, <see cref="RouteInterfaceExists"/>
         /// <see cref="UserOwnsInterface"/>
         /// requirements to given policy builder.
         /// </summary>

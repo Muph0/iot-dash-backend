@@ -42,6 +42,7 @@ namespace IotDash.Controllers.V1 {
         [Authorize(Policy = nameof(Policies.Authorized))]
         [HttpGet(ApiRoutes.Interface.Base)]
         [Produces(MimeType.Application_JSON, Type = typeof(IList<Contracts.V1.Model.IotInterface>))]
+        [ProducesResponseType(401)]
         public async Task<IActionResult> GetInterfaces() {
             var domain = await this.interfaces.GetAllAsync();
             return Ok(domain.Select(i => i.ToContract()));
@@ -54,6 +55,8 @@ namespace IotDash.Controllers.V1 {
         [Authorize(Policy = nameof(Policies.AuthorizedInterfaceAccess))]
         [HttpGet(ApiRoutes.Interface.Get)]
         [Produces(MimeType.Application_JSON, Type = typeof(Contracts.V1.Model.IotInterface))]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(404)]
         public Task<IActionResult> GetInterface() {
 
             var iface = HttpContext.Features.Get<IotInterface>();
@@ -69,7 +72,10 @@ namespace IotDash.Controllers.V1 {
         /// <returns>The created interface and Location header with the interface uri.</returns>
         [Authorize(Policy = nameof(Policies.Authorized))]
         [HttpPost(ApiRoutes.Interface.Create)]
-        [Produces(MimeType.Application_JSON, Type = typeof(Contracts.V1.InterfaceResponse))]
+        [Produces(MimeType.Application_JSON)]
+        [ProducesResponseType(201, Type = typeof(InterfaceResponse))]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> CreateInterface([FromBody] InterfaceCreateRequest request) {
 
             if (!ModelState.IsValid) {
@@ -91,7 +97,7 @@ namespace IotDash.Controllers.V1 {
         /// </summary>
         /// <param name="request">Update request. At least one field must be specified.</param>
         /// <returns>The updated interface.</returns>
-        [Authorize(Policy = nameof(Policies.AuthorizedOwnInterfaceAccess))]
+        [Authorize(Policy = nameof(Policies.AuthorizedInterfaceAccess))]
         [HttpPatch(ApiRoutes.Interface.Update)]
         [Produces(MimeType.Application_JSON, Type = typeof(InterfaceResponse))]
         public async Task<IActionResult> UpdateInterface([FromBody] InterfacePatchRequest request) {
@@ -124,7 +130,7 @@ namespace IotDash.Controllers.V1 {
         /// Delete a specific interface.
         /// </summary>
         /// <returns>No content.</returns>
-        [Authorize(Policy = nameof(Policies.AuthorizedOwnInterfaceAccess))]
+        [Authorize(Policy = nameof(Policies.AuthorizedInterfaceAccess))]
         [HttpDelete(ApiRoutes.Interface.Delete)]
         [Produces(MimeType.Application_JSON, Type = typeof(InterfaceResponse))]
         public async Task<IActionResult> DeleteInterface() {
@@ -133,7 +139,7 @@ namespace IotDash.Controllers.V1 {
 
             bool ok = await interfaces.DeleteByKeyAsync(iface.Id);
             await interfaces.SaveChangesAsync();
-            
+
             return ok
                 ? InterfaceResponse.Ok(iface.ToContract())
                 : InterfaceResponse.NotFound(Error.DeviceAlreadyDeleted());
@@ -144,7 +150,7 @@ namespace IotDash.Controllers.V1 {
         /// </summary>
         /// <param name="request">Time period information with point density.</param>
         /// <returns>List of data points.</returns>
-        [Authorize(Policy = nameof(Policies.AuthorizedOwnInterfaceAccess))]
+        [Authorize(Policy = nameof(Policies.AuthorizedInterfaceAccess))]
         [HttpPost(ApiRoutes.Interface.History)]
         [Produces(MimeType.Application_JSON, Type = typeof(HistoryResponse))]
         public async Task<IActionResult> GetHistory([FromBody] HistoryRequest request) {
@@ -157,41 +163,6 @@ namespace IotDash.Controllers.V1 {
             var results = await history.GetPagedHistoryAsync(iface, request);
 
             return HistoryResponse.Ok(results.Select(r => r.ToContract()));
-        }
-
-        /// <summary>
-        /// Will be removed.
-        /// </summary>
-        /// <returns></returns>
-        [Obsolete]
-        [Authorize(Policy = nameof(Policies.AuthorizedOwnInterfaceAccess))]
-        [HttpPut(ApiRoutes.Interface.History)]
-        public async Task<IActionResult> GenerateHistory() {
-
-            var iface = HttpContext.Features.GetRequired<IotInterface>();
-
-            DateTime start = DateTime.Now.Subtract(TimeSpan.FromDays(7));
-            DateTime end = DateTime.Now;
-
-            var delta = end - start;
-            for (int m = 0; m < delta.TotalMinutes; m++) {
-
-                double value = Math.Sin(m / 1000.0) * 10 + 3;
-
-                HistoryEntry e = new() {
-                    Average = value,
-                    Min = value,
-                    Max = value,
-                    InterfaceId = iface.Id,
-                    WhenUTC = start.AddMinutes(m),
-                };
-
-                await history.CreateAsync(e);
-            }
-
-            await history.SaveChangesAsync();
-
-            return Ok();
         }
     }
 }

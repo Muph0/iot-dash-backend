@@ -15,15 +15,17 @@ namespace IotDash.Services.History {
 
     internal class HistoryWriter : IDisposable, IMqttSubscriber {
         private readonly SubscriptionGuard guard = new();
-        private readonly IotInterface entity;
-        private readonly IHistoryStore store;
+        private readonly IotInterface iface;
+        private readonly IHistoryStore historyStore;
+        private readonly IInterfaceStore ifaceStore;
         private readonly ILogger logger;
         private readonly IHubContext<ChartHub> chartHub;
 
         public HistoryWriter(IotInterface entity, IServiceScope scope) {
             var provider = scope.ServiceProvider;
-            this.entity = entity;
-            this.store = provider.GetRequiredService<IHistoryStore>();
+            this.iface = entity;
+            this.historyStore = provider.GetRequiredService<IHistoryStore>();
+            this.ifaceStore = provider.GetRequiredService<IInterfaceStore>();
             this.logger = provider.GetRequiredService<ILogger<HistoryWriter>>();
             var mqtt = provider.GetRequiredService<MqttMediator>();
             mqtt.Subscribe(entity.GetTopicName(), this, guard);
@@ -44,10 +46,16 @@ namespace IotDash.Services.History {
                 Average = val,
                 Min = val,
                 Max = val,
-                InterfaceId = entity.Id,
+                InterfaceId = iface.Id,
             };
-            await store.CreateAsync(entry);
-            await store.SaveChangesAsync();
+
+            if (iface.HistoryEnabled) {
+                await historyStore.CreateAsync(entry);
+                await historyStore.SaveChangesAsync();
+            }
+
+            (await ifaceStore.GetByKeyAsync(iface.Id)).Value = val;
+            await ifaceStore.SaveChangesAsync();
 
             await chartHub.Clients.All.SendAsync(ChartHub.MethodNewData, new Contracts.V1.Model.HistoryEntryUpdate(entry));
         }

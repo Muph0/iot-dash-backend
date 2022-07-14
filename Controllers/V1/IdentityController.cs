@@ -52,6 +52,7 @@ namespace IotDash.Controllers.V1 {
         /// <returns>New token pair wrapped in <see cref="AuthResponse"/>.</returns>
         [HttpPost(ApiRoutes.Identity.Login)]
         [Produces(MimeType.Application_JSON, Type = typeof(AuthResponse))]
+        [ProducesResponseType(typeof(AuthResponse), 400)]
         public async Task<IActionResult> Login([FromBody] UserLoginRequest request) {
 
             var authResult = await identity.LoginAsync(request.Email, request.Password);
@@ -65,6 +66,7 @@ namespace IotDash.Controllers.V1 {
         /// <returns>New token pair wrapped in <see cref="AuthResponse"/>.</returns>
         [HttpPost(ApiRoutes.Identity.Refresh)]
         [Produces(MimeType.Application_JSON, Type = typeof(AuthResponse))]
+        [ProducesResponseType(typeof(AuthResponse), 400)]
         public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request) {
 
             var authResult = await identity.RefreshTokenAsync(request.Token, request.RefreshToken);
@@ -78,7 +80,8 @@ namespace IotDash.Controllers.V1 {
         [Authorize]
         [HttpGet(ApiRoutes.Identity.Me)]
         [Produces(MimeType.Application_JSON, Type = typeof(Contracts.V1.Model.User))]
-        public Task<IActionResult> GetAllUsers() {
+        [ProducesResponseType(401)]
+        public Task<IActionResult> GetUser() {
 
             ClaimsPrincipal token = HttpContext.User;
             var user = HttpContext.Features.GetRequired<IdentityUser>();

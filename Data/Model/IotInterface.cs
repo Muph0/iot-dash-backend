@@ -45,13 +45,13 @@ namespace IotDash.Data.Model {
 
         /// <summary>
         /// </summary>
-        /// <returns>true if this interface needs an <see cref="Services.Evaluation.InterfaceEvaluator0"/>.</returns>
+        /// <returns>true if this interface needs an <see cref="Services.Evaluation.InterfaceEvaluator"/>.</returns>
         internal bool NeedsEvaluator() => Kind == InterfaceKind.Switch && Expression != null;
 
         /// <summary>
         /// </summary>
-        /// <returns>true if this interface needs a <see cref="Services.History.HistoryWriter0"/>.</returns>
-        internal bool NeedsWriter() => HistoryEnabled;
+        /// <returns>true if this interface needs a <see cref="Services.History.HistoryWriter"/>.</returns>
+        internal bool NeedsWriter() => true;
     }
 
 }
