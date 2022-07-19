@@ -3,7 +3,7 @@
 This is an in depth manual about the architecture and individual components' implementation of the IOT-Dash application backend.
 
 Related documents:
-- [README](?)
+- [README](https://github.com/Muph0/iot-dash-backend)
 
 [TOC]
 
@@ -11,23 +11,23 @@ Related documents:
 The backend is a middle man between the web application and the devices. It is responsible for managing devices and presenting data for users of front end application. See in the following component illustration.
 
 ```
-                                                     devices
-┌───────────────┐       ┌─────────────────┐          ┌─────┐
-│ iot-dash-app  │       │                 │◄────┬────┤     │
-└──────┬────────┘       │   MQTT Broker   │     │    ├─────┤
-       │                │                 │     ├────┤     │
-       │ http           └───┬─────────────┘     │    ├─────┤
-       │                  ▲ │                   ├────┤     │
-       │                  │ │ publish &         │    ├─────┤
-       ▼                  │ │ subscribe         └────┤     │
-   REST api               │ ▼                        ├─────┤
-┌─────────────────────────┴───────────────┐          │  .  │
-│            iot-dash-backend             │          │  .  │
-└────────────────────┬────────────────────┘          │  .  │
-                     │                               │     │
-┌────────────────────┴────────────────────┐          │     │
-│              MySQL database             │          │     │
-└─────────────────────────────────────────┘          └─────┘
+                                                         devices
+    ┌───────────────┐       ┌─────────────────┐          ┌─────┐
+    │ iot-dash-app  │       │                 │◄────┬────┤     │
+    └──────┬────────┘       │   MQTT Broker   │     │    ├─────┤
+           │                │                 │     ├────┤     │
+           │ http           └───┬─────────────┘     │    ├─────┤
+           │                  ▲ │                   ├────┤     │
+           │                  │ │ publish &         │    ├─────┤
+           ▼                  │ │ subscribe         └────┤     │
+       REST api               │ ▼                        ├─────┤
+    ┌─────────────────────────┴───────────────┐          │  .  │
+    │            iot-dash-backend             │          │  .  │
+    └────────────────────┬────────────────────┘          │  .  │
+                         │                               │     │
+    ┌────────────────────┴────────────────────┐          │     │
+    │              MySQL database             │          │     │
+    └─────────────────────────────────────────┘          └─────┘
 ```
 # Conceptual model
 
@@ -41,6 +41,8 @@ Service-oriented architecture of the backend uses dependency injection provided 
 
 Services are registered by scanning the assembly for implementations of the IotDash.Installers.IInstaller interface, which are located in the IotDash.Installers namespace.
 Then the installers are instantiated and their `Install()` methods are called.
+
+![IInstallers](inherit_graph_47.png)
 
 The dependency container registers services by Type, but not directly by the service type. The services are registered by an interface or an abstract type to allow easy swap of implementation of different services.
 
@@ -85,7 +87,8 @@ The most of the application's functionality is wrapped in services (see [Archite
 
 Model store classes provide abstraction over the database. Other services instead of directly accessing the database depend on these IotDash.Services.IModelStore objects, which provide basic CRUD functionality over the database, plus some additional features like change detection.
 
-These scoped services are registered in DI service container by IotDash.Installers.DataInstaller. The following interfaces represent the API of these services:
+These scoped services are registered in DI service container by IotDash.Installers.DataInstaller. The following interfaces represent the API of these services.
+Open them and check their inheritance diagrams to find the relevant implementations.
     - IotDash.Services.IInterfaceStore
     - IotDash.Services.IUserStore
     - IotDash.Services.IIdentityService

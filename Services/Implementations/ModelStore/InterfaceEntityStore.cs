@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 
 namespace IotDash.Services.ModelStore {
 
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     internal class InterfaceEntityStore : IInterfaceStore {
 
         private readonly DataContext db;

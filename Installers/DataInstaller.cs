@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using IotDash.Services.ModelStore;
-using IotDash.Services.Implementations____;
+using IotDash.Services.Implementations;
 
 namespace IotDash.Installers {
 
