@@ -90,7 +90,11 @@ $(function() {
 </ul>
 </li>
 <li class="level2"><a href="#autotoc_md7">Services</a><ul><li class="level3"><a href="#autotoc_md8">Model stores</a></li>
-<li class="level3"><a href="#autotoc_md9">MQTT Client</a></li>
+<li class="level3"><a href="#autotoc_md9">Expression evaluation</a></li>
+<li class="level3"><a href="#autotoc_md10">History logging</a></li>
+<li class="level3"><a href="#autotoc_md11">MQTT Client</a></li>
+<li class="level3"><a href="#autotoc_md12">Messaging</a></li>
+<li class="level3"><a href="#autotoc_md13">Logging</a></li>
 </ul>
 </li>
 </ul>
@@ -170,11 +174,19 @@ Model stores</h3>
 </ul>
 <p >All these stores depend on <a class="el" href="classIotDash_1_1Data_1_1DataContext.html" title="Represents a connection to database">IotDash.Data.DataContext</a> which is also registered in by same installer. It is a scoped service, which means it is created once per HTTP request.</p>
 <h3><a class="anchor" id="autotoc_md9"></a>
+Expression evaluation</h3>
+<h3><a class="anchor" id="autotoc_md10"></a>
+History logging</h3>
+<h3><a class="anchor" id="autotoc_md11"></a>
 MQTT Client</h3>
 <p >The MQTT client is realised via the MQTTnet library. It provides the following service</p><ul>
 <li><a class="el" href="classIotDash_1_1Services_1_1Mqtt_1_1MqttMediator.html" title="Specialisation of the AbstractMediator&lt;TChannelKey, TMsg&gt; where the channel key is of type string and...">IotDash.Services.Mqtt.MqttMediator</a> implemented by <a class="el" href="classIotDash_1_1Services_1_1Mqtt_1_1Implementation_1_1MqttNet__Mediator.html" title="A component of the HostedMqttService. Specialisation of MqttMediator designed to work with the MQTTne...">IotDash.Services.Mqtt.Implementation.MqttNet_Mediator</a></li>
 </ul>
-<p >The service is composed of classes in the <a class="el" href="namespaceIotDash_1_1Services_1_1Mqtt_1_1Implementation.html">IotDash.Services.Mqtt.Implementation</a> namespace. </p>
+<p >The service is composed of classes in the <a class="el" href="namespaceIotDash_1_1Services_1_1Mqtt_1_1Implementation.html">IotDash.Services.Mqtt.Implementation</a> namespace.</p>
+<h3><a class="anchor" id="autotoc_md12"></a>
+Messaging</h3>
+<h3><a class="anchor" id="autotoc_md13"></a>
+Logging</h3>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->
