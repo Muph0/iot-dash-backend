@@ -48,9 +48,6 @@ namespace IotDash.Installers {
                 opt.DefaultPolicy = defualtPolicy;
                 opt.InvokeHandlersAfterFailure = false;
             });
-
-            services.Replace<IAuthorizationEvaluator, Services.Auth.AuthEvaluator>();
-            services.Replace<IAuthorizationService, Services.Auth.AuthService>();
         }
     }
 

@@ -8,6 +8,9 @@ using System.Text;
 
 namespace IotDash.Installers {
 
+    /// <summary>
+    /// Configures and registers the <see cref="Microsoft.AspNetCore.Authentication.IAuthenticationService"/>.
+    /// </summary>
     internal class AuthenticationInstaller : IInstaller {
         public void InstallServices(IServiceCollection services, IConfiguration configuration) {
 

@@ -13,8 +13,12 @@ using Microsoft.Extensions.DependencyInjection;
 using IotDash.Domain.Events;
 using Microsoft.Extensions.Logging;
 
+
 namespace IotDash.Data {
 
+    /// <summary>
+    /// Represents a connection to database
+    /// </summary>
     internal class DataContext : IdentityDbContext {
         static bool staticInit = true;
 
@@ -27,8 +31,6 @@ namespace IotDash.Data {
             this.provider = provider;
             this.mediator = provider.GetRequiredService<MessageMediator>();
             this.logger = provider.GetRequiredService<ILogger<DataContext>>();
-
-            
 
             if (staticInit) {
                 staticInit = false;

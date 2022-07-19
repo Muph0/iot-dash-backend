@@ -31,7 +31,7 @@ namespace IotDash.Services.History {
         private readonly IHistoryStore historyStore;
         private readonly IInterfaceStore ifaceStore;
         private readonly ILogger logger;
-        private readonly IHubContext<ChartHub> chartHub;
+        private readonly IHubContext<EventHub> chartHub;
 
         public HistoryWriter(IotInterface entity, IServiceScope scope) {
             var provider = scope.ServiceProvider;
@@ -41,7 +41,7 @@ namespace IotDash.Services.History {
             this.logger = provider.GetRequiredService<ILogger<HistoryWriter>>();
             var mqtt = provider.GetRequiredService<MqttMediator>();
             mqtt.Subscribe(entity.GetTopicName(), this, guard);
-            this.chartHub = provider.GetRequiredService<IHubContext<ChartHub>>();
+            this.chartHub = provider.GetRequiredService<IHubContext<EventHub>>();
         }
 
         async Task ITarget<string, MqttApplicationMessage>.OnReceive(object? sender, MqttApplicationMessage msg) {
@@ -73,7 +73,7 @@ namespace IotDash.Services.History {
                 await ifaceStore.SaveChangesAsync();
             }
 
-            await chartHub.Clients.All.SendAsync(ChartHub.MethodNewData, new Contracts.V1.Model.HistoryEntryUpdate(entry));
+            await chartHub.Clients.All.SendAsync(EventHub.MethodNewData, new Contracts.V1.Model.HistoryEntryUpdate(entry));
         }
 
         public void Dispose() {

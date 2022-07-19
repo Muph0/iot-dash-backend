@@ -8,7 +8,19 @@ using System.Reflection;
 
 namespace IotDash.Installers {
 
+    /// <summary>
+    /// Represents a contract for service installer.
+    /// Assembly-wide scan for implementations of this interface is performed on <see cref="Startup.ConfigureServices(IServiceCollection)"/>.
+    /// The found implementations are instantiated and <see cref="IInstaller.InstallServices(IServiceCollection, IConfiguration)"/> is invoked on them.
+    /// See Architecture in programmers manual.
+    /// </summary>
     public interface IInstaller {
+
+        /// <summary>
+        /// Configure and register services installed by this installer.
+        /// </summary>
+        /// <param name="services">Container into which services are installed.</param>
+        /// <param name="configuration">Key/value application configuration from <c>appconfig.json</c>.</param>
         void InstallServices(IServiceCollection services, IConfiguration configuration);
     }
 

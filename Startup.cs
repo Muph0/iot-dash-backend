@@ -10,8 +10,15 @@ using IotDash.Settings;
 using IotDash.Controllers.V1;
 using IotDash.Utils;
 using System.IO;
+using IotDash.Middleware;
 
 namespace IotDash {
+
+
+    /// <summary>
+    /// This class is responsible for configuring all service and installing them into the container.
+    /// It also configures the HTTP request pipeline.
+    /// </summary>
     public class Startup {
         public Startup(IConfiguration configuration) {
             Configuration = configuration;
@@ -19,7 +26,12 @@ namespace IotDash {
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+
+
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to add services to the container.
+        /// </summary>
+        /// <param name="services">Container into which services are installed.</param>
         public void ConfigureServices(IServiceCollection services) {
             try {
                 services.InstallServicesInAssembly(Configuration);
@@ -31,7 +43,12 @@ namespace IotDash {
             }
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// This method gets called by the runtime.
+        /// HTTP request pipeline is configured in this method.
+        /// </summary>
+        /// <param name="app">Provides mechanisms to configure application request pipelies.</param>
+        /// <param name="env">Provides information about the hosting environment.</param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
 
             if (env.IsDevelopment()) {
@@ -57,7 +74,7 @@ namespace IotDash {
                 app.UseAuthorization();
                 app.UseEndpoints(endpoints => {
                     endpoints.MapControllers();
-                    endpoints.MapHub<ChartHub>();
+                    endpoints.MapHub<EventHub>();
                     endpoints.MapFallbackToFile("/index.html");
                 });
             }

@@ -1,18 +1,15 @@
 using IotDash.Exceptions;
-using IotDash.Utils;
 using IotDash.Utils.ObjectMapping;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace IotDash {
+namespace IotDash.Middleware
+{
     public class ApiErrorReporting {
 
         private readonly RequestDelegate _next;
@@ -26,10 +23,10 @@ namespace IotDash {
         }
 
         public async Task InvokeAsync(HttpContext context) {
-            
+
             ApplicationException exception;
             try {
-                
+
                 await _next(context);
                 exception = context.Features.Get<ApplicationException>();
 

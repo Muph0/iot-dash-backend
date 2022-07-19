@@ -16,10 +16,10 @@ using SignalRSwaggerGen.Attributes;
 namespace IotDash.Controllers.V1 {
 
     [SignalRHub(ApiRoutes.Events)]
-    public class ChartHub : Hub {
+    public class EventHub : Hub {
         public const string MethodNewData = "newdata";
 
-        public ChartHub() {
+        public EventHub() {
 
         }
 

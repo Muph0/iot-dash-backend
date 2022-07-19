@@ -1,67 +1,25 @@
-xit
-# IOT Dash
-IOT Dash is an application used for managing IOT devices and displaying data collected from them.
+*Tento projekt vznikl jako ročníkový projekt a po sléze přešel do bakalářské práce na Matematicko-fyzikální fakultě Univerzity Karlovy. Navštivte [dokumentaci ročníkového projektu](https://gitlab.mff.cuni.cz/teaching/nprg045/obdrzalek/2020-21/kytka)*
 
-This repository contains only the backend part.
+# IOT Dash README
+IOT Dash is an application used for managing IoT devices and displaying data collected from them.
 
-# Application architecture
-The backend is a middle man between the web application and the devices.
-It is responsible for managing devices and presenting data for users of front end application.
+This repository contains only the backend part. Frontend application is located in the repository [iot-dash-app](https://github.com/Muph0/iot-dash-app).
 
-```
-                                                     devices
-┌───────────────┐       ┌─────────────────┐          ┌─────┬─
-│ iot-dash-app  │       │                 │◄────┬────┤     │─ interfaces
-└──────┬────────┘       │   MQTT Broker   │     │    ├─────┤─ ...
-       │                │                 │     ├────┤     │─
-       │ http           └───┬─────────────┘     │    ├─────┤─
-       │                  ▲ │                   ├────┤     │─
-       │                  │ │ publish &         │    ├─────┤─
-       ▼                  │ │ subscribe         └────┤     │─
-   REST api               │ ▼                        ├─────┤─
-┌─────────────────────────┴───────────────┐          │  .  │─
-│            iot-dash-backend             │          │  .  │─
-└────────────────────┬────────────────────┘          │  .  │
-                     │                               │     │
-┌────────────────────┴────────────────────┐          │     │
-│              MySQL database             │          │     │
-└─────────────────────────────────────────┘          └─────┘
-```
-
-## Devices
-The application offers full features only to devices specifically designed to work with it. For interfacing with generic devices, only supported operations are read and write an MQTT topic.
-
-> A **device** is point of interaction with the internet. Typically a collection of related *interfaces* and/or MQTT topics which all correspond to one IP end point and one physical device or program.
-
-Devices have one or more interfaces. For example: a thermometer combined with a humidity meter and a barometer are all *interfaces* managed by one *device* which reads out their measurements and publishes them to the internet.
-
-> An **interface** is a point of interaction with physical world. A probe, sensor, switch and the like. We support only a simple value interfaces either a *probe*, that is read-only interface or a *switch*, a write-only interface.
->
-> Interfaces cannot communicate with the rest of the world on their own, so that's why they are managed by a *device*.
-
-For selected interfaces, the backend logs their state in specified intervals and keeps history logs of some density for specified amounts of time.
-
-## User accounts
-Each user can manage only devices which were registered by them.
-
-## History logging
-The app logs history of selected MQTT topics.
-This history data is then presented over REST API.
-For detail, see [REST API docs](https://muph0.github.io/iot-dash-backend/html/rest.html).
-
-## Further docs
+## Documentation
 
 For detailed information, check out:
  - [REST API documentation](https://muph0.github.io/iot-dash-backend/html/rest.html)
  - [Generated class reference](https://muph0.github.io/iot-dash-backend/html/)
 
 
-# Usage
+# Install & Run
 
-## Install
+To get download the latest release, locate a `run` script in the root of the archive and execute it.
+
+## Requirements
 
 The app is meant to run with the backend and broker visible to all the devices.
-To run it, you will need a running instance of MySQL server and MQTT broker.
+To run it, you will need a running instance of MySQL server and a MQTT broker.
 
 You need to setup a MySQL user and provide credentials in configuration.
 
@@ -71,6 +29,15 @@ This is a default configuration file with commentary
 
 ```jsonc
 {
+  "Kestrel": {
+    "Endpoints": {
+      "Http": {
+        // This is the url the server will be listening on
+        "Url": "http://*:8080"
+      }
+    }
+  },
+
   "ConnectionStrings": {
     // The MySQL connection string with user credentials
     "DefaultConnection": "server=localhost;port=3306;database=iot-dash-backend;uid=iot-dash;password=iot-dash"
@@ -132,7 +99,3 @@ This is a default configuration file with commentary
 
 ```
 
-## Run
-
-To run the app, currently the only option is to build it yourself via .NET CLI.
-You will need .NET 5.0 SDK installed.

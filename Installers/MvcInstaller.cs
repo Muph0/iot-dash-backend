@@ -42,6 +42,7 @@ namespace IotDash.Installers {
             ////////////////
             // Add swagger (with JWT bearer support)
 
+#if DEBUG
             SwaggerSettings swagg = SwaggerSettings.LoadFrom(configuration);
             services.AddSwaggerGen(opt => {
 
@@ -103,6 +104,8 @@ namespace IotDash.Installers {
                 opt.DocumentFilter<Utils.SwaggerGen.CustomModelDocumentFilter<Contracts.V1.Model.HistoryEntryUpdate>>();
 
             });
+#endif
+
         }
 
         public void CorsPolicy(IServiceCollection services, IConfiguration configuration) {

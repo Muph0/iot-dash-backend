@@ -17,7 +17,6 @@ using IotDash.Utils.Context;
 
 namespace IotDash.Authorization.Requirements {
 
-
     /// <summary>
     /// Authorization requirement that checks succeeds if JWT subject is a valid user.
     /// </summary>

@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace IotDash.Services.Messaging.Implementation {
 
-
+    /// <summary>
+    /// Implements the application-level mediator service.
+    /// <para>
+    /// Delegates messages between subscribers based on their <see cref="Type"/>.
+    /// Registered as service in <see cref="IotDash.Installers.MiscServiceInstaller"/>.
+    /// </para>
+    /// </summary>
     internal sealed class MessageSimpleMediatorService : MessageMediator {
 
         private ILogger logger;
