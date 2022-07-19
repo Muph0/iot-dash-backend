@@ -1,0 +1,4 @@
+<map id="IotDash.Settings.AuthSettings" name="IotDash.Settings.AuthSettings">
+<area shape="rect" id="node1" title="Settings for REST authentification. The username and password which are used to authentcate over HTTP..." alt="" coords="5,80,201,107"/>
+<area shape="rect" id="node2" href="$classIotDash_1_1Settings_1_1Settings.html" title=" " alt="" coords="20,5,187,32"/>
+</map>

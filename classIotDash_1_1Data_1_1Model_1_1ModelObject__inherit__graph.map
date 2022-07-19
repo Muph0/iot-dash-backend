@@ -1,0 +1,6 @@
+<map id="IotDash.Data.Model.ModelObject" name="IotDash.Data.Model.ModelObject">
+<area shape="rect" id="node1" title=" " alt="" coords="5,64,179,105"/>
+<area shape="rect" id="node2" href="$classIotDash_1_1Data_1_1Model_1_1HistoryEntry.html" title=" " alt="" coords="239,5,418,47"/>
+<area shape="rect" id="node3" href="$classIotDash_1_1Data_1_1Model_1_1IotInterface.html" title=" " alt="" coords="227,71,431,98"/>
+<area shape="rect" id="node4" href="$classIotDash_1_1Data_1_1Model_1_1RefreshToken.html" title=" " alt="" coords="237,123,420,164"/>
+</map>

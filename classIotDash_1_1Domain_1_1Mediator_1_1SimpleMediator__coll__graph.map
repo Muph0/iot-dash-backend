@@ -1,0 +1,4 @@
+<map id="IotDash.Domain.Mediator.SimpleMediator&lt; TChannelKey, TMsg &gt;" name="IotDash.Domain.Mediator.SimpleMediator&lt; TChannelKey, TMsg &gt;">
+<area shape="rect" id="node1" title="Manages subscribers and mediates messages between them." alt="" coords="5,95,209,151"/>
+<area shape="rect" id="node2" href="$classIotDash_1_1Domain_1_1Mediator_1_1AbstractMediator.html" title="This class implements part the mediator design pattern. Takes responsibility for managing subscriptio..." alt="" coords="14,5,201,47"/>
+</map>

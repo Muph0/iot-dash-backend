@@ -1,0 +1,4 @@
+<map id="IotDash.Services.Auth.HostedAuthPreparer" name="IotDash.Services.Auth.HostedAuthPreparer">
+<area shape="rect" id="node1" title="Makes sure that exactly one user account is available in the database with the correct credentials fr..." alt="" coords="5,80,201,121"/>
+<area shape="rect" id="node2" title=" " alt="" coords="47,5,159,32"/>
+</map>

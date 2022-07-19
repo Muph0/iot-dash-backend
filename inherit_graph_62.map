@@ -1,0 +1,6 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$interfaceIotDash_1_1Services_1_1IModelSaver.html" title=" " alt="" coords="5,46,203,73"/>
+<area shape="rect" id="node2" href="$interfaceIotDash_1_1Services_1_1IHistoryStore.html" title=" " alt="" coords="263,5,433,47"/>
+<area shape="rect" id="node4" href="$interfaceIotDash_1_1Services_1_1IModelStore.html" title=" " alt="" coords="251,71,445,112"/>
+<area shape="rect" id="node3" href="$classIotDash_1_1Services_1_1ModelStore_1_1HistoryEntryStore.html" title=" " alt="" coords="493,5,687,47"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$interfaceIotDash_1_1Domain_1_1Mediator_1_1ITarget.html" title=" " alt="" coords="5,5,176,47"/>
+<area shape="rect" id="node2" href="$interfaceIotDash_1_1Domain_1_1Mediator_1_1IMessageTarget.html" title="Specialized ITarget&lt;TChannelKey, TMsg&gt;, where the channel key is the Type of the message." alt="" coords="224,5,408,47"/>
+</map>

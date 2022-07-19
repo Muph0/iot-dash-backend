@@ -1,0 +1,4 @@
+<map id="IotDash.Authorization.Requirements.RouteInterfaceExists" name="IotDash.Authorization.Requirements.RouteInterfaceExists">
+<area shape="rect" id="node1" title="IAuthorizationRequirement that succeeds if the Http route contains a valid interface." alt="" coords="5,80,236,121"/>
+<area shape="rect" id="node2" title=" " alt="" coords="33,5,208,32"/>
+</map>

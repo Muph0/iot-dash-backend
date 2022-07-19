@@ -1,0 +1,6 @@
+<map id="IotDash.Services.History.HistoryWriter" name="IotDash.Services.History.HistoryWriter">
+<area shape="rect" id="node1" title=" " alt="" coords="29,169,197,211"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,95,96,121"/>
+<area shape="rect" id="node3" href="$interfaceIotDash_1_1Services_1_1Mqtt_1_1IMqttSubscriber.html" title=" " alt="" coords="120,95,235,121"/>
+<area shape="rect" id="node4" href="$interfaceIotDash_1_1Domain_1_1Mediator_1_1ITarget.html" title=" " alt="" coords="76,5,279,47"/>
+</map>

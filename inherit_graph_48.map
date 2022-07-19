@@ -1,0 +1,4 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$interfaceIotDash_1_1Domain_1_1Mediator_1_1ITarget.html" title=" " alt="" coords="5,5,176,61"/>
+<area shape="rect" id="node2" href="$classIotDash_1_1Domain_1_1Mediator_1_1TargetCastAdapter.html" title="Shim inserted before a subscription target, that casts all messages from TMsgIn to TMsgOut." alt="" coords="224,5,447,61"/>
+</map>

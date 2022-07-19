@@ -1,0 +1,4 @@
+<map id="IotDash.Services.Mqtt.MqttMediator" name="IotDash.Services.Mqtt.MqttMediator">
+<area shape="rect" id="node1" title="Specialisation of the AbstractMediator&lt;TChannelKey, TMsg&gt; where the channel key is of type string and..." alt="" coords="5,95,184,136"/>
+<area shape="rect" id="node2" href="$classIotDash_1_1Domain_1_1Mediator_1_1AbstractMediator.html" title=" " alt="" coords="5,5,184,47"/>
+</map>
