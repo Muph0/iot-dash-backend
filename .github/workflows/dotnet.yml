@@ -36,8 +36,8 @@ jobs:
     - name: Transfer docs to runner
       run: sudo chown -R runner docs
 
-#    - name: Copy images
-#      run: cp -ru images docs/html/
+    - name: Copy images
+      run: cp -ru docs/*.png docs/*.svg docs/html/
 
     - name: Deploy to github pages
       uses: JamesIves/github-pages-deploy-action@4.1.4
