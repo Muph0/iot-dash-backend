@@ -33,11 +33,17 @@ jobs:
       with:
         doxyfile-path: 'doxygen.conf'
 
+    - name: OpenAPI Generator Action
+      uses: kpurdon/openapi-generator-action@[version]
+      with:
+        args: "generate -i swagger.yaml -g html -o docs/rest --additional-properties=infoEmail=kytka.honza@gmail.com,infoUrl=https://muph0.github.io/iot-dash-backend/,licenseInfo=,licenseUrl="
+        
     - name: Transfer docs to runner
       run: sudo chown -R runner docs
 
-    - name: Copy images
+    - name: Copy images and REST docs
       run: cp -ru docs/*.png docs/*.svg docs/html/
+           cp docs/rest/index.html docs/html/rest.html
 
     - name: Deploy to github pages
       uses: JamesIves/github-pages-deploy-action@4.1.4

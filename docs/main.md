@@ -4,6 +4,7 @@ This is an in depth manual about the architecture and individual components' imp
 
 Related documents:
 - [README](https://github.com/Muph0/iot-dash-backend)
+- [REST API and scheme documentation](rest.html)
 
 [TOC]
 
