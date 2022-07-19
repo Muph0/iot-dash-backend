@@ -43,7 +43,7 @@ jobs:
 
     - name: Copy static files
       run: mv docs/rest/index.html docs/rest.html ;
-           cp -ru docs/*.png docs/*.svg docs/*.html docs/*.pdf docs/html/ ;
+           cp -ru docs/*.png docs/*.svg docs/*.html docs/html/ ;
 
     - name: Deploy to github pages
       uses: JamesIves/github-pages-deploy-action@4.1.4
