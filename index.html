@@ -103,7 +103,7 @@ $(function() {
 </div>
 <div class="textblock"><p ><a class="anchor" id="md_docs_main"></a> This is an in depth manual about the architecture and individual components' implementation of the IOT-Dash application backend.</p>
 <p >Related documents:</p><ul>
-<li>[README](?)</li>
+<li><a href="https://github.com/Muph0/iot-dash-backend">README</a></li>
 </ul>
 <h1><a class="anchor" id="autotoc_md1"></a>
 Application context</h1>
@@ -133,6 +133,7 @@ Conceptual model</h1>
 Architecture</h1>
 <p >Service-oriented architecture of the backend uses dependency injection provided by the ASP.NET Core library. The functionality is separated into coherent groups called <em>services</em> which exchange information through a mediator pattern (<a class="el" href="classIotDash_1_1Services_1_1Messaging_1_1MessageMediator.html" title="This class is a specialisation of the AbstractMediator&lt;TChannelKey, TMsg&gt; which mediates objects over...">IotDash.Services.Messaging.MessageMediator</a> class).</p>
 <p >Services are registered by scanning the assembly for implementations of the <a class="el" href="interfaceIotDash_1_1Installers_1_1IInstaller.html" title="Represents a contract for service installer. Assembly-wide scan for implementations of this interface...">IotDash.Installers.IInstaller</a> interface, which are located in the <a class="el" href="namespaceIotDash_1_1Installers.html">IotDash.Installers</a> namespace. Then the installers are instantiated and their <code>Install()</code> methods are called.</p>
+<p ><img src="inherit_graph_47.png" alt="IInstallers" class="inline"/></p>
 <p >The dependency container registers services by Type, but not directly by the service type. The services are registered by an interface or an abstract type to allow easy swap of implementation of different services.</p>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Web server pipeline</h2>
@@ -165,12 +166,12 @@ Services</h2>
 <p >The most of the application's functionality is wrapped in services (see <a class="el" href="index.html#autotoc_md3">Architecture</a>). This section contains their complete list.</p>
 <h3><a class="anchor" id="autotoc_md8"></a>
 Model stores</h3>
-<p >Model store classes provide abstraction over the database. Other services instead of directly accessing the database depend on these <a class="el" href="interfaceIotDash_1_1Services_1_1IModelStore.html">IotDash.Services.IModelStore</a> objects, which provide basic CRUD functionality over the database, plus some additional features like change detection.</p>
-<p >These scoped services are registered in DI service container by <a class="el" href="classIotDash_1_1Installers_1_1DataInstaller.html">IotDash.Installers.DataInstaller</a>. The following interfaces represent the API of these services:</p><ul>
-<li><a class="el" href="interfaceIotDash_1_1Services_1_1IInterfaceStore.html">IotDash.Services.IInterfaceStore</a></li>
-<li><a class="el" href="interfaceIotDash_1_1Services_1_1IUserStore.html">IotDash.Services.IUserStore</a></li>
-<li><a class="el" href="interfaceIotDash_1_1Services_1_1IIdentityService.html">IotDash.Services.IIdentityService</a></li>
-<li><a class="el" href="interfaceIotDash_1_1Services_1_1IHistoryStore.html">IotDash.Services.IHistoryStore</a></li>
+<p >Model store classes provide abstraction over the database. Other services instead of directly accessing the database depend on these <a class="el" href="interfaceIotDash_1_1Services_1_1IModelStore.html" title="Represents a contract for a store object which provides CRUD operations on TEntity  indexed by TKey .">IotDash.Services.IModelStore</a> objects, which provide basic CRUD functionality over the database, plus some additional features like change detection.</p>
+<p >These scoped services are registered in DI service container by <a class="el" href="classIotDash_1_1Installers_1_1DataInstaller.html">IotDash.Installers.DataInstaller</a>. The following interfaces represent the API of these services. Open them and check their inheritance diagrams to find the relevant implementations.</p><ul>
+<li><a class="el" href="interfaceIotDash_1_1Services_1_1IInterfaceStore.html" title="This service provides CRUD operations on interfaces.">IotDash.Services.IInterfaceStore</a></li>
+<li><a class="el" href="interfaceIotDash_1_1Services_1_1IUserStore.html" title="This service provides CRUD operations on IdentityUser indexed by their ids.">IotDash.Services.IUserStore</a></li>
+<li><a class="el" href="interfaceIotDash_1_1Services_1_1IIdentityService.html" title="This service provides basic user account functionality.">IotDash.Services.IIdentityService</a></li>
+<li><a class="el" href="interfaceIotDash_1_1Services_1_1IHistoryStore.html" title="This service provides database operations on HistoryEntrys.">IotDash.Services.IHistoryStore</a></li>
 </ul>
 <p >All these stores depend on <a class="el" href="classIotDash_1_1Data_1_1DataContext.html" title="Represents a connection to database">IotDash.Data.DataContext</a> which is also registered in by same installer. It is a scoped service, which means it is created once per HTTP request.</p>
 <h3><a class="anchor" id="autotoc_md9"></a>

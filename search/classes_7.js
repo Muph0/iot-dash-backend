@@ -2,7 +2,7 @@ var searchData=
 [
   ['identity_0',['Identity',['../classIotDash_1_1Contracts_1_1V1_1_1ApiRoutes_1_1Identity.html',1,'IotDash::Contracts::V1::ApiRoutes']]],
   ['identitycontroller_1',['IdentityController',['../classIotDash_1_1Controllers_1_1V1_1_1IdentityController.html',1,'IotDash::Controllers::V1']]],
-  ['identityservice_2',['IdentityService',['../classIotDash_1_1Services_1_1Implementations_________1_1IdentityService.html',1,'IotDash::Services::Implementations____']]],
+  ['identityservice_2',['IdentityService',['../classIotDash_1_1Services_1_1Implementations_1_1IdentityService.html',1,'IotDash::Services::Implementations']]],
   ['ientitymanagementservice_3',['IEntityManagementService',['../interfaceIotDash_1_1Services_1_1Domain_1_1IEntityManagementService.html',1,'IotDash::Services::Domain']]],
   ['iexpr_4',['IExpr',['../interfaceIotDash_1_1Parsing_1_1Expressions_1_1IExpr.html',1,'IotDash::Parsing::Expressions']]],
   ['ihistorystore_5',['IHistoryStore',['../interfaceIotDash_1_1Services_1_1IHistoryStore.html',1,'IotDash::Services']]],

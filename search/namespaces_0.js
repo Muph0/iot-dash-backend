@@ -17,7 +17,7 @@ var searchData=
   ['extensions_14',['Extensions',['../namespaceIotDash_1_1Contracts_1_1V1_1_1Model_1_1Extensions.html',1,'IotDash::Contracts::V1::Model']]],
   ['history_15',['History',['../namespaceIotDash_1_1Services_1_1History.html',1,'IotDash::Services']]],
   ['implementation_16',['Implementation',['../namespaceIotDash_1_1Services_1_1Messaging_1_1Implementation.html',1,'IotDash.Services.Messaging.Implementation'],['../namespaceIotDash_1_1Services_1_1Mqtt_1_1Implementation.html',1,'IotDash.Services.Mqtt.Implementation']]],
-  ['implementations_5f_5f_5f_5f_17',['Implementations____',['../namespaceIotDash_1_1Services_1_1Implementations________.html',1,'IotDash::Services']]],
+  ['implementations_17',['Implementations',['../namespaceIotDash_1_1Services_1_1Implementations.html',1,'IotDash::Services']]],
   ['installers_18',['Installers',['../namespaceIotDash_1_1Installers.html',1,'IotDash']]],
   ['iotdash_19',['IotDash',['../namespaceIotDash.html',1,'']]],
   ['jsonconverters_20',['JsonConverters',['../namespaceIotDash_1_1JsonConverters.html',1,'IotDash']]],

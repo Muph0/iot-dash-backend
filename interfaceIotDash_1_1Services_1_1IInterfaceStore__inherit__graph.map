@@ -1,5 +1,5 @@
 <map id="IotDash.Services.IInterfaceStore" name="IotDash.Services.IInterfaceStore">
-<area shape="rect" id="node1" title=" " alt="" coords="13,95,191,136"/>
+<area shape="rect" id="node1" title="This service provides CRUD operations on interfaces." alt="" coords="13,95,191,136"/>
 <area shape="rect" id="node3" href="$classIotDash_1_1Services_1_1ModelStore_1_1InterfaceEntityStore.html" title=" " alt="" coords="5,184,199,225"/>
 <area shape="rect" id="node2" href="$interfaceIotDash_1_1Services_1_1IModelStore.html" title=" " alt="" coords="15,5,189,47"/>
 </map>

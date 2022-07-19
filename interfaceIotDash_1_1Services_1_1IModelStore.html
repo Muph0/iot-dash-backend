@@ -94,8 +94,8 @@ Inheritance diagram for IotDash.Services.IModelStore&lt; TEntity, TKey &gt;:</di
 <div class="dyncontent">
 <div class="center"><img src="interfaceIotDash_1_1Services_1_1IModelStore__inherit__graph.png" border="0" usemap="#aIotDash_8Services_8IModelStore_3_01TEntity_00_01TKey_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="aIotDash_8Services_8IModelStore_3_01TEntity_00_01TKey_01_4_inherit__map" id="aIotDash_8Services_8IModelStore_3_01TEntity_00_01TKey_01_4_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,80,200,121"/>
-<area shape="rect" href="interfaceIotDash_1_1Services_1_1IModelSaver.html" title=" " alt="" coords="55,5,150,32"/>
+<area shape="rect" title="Represents a contract for a store object which provides CRUD operations on TEntity &#160;indexed by TKey ." alt="" coords="5,80,200,121"/>
+<area shape="rect" href="interfaceIotDash_1_1Services_1_1IModelSaver.html" title="Represents a contract for a store object that saves changes to database." alt="" coords="55,5,150,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -103,8 +103,8 @@ Collaboration diagram for IotDash.Services.IModelStore&lt; TEntity, TKey &gt;:</
 <div class="dyncontent">
 <div class="center"><img src="interfaceIotDash_1_1Services_1_1IModelStore__coll__graph.png" border="0" usemap="#aIotDash_8Services_8IModelStore_3_01TEntity_00_01TKey_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="aIotDash_8Services_8IModelStore_3_01TEntity_00_01TKey_01_4_coll__map" id="aIotDash_8Services_8IModelStore_3_01TEntity_00_01TKey_01_4_coll__map">
-<area shape="rect" title=" " alt="" coords="5,80,200,121"/>
-<area shape="rect" href="interfaceIotDash_1_1Services_1_1IModelSaver.html" title=" " alt="" coords="55,5,150,32"/>
+<area shape="rect" title="Represents a contract for a store object which provides CRUD operations on TEntity &#160;indexed by TKey ." alt="" coords="5,80,200,121"/>
+<area shape="rect" href="interfaceIotDash_1_1Services_1_1IModelSaver.html" title="Represents a contract for a store object that saves changes to database." alt="" coords="55,5,150,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -112,11 +112,9 @@ Collaboration diagram for IotDash.Services.IModelStore&lt; TEntity, TKey &gt;:</
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ab66fa2cb178633273f008e66b77b47be"><td class="memItemLeft" align="right" valign="top">Task&lt; IReadOnlyList&lt; TEntity &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceIotDash_1_1Services_1_1IModelStore.html#ab66fa2cb178633273f008e66b77b47be">GetAllAsync</a> ()</td></tr>
 <tr class="separator:ab66fa2cb178633273f008e66b77b47be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a77225bf2e634807a6cd8c13c7921cc3f"><td class="memItemLeft" align="right" valign="top"><a id="a77225bf2e634807a6cd8c13c7921cc3f" name="a77225bf2e634807a6cd8c13c7921cc3f"></a>
-Task&lt; TEntity?&gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetByKeyAsync</b> (TKey entityId)</td></tr>
-<tr class="separator:a77225bf2e634807a6cd8c13c7921cc3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe1535ba59b2ebb92449e20592f97a45"><td class="memItemLeft" align="right" valign="top"><a id="afe1535ba59b2ebb92449e20592f97a45" name="afe1535ba59b2ebb92449e20592f97a45"></a>
-Task&#160;</td><td class="memItemRight" valign="bottom"><b>CreateAsync</b> (TEntity entityToCreate)</td></tr>
+<tr class="memitem:ac49421ef2b3cdf4a7df240ae6dc06702"><td class="memItemLeft" align="right" valign="top">Task&lt; TEntity?&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceIotDash_1_1Services_1_1IModelStore.html#ac49421ef2b3cdf4a7df240ae6dc06702">GetByKeyAsync</a> (TKey key)</td></tr>
+<tr class="separator:ac49421ef2b3cdf4a7df240ae6dc06702"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe1535ba59b2ebb92449e20592f97a45"><td class="memItemLeft" align="right" valign="top">Task&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceIotDash_1_1Services_1_1IModelStore.html#afe1535ba59b2ebb92449e20592f97a45">CreateAsync</a> (TEntity entityToCreate)</td></tr>
 <tr class="separator:afe1535ba59b2ebb92449e20592f97a45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20add80dae5de3904314926ca7719d31"><td class="memItemLeft" align="right" valign="top">Task&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceIotDash_1_1Services_1_1IModelStore.html#a20add80dae5de3904314926ca7719d31">DeleteByKeyAsync</a> (TKey entityId)</td></tr>
 <tr class="separator:a20add80dae5de3904314926ca7719d31"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -124,7 +122,51 @@ Task&#160;</td><td class="memItemRight" valign="bottom"><b>CreateAsync</b> (TEnt
 <tr class="memitem:a88a5bdb0f8149c79ab36f92b6969e9ad inherit pub_methods_interfaceIotDash_1_1Services_1_1IModelSaver"><td class="memItemLeft" align="right" valign="top">Task&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceIotDash_1_1Services_1_1IModelSaver.html#a88a5bdb0f8149c79ab36f92b6969e9ad">SaveChangesAsync</a> ()</td></tr>
 <tr class="separator:a88a5bdb0f8149c79ab36f92b6969e9ad inherit pub_methods_interfaceIotDash_1_1Services_1_1IModelSaver"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Represents a contract for a store object which provides CRUD operations on <em>TEntity</em>  indexed by <em>TKey</em> . </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TEntity</td><td></td></tr>
+    <tr><td class="paramname">TKey</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="typeconstraint">
+<dl><dt><b>Type Constraints</b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em>TEntity</em></td><td>&#160;:</td><td valign="top"><em>class</em></td><td>&#160;</td></tr>
+</table>
+</dd>
+</dl>
+</div>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="afe1535ba59b2ebb92449e20592f97a45" name="afe1535ba59b2ebb92449e20592f97a45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe1535ba59b2ebb92449e20592f97a45">&#9670;&nbsp;</a></span>CreateAsync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Task <a class="el" href="interfaceIotDash_1_1Services_1_1IModelStore.html">IotDash.Services.IModelStore</a>&lt; TEntity, TKey &gt;.CreateAsync </td>
+          <td>(</td>
+          <td class="paramtype">TEntity&#160;</td>
+          <td class="paramname"><em>entityToCreate</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Create an entity in the database. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">entityToCreate</td><td>A new entity to create.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A task that represents the asynchronous creation action. It resolves when action is completed.</dd></dl>
+
+</div>
+</div>
 <a id="a20add80dae5de3904314926ca7719d31" name="a20add80dae5de3904314926ca7719d31"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a20add80dae5de3904314926ca7719d31">&#9670;&nbsp;</a></span>DeleteByKeyAsync()</h2>
 
@@ -169,6 +211,33 @@ Task&#160;</td><td class="memItemRight" valign="bottom"><b>CreateAsync</b> (TEnt
 
 <p>Retrieve all entities from the database. </p>
 <dl class="section return"><dt>Returns</dt><dd>A read-only list of all entities.</dd></dl>
+
+</div>
+</div>
+<a id="ac49421ef2b3cdf4a7df240ae6dc06702" name="ac49421ef2b3cdf4a7df240ae6dc06702"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac49421ef2b3cdf4a7df240ae6dc06702">&#9670;&nbsp;</a></span>GetByKeyAsync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Task&lt; TEntity?&gt; <a class="el" href="interfaceIotDash_1_1Services_1_1IModelStore.html">IotDash.Services.IModelStore</a>&lt; TEntity, TKey &gt;.GetByKeyAsync </td>
+          <td>(</td>
+          <td class="paramtype">TKey&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get an entity from database by <em>key</em> . </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>An entity with the matching key or <code>null</code> if not found.</dd></dl>
 
 </div>
 </div>

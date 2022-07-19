@@ -94,9 +94,9 @@ Inheritance diagram for IotDash.Services.IHistoryStore:</div>
 <div class="dyncontent">
 <div class="center"><img src="interfaceIotDash_1_1Services_1_1IHistoryStore__inherit__graph.png" border="0" usemap="#aIotDash_8Services_8IHistoryStore_inherit__map" alt="Inheritance graph"/></div>
 <map name="aIotDash_8Services_8IHistoryStore_inherit__map" id="aIotDash_8Services_8IHistoryStore_inherit__map">
-<area shape="rect" title=" " alt="" coords="17,80,187,121"/>
+<area shape="rect" title="This service provides database operations on HistoryEntrys." alt="" coords="17,80,187,121"/>
 <area shape="rect" href="classIotDash_1_1Services_1_1ModelStore_1_1HistoryEntryStore.html" title=" " alt="" coords="5,169,199,211"/>
-<area shape="rect" href="interfaceIotDash_1_1Services_1_1IModelSaver.html" title=" " alt="" coords="55,5,149,32"/>
+<area shape="rect" href="interfaceIotDash_1_1Services_1_1IModelSaver.html" title="Represents a contract for a store object that saves changes to database." alt="" coords="55,5,149,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -104,23 +104,93 @@ Collaboration diagram for IotDash.Services.IHistoryStore:</div>
 <div class="dyncontent">
 <div class="center"><img src="interfaceIotDash_1_1Services_1_1IHistoryStore__coll__graph.png" border="0" usemap="#aIotDash_8Services_8IHistoryStore_coll__map" alt="Collaboration graph"/></div>
 <map name="aIotDash_8Services_8IHistoryStore_coll__map" id="aIotDash_8Services_8IHistoryStore_coll__map">
-<area shape="rect" title=" " alt="" coords="5,80,175,121"/>
-<area shape="rect" href="interfaceIotDash_1_1Services_1_1IModelSaver.html" title=" " alt="" coords="43,5,137,32"/>
+<area shape="rect" title="This service provides database operations on HistoryEntrys." alt="" coords="5,80,175,121"/>
+<area shape="rect" href="interfaceIotDash_1_1Services_1_1IModelSaver.html" title="Represents a contract for a store object that saves changes to database." alt="" coords="43,5,137,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aab7d57fd17243eb41567f81e136eef01"><td class="memItemLeft" align="right" valign="top"><a id="aab7d57fd17243eb41567f81e136eef01" name="aab7d57fd17243eb41567f81e136eef01"></a>
-Task&lt; IEnumerable&lt; <a class="el" href="classIotDash_1_1Data_1_1Model_1_1HistoryEntry.html">HistoryEntry</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetPagedHistoryAsync</b> (<a class="el" href="classIotDash_1_1Data_1_1Model_1_1IotInterface.html">IotInterface</a> iface, <a class="el" href="classIotDash_1_1Contracts_1_1V1_1_1HistoryRequest.html">HistoryRequest</a> request)</td></tr>
+<tr class="memitem:aab7d57fd17243eb41567f81e136eef01"><td class="memItemLeft" align="right" valign="top">Task&lt; IEnumerable&lt; <a class="el" href="classIotDash_1_1Data_1_1Model_1_1HistoryEntry.html">HistoryEntry</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceIotDash_1_1Services_1_1IHistoryStore.html#aab7d57fd17243eb41567f81e136eef01">GetPagedHistoryAsync</a> (<a class="el" href="classIotDash_1_1Data_1_1Model_1_1IotInterface.html">IotInterface</a> iface, <a class="el" href="classIotDash_1_1Contracts_1_1V1_1_1HistoryRequest.html">HistoryRequest</a> request)</td></tr>
 <tr class="separator:aab7d57fd17243eb41567f81e136eef01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a501442a86c2293b47806231ca127d5f8"><td class="memItemLeft" align="right" valign="top"><a id="a501442a86c2293b47806231ca127d5f8" name="a501442a86c2293b47806231ca127d5f8"></a>
-Task&#160;</td><td class="memItemRight" valign="bottom"><b>CreateAsync</b> (<a class="el" href="classIotDash_1_1Data_1_1Model_1_1HistoryEntry.html">HistoryEntry</a> entry)</td></tr>
+<tr class="memitem:a501442a86c2293b47806231ca127d5f8"><td class="memItemLeft" align="right" valign="top">Task&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceIotDash_1_1Services_1_1IHistoryStore.html#a501442a86c2293b47806231ca127d5f8">CreateAsync</a> (<a class="el" href="classIotDash_1_1Data_1_1Model_1_1HistoryEntry.html">HistoryEntry</a> entry)</td></tr>
 <tr class="separator:a501442a86c2293b47806231ca127d5f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_interfaceIotDash_1_1Services_1_1IModelSaver"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_interfaceIotDash_1_1Services_1_1IModelSaver')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="interfaceIotDash_1_1Services_1_1IModelSaver.html">IotDash.Services.IModelSaver</a></td></tr>
 <tr class="memitem:a88a5bdb0f8149c79ab36f92b6969e9ad inherit pub_methods_interfaceIotDash_1_1Services_1_1IModelSaver"><td class="memItemLeft" align="right" valign="top">Task&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceIotDash_1_1Services_1_1IModelSaver.html#a88a5bdb0f8149c79ab36f92b6969e9ad">SaveChangesAsync</a> ()</td></tr>
 <tr class="separator:a88a5bdb0f8149c79ab36f92b6969e9ad inherit pub_methods_interfaceIotDash_1_1Services_1_1IModelSaver"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >This service provides database operations on HistoryEntrys. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a501442a86c2293b47806231ca127d5f8" name="a501442a86c2293b47806231ca127d5f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a501442a86c2293b47806231ca127d5f8">&#9670;&nbsp;</a></span>CreateAsync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Task IotDash.Services.IHistoryStore.CreateAsync </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classIotDash_1_1Data_1_1Model_1_1HistoryEntry.html">HistoryEntry</a>&#160;</td>
+          <td class="paramname"><em>entry</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Add new measurement to the database. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">entry</td><td>The measurement to add.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A task which represents the async operation.</dd></dl>
+
+<p>Implemented in <a class="el" href="classIotDash_1_1Services_1_1ModelStore_1_1HistoryEntryStore.html#a18d814559d227b3cf291228e5b344310">IotDash.Services.ModelStore.HistoryEntryStore</a>.</p>
+
+</div>
+</div>
+<a id="aab7d57fd17243eb41567f81e136eef01" name="aab7d57fd17243eb41567f81e136eef01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab7d57fd17243eb41567f81e136eef01">&#9670;&nbsp;</a></span>GetPagedHistoryAsync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Task&lt; IEnumerable&lt; <a class="el" href="classIotDash_1_1Data_1_1Model_1_1HistoryEntry.html">HistoryEntry</a> &gt; &gt; IotDash.Services.IHistoryStore.GetPagedHistoryAsync </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classIotDash_1_1Data_1_1Model_1_1IotInterface.html">IotInterface</a>&#160;</td>
+          <td class="paramname"><em>iface</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classIotDash_1_1Contracts_1_1V1_1_1HistoryRequest.html">HistoryRequest</a>&#160;</td>
+          <td class="paramname"><em>request</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get a series of measurements over a continuous interval of time. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">iface</td><td>The interface which to which the measurements belong.</td></tr>
+    <tr><td class="paramname">request</td><td>The parameters of this request.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>An enumerable of the retrieved measurements.</dd></dl>
+
+<p>Implemented in <a class="el" href="classIotDash_1_1Services_1_1ModelStore_1_1HistoryEntryStore.html#a0544d401865f1367f451879e5546950b">IotDash.Services.ModelStore.HistoryEntryStore</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this interface was generated from the following file:<ul>
 <li>Services/IModelStore.cs</li>
 </ul>

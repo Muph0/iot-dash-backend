@@ -1,6 +1,6 @@
 <map id="IotDash.Services.IModelSaver" name="IotDash.Services.IModelSaver">
-<area shape="rect" id="node1" title=" " alt="" coords="106,5,303,32"/>
-<area shape="rect" id="node2" href="$interfaceIotDash_1_1Services_1_1IHistoryStore.html" title=" " alt="" coords="17,80,187,121"/>
-<area shape="rect" id="node4" href="$interfaceIotDash_1_1Services_1_1IModelStore.html" title=" " alt="" coords="211,80,406,121"/>
+<area shape="rect" id="node1" title="Represents a contract for a store object that saves changes to database." alt="" coords="106,5,303,32"/>
+<area shape="rect" id="node2" href="$interfaceIotDash_1_1Services_1_1IHistoryStore.html" title="This service provides database operations on HistoryEntrys." alt="" coords="17,80,187,121"/>
+<area shape="rect" id="node4" href="$interfaceIotDash_1_1Services_1_1IModelStore.html" title="Represents a contract for a store object which provides CRUD operations on TEntity &#160;indexed by TKey ." alt="" coords="211,80,406,121"/>
 <area shape="rect" id="node3" href="$classIotDash_1_1Services_1_1ModelStore_1_1HistoryEntryStore.html" title=" " alt="" coords="5,169,199,211"/>
 </map>
