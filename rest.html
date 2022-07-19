@@ -1,0 +1,890 @@
+<!doctype html>
+<html>
+  <head>
+    <title>IOT Dashboard backend API</title>
+    <style type="text/css">
+      body {
+	font-family: Trebuchet MS, sans-serif;
+	font-size: 15px;
+	color: #444;
+	margin-right: 24px;
+}
+
+h1	{
+	font-size: 25px;
+}
+h2	{
+	font-size: 20px;
+}
+h3	{
+	font-size: 16px;
+	font-weight: bold;
+}
+hr	{
+	height: 1px;
+	border: 0;
+	color: #ddd;
+	background-color: #ddd;
+}
+
+.app-desc {
+  clear: both;
+  margin-left: 20px;
+}
+.param-name {
+  width: 100%;
+}
+.license-info {
+  margin-left: 20px;
+}
+
+.license-url {
+  margin-left: 20px;
+}
+
+.model {
+  margin: 0 0 0px 20px;
+}
+
+.method {
+  margin-left: 20px;
+}
+
+.method-notes	{
+	margin: 10px 0 20px 0;
+	font-size: 90%;
+	color: #555;
+}
+
+pre {
+  padding: 10px;
+  margin-bottom: 2px;
+}
+
+.http-method {
+ text-transform: uppercase;
+}
+
+pre.get {
+  background-color: #0f6ab4;
+}
+
+pre.post {
+  background-color: #10a54a;
+}
+
+pre.put {
+  background-color: #c5862b;
+}
+
+pre.delete {
+  background-color: #a41e22;
+}
+
+.huge	{
+	color: #fff;
+}
+
+pre.example {
+  background-color: #f3f3f3;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+code {
+  white-space: pre;
+}
+
+.nickname {
+  font-weight: bold;
+}
+
+.method-path {
+  font-size: 1.5em;
+  background-color: #0f6ab4;
+}
+
+.up {
+  float:right;
+}
+
+.parameter {
+  width: 500px;
+}
+
+.param {
+  width: 500px;
+  padding: 10px 0 0 20px;
+  font-weight: bold;
+}
+
+.param-desc {
+  width: 700px;
+  padding: 0 0 0 20px;
+  color: #777;
+}
+
+.param-type {
+  font-style: italic;
+}
+
+.param-enum-header {
+width: 700px;
+padding: 0 0 0 60px;
+color: #777;
+font-weight: bold;
+}
+
+.param-enum {
+width: 700px;
+padding: 0 0 0 80px;
+color: #777;
+font-style: italic;
+}
+
+.field-label {
+  padding: 0;
+  margin: 0;
+  clear: both;
+}
+
+.field-items	{
+	padding: 0 0 15px 0;
+	margin-bottom: 15px;
+}
+
+.return-type {
+  clear: both;
+  padding-bottom: 10px;
+}
+
+.param-header {
+  font-weight: bold;
+}
+
+.method-tags {
+  text-align: right;
+}
+
+.method-tag {
+  background: none repeat scroll 0% 0% #24A600;
+  border-radius: 3px;
+  padding: 2px 10px;
+  margin: 2px;
+  color: #FFF;
+  display: inline-block;
+  text-decoration: none;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>IOT Dashboard backend API</h1>
+    <div class="app-desc">IOT device management with MQTT and ASP.NET</div>
+    <div class="app-desc">More information: <a href="https://muph0.github.io/iot-dash-backend/">https://muph0.github.io/iot-dash-backend/</a></div>
+    <div class="app-desc">Contact Info: <a href="kytka.honza@gmail.com">kytka.honza@gmail.com</a></div>
+    <div class="app-desc">Version: v1</div>
+    <div class="app-desc">BasePath:</div>
+    <div class="license-info"></div>
+    <div class="license-url"></div>
+  <h2>Access</h2>
+    <ol>
+      <li>APIKey KeyParamName:Authorization KeyInQuery:false KeyInHeader:true</li>
+    </ol>
+
+  <h2><a name="__Methods">Methods</a></h2>
+  [ Jump to <a href="#__Models">Models</a> ]
+
+  <h3>Table of Contents </h3>
+  <div class="method-summary"></div>
+  <h4><a href="#Identity">Identity</a></h4>
+  <ul>
+  <li><a href="#getUser"><code><span class="http-method">get</span> /api/v1/identity</code></a></li>
+  <li><a href="#login"><code><span class="http-method">post</span> /api/v1/identity/login</code></a></li>
+  <li><a href="#refresh"><code><span class="http-method">post</span> /api/v1/identity/refresh</code></a></li>
+  </ul>
+  <h4><a href="#Interface">Interface</a></h4>
+  <ul>
+  <li><a href="#createInterface"><code><span class="http-method">post</span> /api/v1/interface</code></a></li>
+  <li><a href="#deleteInterface"><code><span class="http-method">delete</span> /api/v1/interface/{ifaceId}</code></a></li>
+  <li><a href="#getHistory"><code><span class="http-method">post</span> /api/v1/interface/{ifaceId}/history</code></a></li>
+  <li><a href="#getInterface"><code><span class="http-method">get</span> /api/v1/interface/{ifaceId}</code></a></li>
+  <li><a href="#getInterfaces"><code><span class="http-method">get</span> /api/v1/interface</code></a></li>
+  <li><a href="#updateInterface"><code><span class="http-method">patch</span> /api/v1/interface/{ifaceId}</code></a></li>
+  </ul>
+
+  <h1><a name="Identity">Identity</a></h1>
+  <div class="method"><a name="getUser"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /api/v1/identity</code></pre></div>
+    <div class="method-summary">Get information about the authorization token bearer. (<span class="nickname">getUser</span>)</div>
+    <div class="method-notes"></div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#User">User</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "id" : "id",
+  "userName" : "userName",
+  "email" : "email"
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Success
+        <a href="#User">User</a>
+    <h4 class="field-label">401</h4>
+    Unauthorized
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="login"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /api/v1/identity/login</code></pre></div>
+    <div class="method-summary">Get a new authorization token for the user. (<span class="nickname">login</span>)</div>
+    <div class="method-notes"></div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+      <li><code>text/json</code></li>
+      <li><code>application/*+json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">UserLoginRequest <a href="#UserLoginRequest">UserLoginRequest</a> (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#AuthResponse">AuthResponse</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "success" : true,
+  "errors" : [ "errors", "errors" ],
+  "token" : "token",
+  "refreshToken" : "refreshToken"
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Success
+        <a href="#AuthResponse">AuthResponse</a>
+    <h4 class="field-label">400</h4>
+    Bad Request
+        <a href="#AuthResponse">AuthResponse</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="refresh"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /api/v1/identity/refresh</code></pre></div>
+    <div class="method-summary">Provide a new token pair in exchange for a valid refresh token and an expired JWT token. (<span class="nickname">refresh</span>)</div>
+    <div class="method-notes"></div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+      <li><code>text/json</code></li>
+      <li><code>application/*+json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">RefreshTokenRequest <a href="#RefreshTokenRequest">RefreshTokenRequest</a> (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#AuthResponse">AuthResponse</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "success" : true,
+  "errors" : [ "errors", "errors" ],
+  "token" : "token",
+  "refreshToken" : "refreshToken"
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Success
+        <a href="#AuthResponse">AuthResponse</a>
+    <h4 class="field-label">400</h4>
+    Bad Request
+        <a href="#AuthResponse">AuthResponse</a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Interface">Interface</a></h1>
+  <div class="method"><a name="createInterface"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /api/v1/interface</code></pre></div>
+    <div class="method-summary">Create a new interface. (<span class="nickname">createInterface</span>)</div>
+    <div class="method-notes"></div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+      <li><code>text/json</code></li>
+      <li><code>application/*+json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">InterfaceCreateRequest <a href="#InterfaceCreateRequest">InterfaceCreateRequest</a> (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#InterfaceResponse">InterfaceResponse</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "success" : true,
+  "interface" : {
+    "historyEnabled" : true,
+    "expression" : "expression",
+    "topic" : "topic",
+    "id" : "046b6c7f-0b8a-43b9-b35d-6489e6daee91",
+    "value" : 0.8008281904610115
+  },
+  "errors" : [ "errors", "errors" ]
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">201</h4>
+    Success
+        <a href="#InterfaceResponse">InterfaceResponse</a>
+    <h4 class="field-label">401</h4>
+    Unauthorized
+        <a href="#"></a>
+    <h4 class="field-label">400</h4>
+    Bad Request
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="deleteInterface"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /api/v1/interface/{ifaceId}</code></pre></div>
+    <div class="method-summary">Delete a specific interface. (<span class="nickname">deleteInterface</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">ifaceId (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  default: null </div>
+    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#InterfaceResponse">InterfaceResponse</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "success" : true,
+  "interface" : {
+    "historyEnabled" : true,
+    "expression" : "expression",
+    "topic" : "topic",
+    "id" : "046b6c7f-0b8a-43b9-b35d-6489e6daee91",
+    "value" : 0.8008281904610115
+  },
+  "errors" : [ "errors", "errors" ]
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Success
+        <a href="#InterfaceResponse">InterfaceResponse</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getHistory"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /api/v1/interface/{ifaceId}/history</code></pre></div>
+    <div class="method-summary">Get interface history over a specified time period with given point density. (<span class="nickname">getHistory</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">ifaceId (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  default: null </div>
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+      <li><code>text/json</code></li>
+      <li><code>application/*+json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">HistoryRequest <a href="#HistoryRequest">HistoryRequest</a> (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#HistoryResponse">HistoryResponse</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "success" : true,
+  "values" : [ {
+    "average" : 1.4658129805029452,
+    "min" : 0.8008281904610115,
+    "max" : 6.027456183070403,
+    "timeUTC" : "2000-01-23T04:56:07.000+00:00"
+  }, {
+    "average" : 1.4658129805029452,
+    "min" : 0.8008281904610115,
+    "max" : 6.027456183070403,
+    "timeUTC" : "2000-01-23T04:56:07.000+00:00"
+  } ],
+  "errors" : [ "errors", "errors" ]
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Success
+        <a href="#HistoryResponse">HistoryResponse</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getInterface"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /api/v1/interface/{ifaceId}</code></pre></div>
+    <div class="method-summary">Get information about the specific interface. (<span class="nickname">getInterface</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">ifaceId (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  default: null </div>
+    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#IotInterface">IotInterface</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "historyEnabled" : true,
+  "expression" : "expression",
+  "topic" : "topic",
+  "id" : "046b6c7f-0b8a-43b9-b35d-6489e6daee91",
+  "value" : 0.8008281904610115
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Success
+        <a href="#IotInterface">IotInterface</a>
+    <h4 class="field-label">401</h4>
+    Unauthorized
+        <a href="#"></a>
+    <h4 class="field-label">404</h4>
+    Not Found
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getInterfaces"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /api/v1/interface</code></pre></div>
+    <div class="method-summary">Get information about all interfaces. (<span class="nickname">getInterfaces</span>)</div>
+    <div class="method-notes"></div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#IotInterface">IotInterface</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "historyEnabled" : true,
+  "expression" : "expression",
+  "topic" : "topic",
+  "id" : "046b6c7f-0b8a-43b9-b35d-6489e6daee91",
+  "value" : 0.8008281904610115
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Success
+        
+    <h4 class="field-label">401</h4>
+    Unauthorized
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="updateInterface"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="patch"><code class="huge"><span class="http-method">patch</span> /api/v1/interface/{ifaceId}</code></pre></div>
+    <div class="method-summary">Update one or more fields of the specified interface. (<span class="nickname">updateInterface</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">ifaceId (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  default: null </div>
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+      <li><code>text/json</code></li>
+      <li><code>application/*+json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">InterfacePatchRequest <a href="#InterfacePatchRequest">InterfacePatchRequest</a> (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#InterfaceResponse">InterfaceResponse</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "success" : true,
+  "interface" : {
+    "historyEnabled" : true,
+    "expression" : "expression",
+    "topic" : "topic",
+    "id" : "046b6c7f-0b8a-43b9-b35d-6489e6daee91",
+    "value" : 0.8008281904610115
+  },
+  "errors" : [ "errors", "errors" ]
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Success
+        <a href="#InterfaceResponse">InterfaceResponse</a>
+  </div> <!-- method -->
+  <hr/>
+
+  <h2><a name="__Models">Models</a></h2>
+  [ Jump to <a href="#__Methods">Methods</a> ]
+
+  <h3>Table of Contents</h3>
+  <ol>
+    <li><a href="#AuthResponse"><code>AuthResponse</code> - </a></li>
+    <li><a href="#HistoryEntry"><code>HistoryEntry</code> - </a></li>
+    <li><a href="#HistoryEntryUpdate"><code>HistoryEntryUpdate</code> - </a></li>
+    <li><a href="#HistoryRequest"><code>HistoryRequest</code> - </a></li>
+    <li><a href="#HistoryResponse"><code>HistoryResponse</code> - </a></li>
+    <li><a href="#InterfaceCreateRequest"><code>InterfaceCreateRequest</code> - </a></li>
+    <li><a href="#InterfaceKind"><code>InterfaceKind</code> - </a></li>
+    <li><a href="#InterfacePatchRequest"><code>InterfacePatchRequest</code> - </a></li>
+    <li><a href="#InterfaceResponse"><code>InterfaceResponse</code> - </a></li>
+    <li><a href="#IotInterface"><code>IotInterface</code> - </a></li>
+    <li><a href="#RefreshTokenRequest"><code>RefreshTokenRequest</code> - </a></li>
+    <li><a href="#User"><code>User</code> - </a></li>
+    <li><a href="#UserLoginRequest"><code>UserLoginRequest</code> - </a></li>
+  </ol>
+
+  <div class="model">
+    <h3><a name="AuthResponse"><code>AuthResponse</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>Represents result of an authentication</div>
+    <div class="field-items">
+      <div class="param">success </div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
+<div class="param">errors (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">array[String]</a></span>  </div>
+<div class="param">token (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Newly issued JWT token. </div>
+<div class="param">refreshToken (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> One-time use refresh token. </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="HistoryEntry"><code>HistoryEntry</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>Represents a measurement event in time.</div>
+    <div class="field-items">
+      <div class="param">timeUTC </div><div class="param-desc"><span class="param-type"><a href="#DateTime">Date</a></span>  format: date-time</div>
+<div class="param">min </div><div class="param-desc"><span class="param-type"><a href="#double">Double</a></span>  format: double</div>
+<div class="param">max </div><div class="param-desc"><span class="param-type"><a href="#double">Double</a></span>  format: double</div>
+<div class="param">average </div><div class="param-desc"><span class="param-type"><a href="#double">Double</a></span>  format: double</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="HistoryEntryUpdate"><code>HistoryEntryUpdate</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>Represents an server-to-client event.
+This event is fired when a new IotDash.Contracts.V1.Model.HistoryEntry is created.</div>
+    <div class="field-items">
+      <div class="param">entry </div><div class="param-desc"><span class="param-type"><a href="#HistoryEntry">HistoryEntry</a></span>  </div>
+<div class="param">interfaceId </div><div class="param-desc"><span class="param-type"><a href="#UUID">UUID</a></span> Interface to which this entry relates. format: uuid</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="HistoryRequest"><code>HistoryRequest</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>REST model of a history query. Represents a time interval with point density information.</div>
+    <div class="field-items">
+      <div class="param">fromUTC </div><div class="param-desc"><span class="param-type"><a href="#DateTime">Date</a></span> Start of the time interval. format: date-time</div>
+<div class="param">toUTC </div><div class="param-desc"><span class="param-type"><a href="#DateTime">Date</a></span> End of the time interval. format: date-time</div>
+<div class="param">pointCount (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Maximum number of points in the interval. If exceeded,
+poins will be recalculated to uniformly cover the interval. format: int32</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="HistoryResponse"><code>HistoryResponse</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">success </div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
+<div class="param">errors (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">array[String]</a></span>  </div>
+<div class="param">values (optional)</div><div class="param-desc"><span class="param-type"><a href="#HistoryEntry">array[HistoryEntry]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="InterfaceCreateRequest"><code>InterfaceCreateRequest</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">topic (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">expression (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">historyEnabled (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
+<div class="param">kind </div><div class="param-desc"><span class="param-type"><a href="#InterfaceKind">InterfaceKind</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="InterfaceKind"><code>InterfaceKind</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>Enumeration of different device types as presented over Rest API.</div>
+    <div class="field-items">
+          </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="InterfacePatchRequest"><code>InterfacePatchRequest</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">topic (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">expression (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">historyEnabled (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
+<div class="param">kind (optional)</div><div class="param-desc"><span class="param-type"><a href="#InterfaceKind">InterfaceKind</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="InterfaceResponse"><code>InterfaceResponse</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">success </div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
+<div class="param">errors (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">array[String]</a></span>  </div>
+<div class="param">interface (optional)</div><div class="param-desc"><span class="param-type"><a href="#IotInterface">IotInterface</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="IotInterface"><code>IotInterface</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>Represents an Iot device.</div>
+    <div class="field-items">
+      <div class="param">id </div><div class="param-desc"><span class="param-type"><a href="#UUID">UUID</a></span>  format: uuid</div>
+<div class="param">topic (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">kind </div><div class="param-desc"><span class="param-type"><a href="#InterfaceKind">InterfaceKind</a></span>  </div>
+<div class="param">expression (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">value </div><div class="param-desc"><span class="param-type"><a href="#double">Double</a></span>  format: double</div>
+<div class="param">historyEnabled </div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="RefreshTokenRequest"><code>RefreshTokenRequest</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">token </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">refreshToken </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="User"><code>User</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>Represents a user.</div>
+    <div class="field-items">
+      <div class="param">email </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">id </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">userName </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="UserLoginRequest"><code>UserLoginRequest</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">username </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">password </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  </body>
+</html>
