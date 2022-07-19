@@ -1,4 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,129,32"/>
-<area shape="rect" id="node2" href="$classIotDash_1_1Data_1_1DataContext.html" title=" " alt="" coords="177,5,348,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,46,120,73"/>
+<area shape="rect" id="node2" href="$classIotDash_1_1Utils_1_1SwaggerGen_1_1CustomModelDocumentFilter.html" title=" " alt="" coords="169,5,389,47"/>
+<area shape="rect" id="node3" href="$classIotDash_1_1Utils_1_1SwaggerGen_1_1PolymorphismDocumentFilter.html" title=" " alt="" coords="168,71,391,112"/>
 </map>

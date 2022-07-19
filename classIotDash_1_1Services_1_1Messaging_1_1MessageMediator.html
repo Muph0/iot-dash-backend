@@ -94,8 +94,8 @@ Inheritance diagram for IotDash.Services.Messaging.MessageMediator:</div>
 <div class="dyncontent">
 <div class="center"><img src="classIotDash_1_1Services_1_1Messaging_1_1MessageMediator__inherit__graph.png" border="0" usemap="#aIotDash_8Services_8Messaging_8MessageMediator_inherit__map" alt="Inheritance graph"/></div>
 <map name="aIotDash_8Services_8Messaging_8MessageMediator_inherit__map" id="aIotDash_8Services_8Messaging_8MessageMediator_inherit__map">
-<area shape="rect" title=" " alt="" coords="39,95,229,136"/>
-<area shape="rect" href="classIotDash_1_1Services_1_1Messaging_1_1Implementation_1_1MessageSimpleMediatorService.html" title=" " alt="" coords="5,184,263,240"/>
+<area shape="rect" title="This class is a specialisation of the AbstractMediator&lt;TChannelKey, TMsg&gt; which mediates objects over..." alt="" coords="39,95,229,136"/>
+<area shape="rect" href="classIotDash_1_1Services_1_1Messaging_1_1Implementation_1_1MessageSimpleMediatorService.html" title="Implements the application&#45;level mediator service." alt="" coords="5,184,263,240"/>
 <area shape="rect" href="classIotDash_1_1Domain_1_1Mediator_1_1AbstractMediator.html" title=" " alt="" coords="52,5,216,47"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -104,7 +104,7 @@ Collaboration diagram for IotDash.Services.Messaging.MessageMediator:</div>
 <div class="dyncontent">
 <div class="center"><img src="classIotDash_1_1Services_1_1Messaging_1_1MessageMediator__coll__graph.png" border="0" usemap="#aIotDash_8Services_8Messaging_8MessageMediator_coll__map" alt="Collaboration graph"/></div>
 <map name="aIotDash_8Services_8Messaging_8MessageMediator_coll__map" id="aIotDash_8Services_8Messaging_8MessageMediator_coll__map">
-<area shape="rect" title=" " alt="" coords="5,95,196,136"/>
+<area shape="rect" title="This class is a specialisation of the AbstractMediator&lt;TChannelKey, TMsg&gt; which mediates objects over..." alt="" coords="5,95,196,136"/>
 <area shape="rect" href="classIotDash_1_1Domain_1_1Mediator_1_1AbstractMediator.html" title=" " alt="" coords="19,5,183,47"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -145,7 +145,9 @@ abstract int&#160;</td><td class="memItemRight" valign="bottom"><b>TargetCount</
 abstract IEnumerable&lt; TChannelKey &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Keys</b><code> [get]</code></td></tr>
 <tr class="separator:a81bfcf1edbb63cf8b4bb09212f91f00d inherit properties_classIotDash_1_1Domain_1_1Mediator_1_1AbstractMediator"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >This class is a specialisation of the AbstractMediator&lt;TChannelKey, TMsg&gt; which mediates objects over channels differentiated by the objects' types. It provides nicer API than the parent class. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a6d883e7f67c06fa52f2dcb56eb443f4b" name="a6d883e7f67c06fa52f2dcb56eb443f4b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6d883e7f67c06fa52f2dcb56eb443f4b">&#9670;&nbsp;</a></span>Send&lt; TMsg &gt;()</h2>
 
@@ -223,6 +225,21 @@ abstract IEnumerable&lt; TChannelKey &gt;&#160;</td><td class="memItemRight" val
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Subscribe <em>target</em>  for message of type <em>TMsg</em> . Produced <em>subscription</em>  is used to cancel the subscription. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TMsg</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td></td></tr>
+    <tr><td class="paramname">subscription</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 <div class="typeconstraint">
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">

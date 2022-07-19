@@ -1,9 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" title=" " alt="" coords="5,143,88,170"/>
-<area shape="rect" id="node2" href="$interfaceIotDash_1_1Parsing_1_1Expressions_1_1IExpr.html" title=" " alt="" coords="136,136,327,177"/>
-<area shape="rect" id="node3" href="$classIotDash_1_1Parsing_1_1Expressions_1_1BinaryOp.html" title=" " alt="" coords="375,5,565,47"/>
-<area shape="rect" id="node4" href="$classIotDash_1_1Parsing_1_1Expressions_1_1FunctionCall.html" title=" " alt="" coords="375,71,565,112"/>
-<area shape="rect" id="node5" href="$classIotDash_1_1Parsing_1_1Expressions_1_1Literal.html" title=" " alt="" coords="375,136,565,177"/>
-<area shape="rect" id="node6" href="$classIotDash_1_1Parsing_1_1Expressions_1_1TopicRef.html" title=" " alt="" coords="375,201,565,243"/>
-<area shape="rect" id="node7" href="$classIotDash_1_1Parsing_1_1Expressions_1_1UnaryOp.html" title=" " alt="" coords="375,267,565,308"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,13,120,39"/>
+<area shape="rect" id="node2" href="$classIotDash_1_1Services_1_1MyConsoleLoggerProvider.html" title=" " alt="" coords="168,5,356,47"/>
 </map>

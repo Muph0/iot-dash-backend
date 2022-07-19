@@ -79,129 +79,102 @@ $(function() {
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">IOT Dash </div></div>
+  <div class="headertitle"><div class="title">Programmer's manual </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p ><a class="anchor" id="md_README"></a> xit </p>
-<h1><a class="anchor" id="autotoc_md0"></a>
-IOT Dash</h1>
-<p >IOT Dash is an application used for managing IOT devices and displaying data collected from them.</p>
-<p >This repository contains only the backend part.</p>
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#autotoc_md1">Application context</a></li>
+<li class="level1"><a href="#autotoc_md2">Conceptual model</a></li>
+<li class="level1"><a href="#autotoc_md3">Architecture</a><ul><li class="level2"><a href="#autotoc_md4">Web server pipeline</a><ul><li class="level3"><a href="#autotoc_md5">Authorization and Authentication</a></li>
+<li class="level3"><a href="#autotoc_md6">Controllers and Hubs</a></li>
+</ul>
+</li>
+<li class="level2"><a href="#autotoc_md7">Services</a><ul><li class="level3"><a href="#autotoc_md8">Model stores</a></li>
+<li class="level3"><a href="#autotoc_md9">MQTT Client</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="textblock"><p ><a class="anchor" id="md_docs_main"></a> This is an in depth manual about the architecture and individual components' implementation of the IOT-Dash application backend.</p>
+<p >Related documents:</p><ul>
+<li>[README](?)</li>
+</ul>
 <h1><a class="anchor" id="autotoc_md1"></a>
-Application architecture</h1>
-<p >The backend is a middle man between the web application and the devices. It is responsible for managing devices and presenting data for users of front end application.</p>
+Application context</h1>
+<p >The backend is a middle man between the web application and the devices. It is responsible for managing devices and presenting data for users of front end application. See in the following component illustration.</p>
 <div class="fragment"><div class="line">                                                     devices</div>
-<div class="line">┌───────────────┐       ┌─────────────────┐          ┌─────┬─</div>
-<div class="line">│ iot-dash-app  │       │                 │◄────┬────┤     │─ interfaces</div>
-<div class="line">└──────┬────────┘       │   MQTT Broker   │     │    ├─────┤─ ...</div>
-<div class="line">       │                │                 │     ├────┤     │─</div>
-<div class="line">       │ http           └───┬─────────────┘     │    ├─────┤─</div>
-<div class="line">       │                  ▲ │                   ├────┤     │─</div>
-<div class="line">       │                  │ │ publish &amp;         │    ├─────┤─</div>
-<div class="line">       ▼                  │ │ subscribe         └────┤     │─</div>
-<div class="line">   REST api               │ ▼                        ├─────┤─</div>
-<div class="line">┌─────────────────────────┴───────────────┐          │  .  │─</div>
-<div class="line">│            iot-dash-backend             │          │  .  │─</div>
+<div class="line">┌───────────────┐       ┌─────────────────┐          ┌─────┐</div>
+<div class="line">│ iot-dash-app  │       │                 │◄────┬────┤     │</div>
+<div class="line">└──────┬────────┘       │   MQTT Broker   │     │    ├─────┤</div>
+<div class="line">       │                │                 │     ├────┤     │</div>
+<div class="line">       │ http           └───┬─────────────┘     │    ├─────┤</div>
+<div class="line">       │                  ▲ │                   ├────┤     │</div>
+<div class="line">       │                  │ │ publish &amp;         │    ├─────┤</div>
+<div class="line">       ▼                  │ │ subscribe         └────┤     │</div>
+<div class="line">   REST api               │ ▼                        ├─────┤</div>
+<div class="line">┌─────────────────────────┴───────────────┐          │  .  │</div>
+<div class="line">│            iot-dash-backend             │          │  .  │</div>
 <div class="line">└────────────────────┬────────────────────┘          │  .  │</div>
 <div class="line">                     │                               │     │</div>
 <div class="line">┌────────────────────┴────────────────────┐          │     │</div>
 <div class="line">│              MySQL database             │          │     │</div>
 <div class="line">└─────────────────────────────────────────┘          └─────┘</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md2"></a>
-Devices</h2>
-<p >The application offers full features only to devices specifically designed to work with it. For interfacing with generic devices, only supported operations are read and write an MQTT topic.</p>
-<blockquote class="doxtable">
-<p >&zwj;A <b>device</b> is point of interaction with the internet. Typically a collection of related <em>interfaces</em> and/or MQTT topics which all correspond to one IP end point and one physical device or program. </p>
-</blockquote>
-<p>Devices have one or more interfaces. For example: a thermometer combined with a humidity meter and a barometer are all <em>interfaces</em> managed by one <em>device</em> which reads out their measurements and publishes them to the internet.</p>
-<blockquote class="doxtable">
-<p >&zwj;An <b>interface</b> is a point of interaction with physical world. A probe, sensor, switch and the like. We support only a simple value interfaces either a <em>probe</em>, that is read-only interface or a <em>switch</em>, a write-only interface.</p>
-<p >Interfaces cannot communicate with the rest of the world on their own, so that's why they are managed by a <em>device</em>. </p>
-</blockquote>
-<p>For selected interfaces, the backend logs their state in specified intervals and keeps history logs of some density for specified amounts of time.</p>
-<h2><a class="anchor" id="autotoc_md3"></a>
-User accounts</h2>
-<p >Each user can manage only devices which were registered by them.</p>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md2"></a>
+Conceptual model</h1>
+<p >The conceptual model of the application is illustrated in the following UML diagram. Classes with relevant documentation are in the <a class="el" href="namespaceIotDash_1_1Data_1_1Model.html">IotDash.Data.Model</a> namespace. Application uses Entity Framework Core to generate SQL schema from C# classes.</p>
+<p ><img src="model.png" alt="Conceptual model" class="inline"/></p>
+<h1><a class="anchor" id="autotoc_md3"></a>
+Architecture</h1>
+<p >Service-oriented architecture of the backend uses dependency injection provided by the ASP.NET Core library. The functionality is separated into coherent groups called <em>services</em> which exchange information through a mediator pattern (<a class="el" href="classIotDash_1_1Services_1_1Messaging_1_1MessageMediator.html" title="This class is a specialisation of the AbstractMediator&lt;TChannelKey, TMsg&gt; which mediates objects over...">IotDash.Services.Messaging.MessageMediator</a> class).</p>
+<p >Services are registered by scanning the assembly for implementations of the <a class="el" href="interfaceIotDash_1_1Installers_1_1IInstaller.html" title="Represents a contract for service installer. Assembly-wide scan for implementations of this interface...">IotDash.Installers.IInstaller</a> interface, which are located in the <a class="el" href="namespaceIotDash_1_1Installers.html">IotDash.Installers</a> namespace. Then the installers are instantiated and their <code>Install()</code> methods are called.</p>
+<p >The dependency container registers services by Type, but not directly by the service type. The services are registered by an interface or an abstract type to allow easy swap of implementation of different services.</p>
 <h2><a class="anchor" id="autotoc_md4"></a>
-History logging</h2>
-<p >The app logs history of selected MQTT topics. This history data is then presented over REST API. For detail, see <a href="https://muph0.github.io/iot-dash-backend/html/rest.html">REST API docs</a>.</p>
-<h2><a class="anchor" id="autotoc_md5"></a>
-Further docs</h2>
-<p >For detailed information, check out:</p><ul>
-<li><a href="https://muph0.github.io/iot-dash-backend/html/rest.html">REST API documentation</a></li>
-<li><a href="https://muph0.github.io/iot-dash-backend/html/">Generated class reference</a></li>
+Web server pipeline</h2>
+<p >The web server uses the middleware pattern to realize the server pipeline. Each request is passed through the pipeline call stack. The pipeline is configured in the <a class="el" href="classIotDash_1_1Startup.html" title="This class is responsible for configuring all service and installing them into the container....">IotDash.Startup</a> class.</p>
+<p ><img src="pipeline.svg" alt="Web server pipeline" style="pointer-events: none;" class="inline"/></p>
+<p >Different parts of the pipeline are realised by the following classes:</p><ul>
+<li><b>CORS</b>: Microsoft.AspNetCore.Builder.CorsMiddlewareExtensions</li>
+<li><b>Routing</b>: Microsoft.AspNetCore.Routing.EndpointRoutingMiddleware</li>
+<li><b>Error reporting</b>: <a class="el" href="classIotDash_1_1Middleware_1_1ApiErrorReporting.html">IotDash.Middleware.ApiErrorReporting</a></li>
+<li><b>Authentication</b>: Microsoft.AspNetCore.Authentication.AuthenticationMiddleware</li>
+<li><b>Authorization</b>: Microsoft.AspNetCore.Authorization.AuthorizationMiddleware</li>
+<li>Different endpoints are registered by providing appropriate implementation of Microsoft.AspNetCore.Routing.IEndpointRouteBuilder to the Microsoft.AspNetCore.Routing.EndpointMiddleware on top of the pipeline.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md6"></a>
-Usage</h1>
+<p >Static files hosted by this backend application are the files of the frontend application.</p>
+<h3><a class="anchor" id="autotoc_md5"></a>
+Authorization and Authentication</h3>
+<p >Authentication is realised via standard ASP.NET authenticator service with the JWT extension. The ASP.NET authenticators are configured and registered in the AuthenticationInstaller.</p>
+<p >Authorization is realised via <a class="el" href="classIotDash_1_1Authorization_1_1Policies.html" title="Contains static generator methods for different policies.">IotDash.Authorization.Policies</a> registering different <a class="el" href="namespaceIotDash_1_1Authorization_1_1Requirements.html">IotDash.Authorization.Requirements</a> onto various controller routes. The requirements are realised by their relevant AuthorizationHandlers.</p>
+<h3><a class="anchor" id="autotoc_md6"></a>
+Controllers and Hubs</h3>
+<p >Controllers provide endpoints for HTTP routes. They are registered automatically on the <a class="el" href="classIotDash_1_1Startup.html#ad3b4c11fdc5028d24e1fbb707fe76b56" title="This method gets called by the runtime. HTTP request pipeline is configured in this method.">IotDash.Startup.Configure</a>.</p><ul>
+<li><a class="el" href="classIotDash_1_1Controllers_1_1V1_1_1IdentityController.html" title="The IotDash.Controllers.V1.IdentityController provides route endpoints for user account management.">IotDash.Controllers.V1.IdentityController</a></li>
+<li><a class="el" href="classIotDash_1_1Controllers_1_1V1_1_1InterfaceController.html">IotDash.Controllers.V1.InterfaceController</a></li>
+</ul>
+<p >Hubs provide endpoints for SignalR clients, which enable two-way real-time communication with the clients. In this application, this functionality is only used for providing real-time MQTT data to the clients.</p><ul>
+<li><a class="el" href="classIotDash_1_1Controllers_1_1V1_1_1EventHub.html">IotDash.Controllers.V1.EventHub</a></li>
+</ul>
 <h2><a class="anchor" id="autotoc_md7"></a>
-Install</h2>
-<p >The app is meant to run with the backend and broker visible to all the devices. To run it, you will need a running instance of MySQL server and MQTT broker.</p>
-<p >You need to setup a MySQL user and provide credentials in configuration.</p>
-<h2><a class="anchor" id="autotoc_md8"></a>
-Configure</h2>
-<p >This is a default configuration file with commentary</p>
-<div class="fragment"><div class="line">{</div>
-<div class="line">  &quot;ConnectionStrings&quot;: {</div>
-<div class="line">    // The MySQL connection string with user credentials</div>
-<div class="line">    &quot;DefaultConnection&quot;: &quot;server=localhost;port=3306;database=iot-dash-backend;uid=iot-dash;password=iot-dash&quot;</div>
-<div class="line">  },</div>
-<div class="line"> </div>
-<div class="line">  &quot;Jwt&quot;: {</div>
-<div class="line">    // The JWT secret that is used to verify and sign all issued JWT tokens</div>
-<div class="line">    &quot;Secret&quot;: &quot;kOxuIYF4o6-NN0bVnVgPcpNm0tT3-ZlZ&quot;,</div>
-<div class="line"> </div>
-<div class="line">    // Algorithm used for token signing</div>
-<div class="line">    &quot;Algorithm&quot;: &quot;HS256&quot;,</div>
-<div class="line"> </div>
-<div class="line">    // Time after which will JWT expire (format: days.hh:mm:ss)</div>
-<div class="line">    &quot;TokenLifetime&quot;: &quot;00:15:30&quot;,</div>
-<div class="line"> </div>
-<div class="line">    // Time for which will be expired token still accepted</div>
-<div class="line">    &quot;ClockSkew&quot;: &quot;00:00:30&quot;,</div>
-<div class="line"> </div>
-<div class="line">    // Time after which a refresh token validity will expire</div>
-<div class="line">    &quot;RefreshTokenLifetime&quot;: &quot;180.00:00:00&quot;</div>
-<div class="line">  },</div>
-<div class="line"> </div>
-<div class="line">  &quot;Mqtt&quot;: {</div>
-<div class="line">    &quot;Broker&quot;: {</div>
-<div class="line">      // Host name of the MQTT broker</div>
-<div class="line">      &quot;Host&quot;: &quot;192.168.7.7&quot;,</div>
-<div class="line"> </div>
-<div class="line">      // Port on which the MQTT broker is listening</div>
-<div class="line">      &quot;Port&quot;: 1883,</div>
-<div class="line"> </div>
-<div class="line">      // If the program fails to reconnect to broker this many times in a row</div>
-<div class="line">      // it will terminate with an error. -1 will never terminate.</div>
-<div class="line">      &quot;MaxReconnectionAttempts&quot;: 5,</div>
-<div class="line">    },</div>
-<div class="line"> </div>
-<div class="line">    &quot;Client&quot;: {</div>
-<div class="line">      &quot;Id&quot;: &quot;5eb020f043ba8930506acbdd&quot;</div>
-<div class="line">    },</div>
-<div class="line">  },</div>
-<div class="line"> </div>
-<div class="line">  // Configuration for Microsoft logging</div>
-<div class="line">  &quot;Logging&quot;: {</div>
-<div class="line"> </div>
-<div class="line">    &quot;LogLevel&quot;: {</div>
-<div class="line">      // Log levels for different namespaces. Key is a namespace,</div>
-<div class="line">      // value is logging level. All messages from and above given</div>
-<div class="line">      // level will be logged.</div>
-<div class="line">      //</div>
-<div class="line">      // Valid levels are: &#39;Trace&#39;, &#39;Debug&#39;, &#39;Information&#39;,</div>
-<div class="line">      //                   &#39;Warning&#39;, &#39;Error&#39;, &#39;Critical&#39;</div>
-<div class="line">      // (in ascending order)</div>
-<div class="line">      &quot;Default&quot;: &quot;Information&quot;,</div>
-<div class="line">      &quot;Microsoft&quot;: &quot;Warning&quot;,</div>
-<div class="line">      &quot;Microsoft.Hosting.Lifetime&quot;: &quot;Information&quot;,</div>
-<div class="line">    }</div>
-<div class="line">  },</div>
-<div class="line">  &quot;AllowedHosts&quot;: &quot;*&quot;</div>
-<div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md9"></a>
-Run</h2>
-<p >To run the app, currently the only option is to build it yourself via .NET CLI. You will need .NET 5.0 SDK installed. </p>
+Services</h2>
+<p >The most of the application's functionality is wrapped in services (see <a class="el" href="index.html#autotoc_md3">Architecture</a>). This section contains their complete list.</p>
+<h3><a class="anchor" id="autotoc_md8"></a>
+Model stores</h3>
+<p >Model store classes provide abstraction over the database. Other services instead of directly accessing the database depend on these <a class="el" href="interfaceIotDash_1_1Services_1_1IModelStore.html">IotDash.Services.IModelStore</a> objects, which provide basic CRUD functionality over the database, plus some additional features like change detection.</p>
+<p >These scoped services are registered in DI service container by <a class="el" href="classIotDash_1_1Installers_1_1DataInstaller.html">IotDash.Installers.DataInstaller</a>. The following interfaces represent the API of these services:</p><ul>
+<li><a class="el" href="interfaceIotDash_1_1Services_1_1IInterfaceStore.html">IotDash.Services.IInterfaceStore</a></li>
+<li><a class="el" href="interfaceIotDash_1_1Services_1_1IUserStore.html">IotDash.Services.IUserStore</a></li>
+<li><a class="el" href="interfaceIotDash_1_1Services_1_1IIdentityService.html">IotDash.Services.IIdentityService</a></li>
+<li><a class="el" href="interfaceIotDash_1_1Services_1_1IHistoryStore.html">IotDash.Services.IHistoryStore</a></li>
+</ul>
+<p >All these stores depend on <a class="el" href="classIotDash_1_1Data_1_1DataContext.html" title="Represents a connection to database">IotDash.Data.DataContext</a> which is also registered in by same installer. It is a scoped service, which means it is created once per HTTP request.</p>
+<h3><a class="anchor" id="autotoc_md9"></a>
+MQTT Client</h3>
+<p >The MQTT client is realised via the MQTTnet library. It provides the following service</p><ul>
+<li><a class="el" href="classIotDash_1_1Services_1_1Mqtt_1_1MqttMediator.html" title="Specialisation of the AbstractMediator&lt;TChannelKey, TMsg&gt; where the channel key is of type string and...">IotDash.Services.Mqtt.MqttMediator</a> implemented by <a class="el" href="classIotDash_1_1Services_1_1Mqtt_1_1Implementation_1_1MqttNet__Mediator.html" title="A component of the HostedMqttService. Specialisation of MqttMediator designed to work with the MQTTne...">IotDash.Services.Mqtt.Implementation.MqttNet_Mediator</a></li>
+</ul>
+<p >The service is composed of classes in the <a class="el" href="namespaceIotDash_1_1Services_1_1Mqtt_1_1Implementation.html">IotDash.Services.Mqtt.Implementation</a> namespace. </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->

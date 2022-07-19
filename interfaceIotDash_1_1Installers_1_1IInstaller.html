@@ -94,8 +94,8 @@ Inheritance diagram for IotDash.Installers.IInstaller:</div>
 <div class="dyncontent">
 <div class="center"><img src="interfaceIotDash_1_1Installers_1_1IInstaller__inherit__graph.png" border="0" usemap="#aIotDash_8Installers_8IInstaller_inherit__map" alt="Inheritance graph"/></div>
 <map name="aIotDash_8Installers_8IInstaller_inherit__map" id="aIotDash_8Installers_8IInstaller_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,195,181,222"/>
-<area shape="rect" href="classIotDash_1_1Installers_1_1AuthenticationInstaller.html" title=" " alt="" coords="229,5,439,47"/>
+<area shape="rect" title="Represents a contract for service installer. Assembly&#45;wide scan for implementations of this interface..." alt="" coords="5,195,181,222"/>
+<area shape="rect" href="classIotDash_1_1Installers_1_1AuthenticationInstaller.html" title="Configures and registers the Microsoft.AspNetCore.Authentication.IAuthenticationService." alt="" coords="229,5,439,47"/>
 <area shape="rect" href="classIotDash_1_1Installers_1_1AuthorizationInstaller.html" title=" " alt="" coords="233,71,435,112"/>
 <area shape="rect" href="classIotDash_1_1Installers_1_1DataInstaller.html" title=" " alt="" coords="235,137,433,163"/>
 <area shape="rect" href="classIotDash_1_1Installers_1_1MiscServiceInstaller.html" title=" " alt="" coords="235,188,433,229"/>
@@ -107,10 +107,51 @@ Inheritance diagram for IotDash.Installers.IInstaller:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a15027d0e1030f3f15f97cb41c5e3a7f0"><td class="memItemLeft" align="right" valign="top"><a id="a15027d0e1030f3f15f97cb41c5e3a7f0" name="a15027d0e1030f3f15f97cb41c5e3a7f0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>InstallServices</b> (IServiceCollection services, IConfiguration configuration)</td></tr>
+<tr class="memitem:a15027d0e1030f3f15f97cb41c5e3a7f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceIotDash_1_1Installers_1_1IInstaller.html#a15027d0e1030f3f15f97cb41c5e3a7f0">InstallServices</a> (IServiceCollection services, IConfiguration configuration)</td></tr>
 <tr class="separator:a15027d0e1030f3f15f97cb41c5e3a7f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Represents a contract for service installer. Assembly-wide scan for implementations of this interface is performed on <a class="el" href="classIotDash_1_1Startup.html#ac23c5c23b98049b66c23334ae678401b" title="This method gets called by the runtime. Use this method to add services to the container.">Startup.ConfigureServices(IServiceCollection)</a>. The found implementations are instantiated and <a class="el" href="interfaceIotDash_1_1Installers_1_1IInstaller.html#a15027d0e1030f3f15f97cb41c5e3a7f0" title="Configure and register services installed by this installer.">IInstaller.InstallServices(IServiceCollection, IConfiguration)</a> is invoked on them. See Architecture in programmers manual. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a15027d0e1030f3f15f97cb41c5e3a7f0" name="a15027d0e1030f3f15f97cb41c5e3a7f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15027d0e1030f3f15f97cb41c5e3a7f0">&#9670;&nbsp;</a></span>InstallServices()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void IotDash.Installers.IInstaller.InstallServices </td>
+          <td>(</td>
+          <td class="paramtype">IServiceCollection&#160;</td>
+          <td class="paramname"><em>services</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IConfiguration&#160;</td>
+          <td class="paramname"><em>configuration</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Configure and register services installed by this installer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">services</td><td>Container into which services are installed.</td></tr>
+    <tr><td class="paramname">configuration</td><td>Key/value application configuration from <code>appconfig.json</code>.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="classIotDash_1_1Installers_1_1AuthenticationInstaller.html#a0acb663bc8ade5da4e4bf6fc60165885">IotDash.Installers.AuthenticationInstaller</a>, <a class="el" href="classIotDash_1_1Installers_1_1AuthorizationInstaller.html#afada13ddc4e2e3aca6f33d6e4a672bbc">IotDash.Installers.AuthorizationInstaller</a>, <a class="el" href="classIotDash_1_1Installers_1_1DataInstaller.html#a32586f4cf02df7cb7379b4ef68287e13">IotDash.Installers.DataInstaller</a>, <a class="el" href="classIotDash_1_1Installers_1_1MiscServiceInstaller.html#aaeb80851334139ee2511a669e512c262">IotDash.Installers.MiscServiceInstaller</a>, <a class="el" href="classIotDash_1_1Installers_1_1MqttInstaller.html#a9dfaa2043cc459e48c44acd0cdc884e1">IotDash.Installers.MqttInstaller</a>, <a class="el" href="classIotDash_1_1Installers_1_1MvcInstaller.html#a7bd437f653c296baa5eb8f3f442479b2">IotDash.Installers.MvcInstaller</a>, and <a class="el" href="classIotDash_1_1Parsing_1_1FunctionInstaller.html#ad6b9e63e262dce1afd7b4c752a53b0b5">IotDash.Parsing.FunctionInstaller</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this interface was generated from the following file:<ul>
 <li>Installers/IInstaller.cs</li>
 </ul>

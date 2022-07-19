@@ -6,12 +6,10 @@ var searchData=
   ['aentitymanagerservice_3',['AEntityManagerService',['../classIotDash_1_1Services_1_1Domain_1_1AEntityManagerService.html',1,'IotDash::Services::Domain']]],
   ['aentitymanagerservice_3c_20iotinterface_2c_20historywriter_20_3e_4',['AEntityManagerService&lt; IotInterface, HistoryWriter &gt;',['../classIotDash_1_1Services_1_1Domain_1_1AEntityManagerService.html',1,'IotDash::Services::Domain']]],
   ['aentitymanagerservice_3c_20iotinterface_2c_20interfaceevaluator_20_3e_5',['AEntityManagerService&lt; IotInterface, InterfaceEvaluator &gt;',['../classIotDash_1_1Services_1_1Domain_1_1AEntityManagerService.html',1,'IotDash::Services::Domain']]],
-  ['apierrorreporting_6',['ApiErrorReporting',['../classIotDash_1_1ApiErrorReporting.html',1,'IotDash']]],
+  ['apierrorreporting_6',['ApiErrorReporting',['../classIotDash_1_1Middleware_1_1ApiErrorReporting.html',1,'IotDash::Middleware']]],
   ['apiroutes_7',['ApiRoutes',['../classIotDash_1_1Contracts_1_1V1_1_1ApiRoutes.html',1,'IotDash::Contracts::V1']]],
   ['authenticationinstaller_8',['AuthenticationInstaller',['../classIotDash_1_1Installers_1_1AuthenticationInstaller.html',1,'IotDash::Installers']]],
-  ['authevaluator_9',['AuthEvaluator',['../classIotDash_1_1Services_1_1Auth_1_1AuthEvaluator.html',1,'IotDash::Services::Auth']]],
-  ['authorizationinstaller_10',['AuthorizationInstaller',['../classIotDash_1_1Installers_1_1AuthorizationInstaller.html',1,'IotDash::Installers']]],
-  ['authresponse_11',['AuthResponse',['../classIotDash_1_1Contracts_1_1V1_1_1AuthResponse.html',1,'IotDash::Contracts::V1']]],
-  ['authservice_12',['AuthService',['../classIotDash_1_1Services_1_1Auth_1_1AuthService.html',1,'IotDash::Services::Auth']]],
-  ['authsettings_13',['AuthSettings',['../classIotDash_1_1Settings_1_1AuthSettings.html',1,'IotDash::Settings']]]
+  ['authorizationinstaller_9',['AuthorizationInstaller',['../classIotDash_1_1Installers_1_1AuthorizationInstaller.html',1,'IotDash::Installers']]],
+  ['authresponse_10',['AuthResponse',['../classIotDash_1_1Contracts_1_1V1_1_1AuthResponse.html',1,'IotDash::Contracts::V1']]],
+  ['authsettings_11',['AuthSettings',['../classIotDash_1_1Settings_1_1AuthSettings.html',1,'IotDash::Settings']]]
 ];

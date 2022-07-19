@@ -5,5 +5,6 @@ var searchData=
   ['polymorphismdocumentfilter_2',['PolymorphismDocumentFilter',['../classIotDash_1_1Utils_1_1SwaggerGen_1_1PolymorphismDocumentFilter.html',1,'IotDash::Utils::SwaggerGen']]],
   ['preordervisitor_3',['PreorderVisitor',['../classIotDash_1_1Parsing_1_1PreorderVisitor.html',1,'IotDash::Parsing']]],
   ['program_4',['Program',['../classIotDash_1_1Program.html',1,'IotDash']]],
-  ['publisher_5',['Publisher',['../classIotDash_1_1Services_1_1Mqtt_1_1Implementation_1_1HostedMqttService.html#a397ce27ba7ecbb83153d5ebd4ac2fa5d',1,'IotDash::Services::Mqtt::Implementation::HostedMqttService']]]
+  ['programmer_27s_20manual_5',['Programmer&apos;s manual',['../index.html',1,'']]],
+  ['publisher_6',['Publisher',['../classIotDash_1_1Services_1_1Mqtt_1_1Implementation_1_1HostedMqttService.html#a397ce27ba7ecbb83153d5ebd4ac2fa5d',1,'IotDash::Services::Mqtt::Implementation::HostedMqttService']]]
 ];

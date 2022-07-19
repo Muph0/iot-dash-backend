@@ -96,11 +96,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a243e99ee8f834dcb5d15b86d601b2e34"><td class="memItemLeft" align="right" valign="top"><a id="a243e99ee8f834dcb5d15b86d601b2e34" name="a243e99ee8f834dcb5d15b86d601b2e34"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Startup</b> (IConfiguration configuration)</td></tr>
 <tr class="separator:a243e99ee8f834dcb5d15b86d601b2e34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac23c5c23b98049b66c23334ae678401b"><td class="memItemLeft" align="right" valign="top"><a id="ac23c5c23b98049b66c23334ae678401b" name="ac23c5c23b98049b66c23334ae678401b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ConfigureServices</b> (IServiceCollection services)</td></tr>
+<tr class="memitem:ac23c5c23b98049b66c23334ae678401b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIotDash_1_1Startup.html#ac23c5c23b98049b66c23334ae678401b">ConfigureServices</a> (IServiceCollection services)</td></tr>
 <tr class="separator:ac23c5c23b98049b66c23334ae678401b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3b4c11fdc5028d24e1fbb707fe76b56"><td class="memItemLeft" align="right" valign="top"><a id="ad3b4c11fdc5028d24e1fbb707fe76b56" name="ad3b4c11fdc5028d24e1fbb707fe76b56"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Configure</b> (IApplicationBuilder app, IWebHostEnvironment env)</td></tr>
+<tr class="memitem:ad3b4c11fdc5028d24e1fbb707fe76b56"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIotDash_1_1Startup.html#ad3b4c11fdc5028d24e1fbb707fe76b56">Configure</a> (IApplicationBuilder app, IWebHostEnvironment env)</td></tr>
 <tr class="separator:ad3b4c11fdc5028d24e1fbb707fe76b56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
@@ -109,6 +107,88 @@ Properties</h2></td></tr>
 IConfiguration&#160;</td><td class="memItemRight" valign="bottom"><b>Configuration</b><code> [get]</code></td></tr>
 <tr class="separator:aa58ade462c71324e609f282c861c124f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >This class is responsible for configuring all service and installing them into the container. It also configures the HTTP request pipeline. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ad3b4c11fdc5028d24e1fbb707fe76b56" name="ad3b4c11fdc5028d24e1fbb707fe76b56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3b4c11fdc5028d24e1fbb707fe76b56">&#9670;&nbsp;</a></span>Configure()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void IotDash.Startup.Configure </td>
+          <td>(</td>
+          <td class="paramtype">IApplicationBuilder&#160;</td>
+          <td class="paramname"><em>app</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IWebHostEnvironment&#160;</td>
+          <td class="paramname"><em>env</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This method gets called by the runtime. HTTP request pipeline is configured in this method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">app</td><td>Provides mechanisms to configure application request pipelies.</td></tr>
+    <tr><td class="paramname">env</td><td>Provides information about the hosting environment.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ac23c5c23b98049b66c23334ae678401b" name="ac23c5c23b98049b66c23334ae678401b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac23c5c23b98049b66c23334ae678401b">&#9670;&nbsp;</a></span>ConfigureServices()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void IotDash.Startup.ConfigureServices </td>
+          <td>(</td>
+          <td class="paramtype">IServiceCollection&#160;</td>
+          <td class="paramname"><em>services</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This method gets called by the runtime. Use this method to add services to the container. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">services</td><td>Container into which services are installed.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>Startup.cs</li>
 </ul>

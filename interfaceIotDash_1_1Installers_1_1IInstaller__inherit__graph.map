@@ -1,6 +1,6 @@
 <map id="IotDash.Installers.IInstaller" name="IotDash.Installers.IInstaller">
-<area shape="rect" id="node1" title=" " alt="" coords="5,195,181,222"/>
-<area shape="rect" id="node2" href="$classIotDash_1_1Installers_1_1AuthenticationInstaller.html" title=" " alt="" coords="229,5,439,47"/>
+<area shape="rect" id="node1" title="Represents a contract for service installer. Assembly&#45;wide scan for implementations of this interface..." alt="" coords="5,195,181,222"/>
+<area shape="rect" id="node2" href="$classIotDash_1_1Installers_1_1AuthenticationInstaller.html" title="Configures and registers the Microsoft.AspNetCore.Authentication.IAuthenticationService." alt="" coords="229,5,439,47"/>
 <area shape="rect" id="node3" href="$classIotDash_1_1Installers_1_1AuthorizationInstaller.html" title=" " alt="" coords="233,71,435,112"/>
 <area shape="rect" id="node4" href="$classIotDash_1_1Installers_1_1DataInstaller.html" title=" " alt="" coords="235,137,433,163"/>
 <area shape="rect" id="node5" href="$classIotDash_1_1Installers_1_1MiscServiceInstaller.html" title=" " alt="" coords="235,188,433,229"/>

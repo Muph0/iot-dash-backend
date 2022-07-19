@@ -1,4 +1,4 @@
 <map id="IotDash.Services.Messaging.MessageMediator" name="IotDash.Services.Messaging.MessageMediator">
-<area shape="rect" id="node1" title=" " alt="" coords="5,95,196,136"/>
+<area shape="rect" id="node1" title="This class is a specialisation of the AbstractMediator&lt;TChannelKey, TMsg&gt; which mediates objects over..." alt="" coords="5,95,196,136"/>
 <area shape="rect" id="node2" href="$classIotDash_1_1Domain_1_1Mediator_1_1AbstractMediator.html" title=" " alt="" coords="19,5,183,47"/>
 </map>

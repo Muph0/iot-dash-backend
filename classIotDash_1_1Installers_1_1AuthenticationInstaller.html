@@ -94,8 +94,8 @@ Inheritance diagram for IotDash.Installers.AuthenticationInstaller:</div>
 <div class="dyncontent">
 <div class="center"><img src="classIotDash_1_1Installers_1_1AuthenticationInstaller__inherit__graph.png" border="0" usemap="#aIotDash_8Installers_8AuthenticationInstaller_inherit__map" alt="Inheritance graph"/></div>
 <map name="aIotDash_8Installers_8AuthenticationInstaller_inherit__map" id="aIotDash_8Installers_8AuthenticationInstaller_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,80,215,121"/>
-<area shape="rect" href="interfaceIotDash_1_1Installers_1_1IInstaller.html" title=" " alt="" coords="74,5,146,32"/>
+<area shape="rect" title="Configures and registers the Microsoft.AspNetCore.Authentication.IAuthenticationService." alt="" coords="5,80,215,121"/>
+<area shape="rect" href="interfaceIotDash_1_1Installers_1_1IInstaller.html" title="Represents a contract for service installer. Assembly&#45;wide scan for implementations of this interface..." alt="" coords="74,5,146,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -103,8 +103,8 @@ Collaboration diagram for IotDash.Installers.AuthenticationInstaller:</div>
 <div class="dyncontent">
 <div class="center"><img src="classIotDash_1_1Installers_1_1AuthenticationInstaller__coll__graph.png" border="0" usemap="#aIotDash_8Installers_8AuthenticationInstaller_coll__map" alt="Collaboration graph"/></div>
 <map name="aIotDash_8Installers_8AuthenticationInstaller_coll__map" id="aIotDash_8Installers_8AuthenticationInstaller_coll__map">
-<area shape="rect" title=" " alt="" coords="5,80,215,121"/>
-<area shape="rect" href="interfaceIotDash_1_1Installers_1_1IInstaller.html" title=" " alt="" coords="74,5,146,32"/>
+<area shape="rect" title="Configures and registers the Microsoft.AspNetCore.Authentication.IAuthenticationService." alt="" coords="5,80,215,121"/>
+<area shape="rect" href="interfaceIotDash_1_1Installers_1_1IInstaller.html" title="Represents a contract for service installer. Assembly&#45;wide scan for implementations of this interface..." alt="" coords="74,5,146,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -112,11 +112,12 @@ Collaboration diagram for IotDash.Installers.AuthenticationInstaller:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a0acb663bc8ade5da4e4bf6fc60165885"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIotDash_1_1Installers_1_1AuthenticationInstaller.html#a0acb663bc8ade5da4e4bf6fc60165885">InstallServices</a> (IServiceCollection services, IConfiguration configuration)</td></tr>
 <tr class="separator:a0acb663bc8ade5da4e4bf6fc60165885"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15027d0e1030f3f15f97cb41c5e3a7f0"><td class="memItemLeft" align="right" valign="top"><a id="a15027d0e1030f3f15f97cb41c5e3a7f0" name="a15027d0e1030f3f15f97cb41c5e3a7f0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>InstallServices</b> (IServiceCollection services, IConfiguration configuration)</td></tr>
+<tr class="memitem:a15027d0e1030f3f15f97cb41c5e3a7f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceIotDash_1_1Installers_1_1IInstaller.html#a15027d0e1030f3f15f97cb41c5e3a7f0">InstallServices</a> (IServiceCollection services, IConfiguration configuration)</td></tr>
 <tr class="separator:a15027d0e1030f3f15f97cb41c5e3a7f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Configures and registers the Microsoft.AspNetCore.Authentication.IAuthenticationService. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a0acb663bc8ade5da4e4bf6fc60165885" name="a0acb663bc8ade5da4e4bf6fc60165885"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0acb663bc8ade5da4e4bf6fc60165885">&#9670;&nbsp;</a></span>InstallServices()</h2>
 
@@ -151,7 +152,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>InstallServices</b> (
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="interfaceIotDash_1_1Installers_1_1IInstaller.html">IotDash.Installers.IInstaller</a>.</p>
+<p>Configure and register services installed by this installer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">services</td><td>Container into which services are installed.</td></tr>
+    <tr><td class="paramname">configuration</td><td>Key/value application configuration from <code>appconfig.json</code>.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="interfaceIotDash_1_1Installers_1_1IInstaller.html#a15027d0e1030f3f15f97cb41c5e3a7f0">IotDash.Installers.IInstaller</a>.</p>
 
 </div>
 </div>
