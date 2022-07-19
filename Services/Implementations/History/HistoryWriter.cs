@@ -13,6 +13,18 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace IotDash.Services.History {
 
+    /// <summary>
+    /// <para>
+    /// Part of the history writing service <see cref="HostedHistoryService"/>. 
+    /// Takes the responsibility for storing <see cref="HistoryEntry"/>s of one
+    /// <see cref="IotInterface"/>.
+    /// </para>
+    /// 
+    /// <para>
+    /// Collection of these objects is being maintained by <see cref="HostedHistoryService"/>.
+    /// At all times there exists exactly one per each interface, which returns true from <see cref="IotInterface.NeedsWriter()"/>.
+    /// </para>
+    /// </summary>
     internal class HistoryWriter : IDisposable, IMqttSubscriber {
         private readonly SubscriptionGuard guard = new();
         private readonly IotInterface iface;
@@ -54,8 +66,12 @@ namespace IotDash.Services.History {
                 await historyStore.SaveChangesAsync();
             }
 
-            (await ifaceStore.GetByKeyAsync(iface.Id)).Value = val;
-            await ifaceStore.SaveChangesAsync();
+            var freshIface = await ifaceStore.GetByKeyAsync(iface.Id);
+            if (freshIface != null) {
+                // the interface might have beed deleted already
+                freshIface.Value = val;
+                await ifaceStore.SaveChangesAsync();
+            }
 
             await chartHub.Clients.All.SendAsync(ChartHub.MethodNewData, new Contracts.V1.Model.HistoryEntryUpdate(entry));
         }

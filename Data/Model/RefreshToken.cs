@@ -6,10 +6,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace IotDash.Data.Model {
     public class RefreshToken : ModelObject {
 
-        [Key]
         /// <summary>
         /// The actual data of the token.
         /// </summary>
+        [Key]
         public string Token { get; set; }
 
         /// <summary>

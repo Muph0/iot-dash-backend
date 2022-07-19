@@ -57,8 +57,8 @@ namespace IotDash.Services.ModelStore {
             return Task.FromResult(false);
         }
 
-        public async Task<IdentityUser?> GetByEmailAsync(string email) {
-            return await userManager.FindByEmailAsync(email);
+        public async Task<IdentityUser?> GetByNameAsync(string name) {
+            return await userManager.FindByNameAsync(name);
         }
 
         public Task<bool> CheckPasswordAsync(IdentityUser user, string password) {

@@ -21,10 +21,10 @@ namespace IotDash.Authorization.Requirements {
     /// <summary>
     /// Authorization requirement that checks succeeds if JWT subject is a valid user.
     /// </summary>
-    class JwtAuthorized : IAuthorizationRequirement {
+    public class JwtAuthorized : IAuthorizationRequirement {
 
         /// <summary>
-        /// Handler for <see cref="JwtAuthorized"/>
+        /// Handler for <see cref="Requirements.JwtAuthorized"/> requirement.
         /// </summary>
         public class Handler : AuthorizationHandler<JwtAuthorized> {
 

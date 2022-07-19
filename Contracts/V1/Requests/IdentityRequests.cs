@@ -3,15 +3,14 @@
 namespace IotDash.Contracts.V1 {
     public class UserRegistrationRequest {
         [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        public string Username { get; set; }
         [Required]
         public string Password { get; set; }
     }
 
     public class UserLoginRequest {
         [Required]
-        public string Email { get; set; }
+        public string Username { get; set; }
         [Required]
         public string Password { get; set; }
     }

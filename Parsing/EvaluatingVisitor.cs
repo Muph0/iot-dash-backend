@@ -55,7 +55,7 @@ namespace IotDash.Parsing {
             return x ? 1 : 0;
         }
         internal static bool dbool(double x) {
-            return Math.Abs(x) < 1e-7;
+            return Math.Abs(x) > 1e-7;
         }
 
         TValue IRecursiveVisitor<TValue>.Visit(BinaryOp op, TValue left, TValue right) {

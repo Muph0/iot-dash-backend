@@ -9,6 +9,7 @@ using IotDash.Installers;
 using IotDash.Settings;
 using IotDash.Controllers.V1;
 using IotDash.Utils;
+using System.IO;
 
 namespace IotDash {
     public class Startup {
@@ -32,7 +33,10 @@ namespace IotDash {
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
+
             if (env.IsDevelopment()) {
+                Console.WriteLine($"Hosting static files from \"{env.WebRootPath}\".");
+                Console.WriteLine("Development mode enabled.");
                 app.UseDeveloperExceptionPage();
 
                 SwaggerSettings swagg = SwaggerSettings.LoadFrom(Configuration);
@@ -54,6 +58,7 @@ namespace IotDash {
                 app.UseEndpoints(endpoints => {
                     endpoints.MapControllers();
                     endpoints.MapHub<ChartHub>();
+                    endpoints.MapFallbackToFile("/index.html");
                 });
             }
         }

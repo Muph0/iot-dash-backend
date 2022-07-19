@@ -12,7 +12,10 @@ using System.Threading.Tasks;
 namespace IotDash.Services.Mqtt.Implementation {
 
 
-
+    /// <summary>
+    /// A component of the <see cref="HostedMqttService"/>.
+    /// Specialisation of <see cref="MqttMediator"/> designed to work with the <see cref="MQTTnet.Client.MqttClient"/>.
+    /// </summary>
     internal sealed class MqttNet_Mediator : MqttMediator {
 
         private readonly SimpleMediator<string, MqttApplicationMessage> mediator = new();
@@ -38,6 +41,15 @@ namespace IotDash.Services.Mqtt.Implementation {
         public override IEnumerable<ITarget<string, MqttApplicationMessage>> GetChannelCopy(string key)
             => mediator.GetChannelCopy(key);
 
+        /// <summary>
+        /// Send or receive a message. 
+        /// If the sender is the associated <see cref="HostedMqttService"/>, then the message is broadcasted to in-application listeners.
+        /// Otherwise the sender is from inside the application, so the message is sent to the broker.
+        /// </summary>
+        /// <param name="msgChannel">The MQTT topic.</param>
+        /// <param name="sender">Sender of the message.</param>
+        /// <param name="msg">Message to send.</param>
+        /// <returns></returns>
         protected override async Task MqttSend(string msgChannel, object sender, MqttApplicationMessage msg) {
 
             if (sender == serviceRoot) {
@@ -65,14 +77,33 @@ namespace IotDash.Services.Mqtt.Implementation {
         protected override void SubscribeInternal(string topic, ITarget<string, MqttApplicationMessage> target) {
             throw new InvalidOperationException();
         }
+
+        /// <summary>
+        /// Subscribe <paramref name="target"/> to all messages on given MQTT <paramref name="topic"/> producing a <paramref name="subscription"/>.
+        /// </summary>
+        /// <param name="topic">The topic to subscribe to.</param>
+        /// <param name="target">The target of the events.</param>
+        /// <param name="subscription">Subscription object.</param>
         public override void Subscribe(string topic, ITarget<string, MqttApplicationMessage> target, out ISubscription subscription) {
             mediator.Subscribe(topic, target, out subscription);
             updateSubscriptionState(topic);
         }
+        /// <summary>
+        /// Subscribe <paramref name="target"/> to all messages on given MQTT <paramref name="topic"/>
+        /// registering the produced subscription under a given <paramref name="guard"/>.
+        /// </summary>
+        /// <param name="topic">The topic to subscribe to.</param>
+        /// <param name="target">The target of the events.</param>
+        /// <param name="guard">Subscription guard under which to register produced <see cref="ISubscription"/>.</param>
         public override void Subscribe(string topic, ITarget<string, MqttApplicationMessage> target, SubscriptionGuard guard) {
             mediator.Subscribe(topic, target, guard);
             updateSubscriptionState(topic);
         }
+
+        /// <summary>
+        /// Cancel the given <paramref name="subscription"/>.
+        /// </summary>
+        /// <param name="subscription">The subscription to cancel.</param>
         public override void Unsubscribe(ISubscription<string, MqttApplicationMessage> subscription) { 
             mediator.Unsubscribe(subscription);
             updateSubscriptionState(subscription.Channel);

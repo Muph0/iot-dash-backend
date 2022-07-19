@@ -39,14 +39,14 @@ namespace IotDash.Services {
     }
 
     public interface IIdentityService {
-        Task<AuthResponse> RegisterAsync(string email, string password);
-        Task<AuthResponse> LoginAsync(string email, string password);
+        Task<AuthResponse> RegisterAsync(string username, string password);
+        Task<AuthResponse> LoginAsync(string username, string password);
         Task<AuthResponse> RefreshTokenAsync(string token, string refreshToken);
         Task<int> CleanupRefreshTokens();
     }
 
     public interface IUserStore : IModelStore<IdentityUser, string> {
-        Task<IdentityUser?> GetByEmailAsync(string email);
+        Task<IdentityUser?> GetByNameAsync(string email);
         Task<IdentityResult> CreateAsync(IdentityUser newUser, string password);
         new Task<IdentityResult> CreateAsync(IdentityUser newUser);
         Task<IdentityResult> UpdateAsync(IdentityUser userToUpdate);

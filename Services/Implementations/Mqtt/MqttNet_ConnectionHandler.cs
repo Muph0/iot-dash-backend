@@ -11,12 +11,16 @@ using MQTTnet.Client.Options;
 using MQTTnet.Client.Receiving;
 using MQTTnet.Exceptions;
 using System;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace IotDash.Services.Mqtt.Implementation {
 
+    /// <summary>
+    /// <para>
+    /// A component of the <see cref="HostedMqttService"/>.
+    /// It is responsible for capturing events from the <see cref="IMqttClient"/> and passing them to other components of this service.
+    /// </para>
+    /// </summary>
     internal class MqttNet_ConnectionHandler : IMqttClientConnectedHandler, IMqttClientDisconnectedHandler, IMqttApplicationMessageReceivedHandler {
 
         private readonly ILogger<MqttNet_ConnectionHandler> logger;
@@ -35,7 +39,6 @@ namespace IotDash.Services.Mqtt.Implementation {
             this.clientOptions = provider.GetRequiredService<IMqttClientOptions>();
             this.lifetime = provider.GetRequiredService<IHostApplicationLifetime>();
             this.appSettings = provider.GetRequiredService<MqttSettings>();
-
         }
 
         async Task IMqttApplicationMessageReceivedHandler.HandleApplicationMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs eventArgs) {
@@ -90,7 +93,6 @@ namespace IotDash.Services.Mqtt.Implementation {
                         lifetime.StopApplication();
                     }
                 }
-
 
             } catch (Exception e) {
                 logger.LogCritical(e, $"Unhandled exception during MQTT disconnect event.");

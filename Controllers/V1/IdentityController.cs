@@ -33,7 +33,7 @@ namespace IotDash.Controllers.V1 {
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPost(ApiRoutes.Identity.Register)]
+        //[HttpPost(ApiRoutes.Identity.Register)]
         [Produces(MimeType.Application_JSON, Type = typeof(AuthResponse))]
         public async Task<IActionResult> Register([FromBody] UserRegistrationRequest request) {
 
@@ -41,7 +41,7 @@ namespace IotDash.Controllers.V1 {
                 return AuthResponse.BadRequest(ModelState.Values.SelectMany(v => v.Errors.Select(err => err.ErrorMessage)));
             }
 
-            var authResult = await identity.RegisterAsync(request.Email, request.Password);
+            var authResult = await identity.RegisterAsync(request.Username, request.Password);
             return authResult.AsOkOrBadRequest();
         }
 
@@ -55,7 +55,7 @@ namespace IotDash.Controllers.V1 {
         [ProducesResponseType(typeof(AuthResponse), 400)]
         public async Task<IActionResult> Login([FromBody] UserLoginRequest request) {
 
-            var authResult = await identity.LoginAsync(request.Email, request.Password);
+            var authResult = await identity.LoginAsync(request.Username, request.Password);
             return authResult.AsOkOrBadRequest();
         }
 

@@ -9,5 +9,4 @@ namespace IotDash.Settings {
         public string UiEndpoint { get; set; }
         public string Server { get; set; }
     }
-
 }

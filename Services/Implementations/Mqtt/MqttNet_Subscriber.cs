@@ -13,6 +13,11 @@ using System.Threading.Tasks;
 
 namespace IotDash.Services.Mqtt.Implementation {
 
+    /// <summary>
+    /// A component of the <see cref="HostedMqttService"/>.
+    /// This class is responsible for maintaining list of subscribed topics synchronised with the MQTT broker,
+    /// even in case of temporary disconnection.
+    /// </summary>
     internal class MqttNet_Subscriber : IMqttClientConnectedHandler {
 
         private readonly ILogger logger;
@@ -37,7 +42,17 @@ namespace IotDash.Services.Mqtt.Implementation {
             await Subscribe(lostTopics);
         }
 
-        public Task Subscribe(string topics) => Subscribe(new[] { topics });
+        /// <summary>
+        /// Add a topic to subscription list and potentially update with the broker.
+        /// </summary>
+        /// <param name="topic">The topic name.</param>
+        /// <returns>Task that completes when the communication with broker is done.</returns>
+        public Task Subscribe(string topic) => Subscribe(new[] { topic });
+        /// <summary>
+        /// Add topics to subscription list and potentially update with the broker.
+        /// </summary>
+        /// <param name="topics">List of the topic names.</param>
+        /// <returns>Task that completes when the communication with broker is done.</returns>
         public async Task Subscribe(IEnumerable<string> topics) {
             using (await sem.LockAsync()) {
 
@@ -61,7 +76,18 @@ namespace IotDash.Services.Mqtt.Implementation {
             }
         }
 
-        public Task Unsubscribe(string topics) => Unsubscribe(new[] { topics });
+        /// <summary>
+        /// Remove a topic from subscription list and potentially update with the broker.
+        /// </summary>
+        /// <param name="topic">The topic to remove.</param>
+        /// <returns>Task that completes when the communication with broker is done.</returns>
+        public Task Unsubscribe(string topic) => Unsubscribe(new[] { topic });
+
+        /// <summary>
+        /// Remove topics from subscription list and potentially update with the broker.
+        /// </summary>
+        /// <param name="topics">List of the topics to remove.</param>
+        /// <returns>Task that completes when the communication with broker is done.</returns>
         public async Task Unsubscribe(IEnumerable<string> topics) {
             using (await sem.LockAsync()) {
 

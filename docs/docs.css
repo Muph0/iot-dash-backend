@@ -42,9 +42,10 @@ p code {
 
 }
 
-.memname td.paramname em,
-.params td.paramname {
+.memname td.paramname em, .params td.paramname, .memdoc em.paramname {
     color: cadetblue;
+    font-weight: bold;
+    font-style:normal;
 }
 
 /**

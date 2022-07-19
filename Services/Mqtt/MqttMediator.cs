@@ -5,7 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace IotDash.Services.Mqtt {
+
+    /// <summary>
+    /// Specialisation of the <see cref="AbstractMediator{TChannelKey, TMsg}"/> where the channel 
+    /// key is of type <see cref="string"/> and the message type is <see cref="MqttApplicationMessage"/>.
+    /// </summary>
     abstract class MqttMediator : AbstractMediator<string, MqttApplicationMessage> {
+
+        /// <summary>
+        /// Check if there are any subscribers on given <paramref name="topic"/>.
+        /// </summary>
+        /// <param name="topic">The topic to check.</param>
+        /// <returns><c>true</c> if there are any subscribers.</returns>
         public abstract bool HasSubscribersOnTopic(string topic);
 
         private Dictionary<string, MqttApplicationMessage> retained = new();

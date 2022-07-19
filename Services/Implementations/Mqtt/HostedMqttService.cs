@@ -11,16 +11,47 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace IotDash.Services.Mqtt.Implementation {
+
+    /// <summary>
+    /// <para>
+    /// This class is the root of the MQTT service, responsible for initiation and shutdown of its components.
+    /// The whole service is an bridge between the <see cref="IMqttClient"/> and the event bus of the application.
+    /// <br />
+    /// The service consists of the following components:
+    /// </para>
+    /// <list type="bullet">
+    /// <item><see cref="MqttNet_ConnectionHandler"/></item>
+    /// <item><see cref="MqttNet_Mediator"/></item>
+    /// <item><see cref="MqttNet_Publisher"/></item>
+    /// <item><see cref="MqttNet_Subscriber"/></item>
+    /// </list>
+    /// </summary>
     internal sealed class HostedMqttService : IHostedService, IServiceScope {
 
         private IServiceScope? scope;
         private readonly IServiceScopeFactory factory;
         private readonly ILogger<HostedMqttService> logger;
 
-        public IMqttClient Client { get; }
-        public MqttNet_ConnectionHandler Handler { get; }
+        /// <summary>
+        /// Dependency injection service provider.
+        /// </summary>
         public IServiceProvider ServiceProvider => this.scope!.ServiceProvider;
+
+        /// <summary>
+        /// MQTT library-specific client.
+        /// </summary>
+        public IMqttClient Client { get; }
+        /// <summary>
+        /// Receives events from <see cref="Client"/> and sends them to other components of this service.
+        /// </summary>
+        public MqttNet_ConnectionHandler Handler { get; }
+        /// <summary>
+        /// Queues ready-to-send messages and passes them to <see cref="Client"/>.
+        /// </summary>
         public MqttNet_Publisher Publisher { get; }
+        /// <summary>
+        /// Makes sure
+        /// </summary>
         public MqttNet_Subscriber Subscriber { get; }
         public MqttNet_Mediator Mediator { get; }
         public TaskUnwrapper Unwrapper { get; }

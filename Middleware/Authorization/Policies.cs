@@ -7,11 +7,14 @@ namespace IotDash.Authorization {
 
     /// <summary>
     /// Contains static generator methods for different policies.
+    /// <para>
+    /// Pass a <see cref="AuthorizationPolicyBuilder"/> to any of the member methods to apply the relevant policy.
+    /// </para>
     /// </summary>
     public static class Policies {
 
         /// <summary>
-        /// Adds the <see cref="JwtAuthorized"/> requirement to given policy builder.
+        /// Adds the <see cref="Requirements.JwtAuthorized"/> requirement to given <paramref name="policy"/> builder.
         /// </summary>
         /// <param name="policy">Builder to add to.</param>
         public static void Authorized(AuthorizationPolicyBuilder policy) {
@@ -20,7 +23,7 @@ namespace IotDash.Authorization {
         }
 
         /// <summary>
-        /// Adds the <see cref="RouteInterfaceExists"/>
+        /// Adds the <see cref="Requirements.RouteInterfaceExists"/>
         /// requirement to given policy builder.
         /// </summary>
         /// <param name="policy">Builder to add to.</param>
@@ -30,7 +33,7 @@ namespace IotDash.Authorization {
 
 
         /// <summary>
-        /// Adds the <see cref="JwtAuthorized"/>, <see cref="RouteInterfaceExists"/>
+        /// Adds the <see cref="Requirements.JwtAuthorized"/>, <see cref="Requirements.RouteInterfaceExists"/>
         /// requirements to given policy builder.
         /// </summary>
         /// <param name="policy">Builder to add to.</param>
@@ -41,8 +44,9 @@ namespace IotDash.Authorization {
 
 
         /// <summary>
-        /// Adds the <see cref="JwtAuthorized"/>, <see cref="RouteInterfaceExists"/>
-        /// <see cref="UserOwnsInterface"/>
+        /// Adds the <see cref="Requirements.JwtAuthorized"/>, 
+        /// <see cref="Requirements.RouteInterfaceExists"/> and
+        /// <see cref="Requirements.UserOwnsInterface"/>
         /// requirements to given policy builder.
         /// </summary>
         /// <param name="policy">Builder to add to.</param>

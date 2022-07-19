@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IotDash.Services.Auth {
 
-    class AuthEvaluator : IAuthorizationEvaluator {
+    internal class AuthEvaluator : IAuthorizationEvaluator {
         public AuthorizationResult Evaluate(AuthorizationHandlerContext context) {
 
             if (context.HasSucceeded) {
@@ -23,5 +23,4 @@ namespace IotDash.Services.Auth {
 
         }
     }
-
 }

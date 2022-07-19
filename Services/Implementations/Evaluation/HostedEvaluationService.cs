@@ -17,6 +17,14 @@ using System.Threading.Tasks;
 
 namespace IotDash.Services.Evaluation {
 
+    /// <summary>
+    /// <para>
+    /// This hosted service is responsible for managing <see cref="InterfaceEvaluator"/>s.
+    /// As the database changes, it updates an internal collection of them.
+    /// At all times there is exactly one <see cref="InterfaceEvaluator"/> for each interface 
+    /// which returns true from <see cref="IotInterface.NeedsEvaluator()"/>.
+    /// </para>
+    /// </summary>
     internal sealed class HostedEvaluationService : AEntityManagerService<IotInterface, InterfaceEvaluator>, IHostedService, IServiceScope {
         private readonly MessageMediator mediator;
         private readonly MqttMediator mqtt;

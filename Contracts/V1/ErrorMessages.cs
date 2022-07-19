@@ -13,7 +13,7 @@ namespace IotDash.Contracts.V1 {
         public static string NoModificationsInRequest() => "At least one change must be specified.";
         public static string DeviceAlreadyDeleted() => "Device has already been deleted.";
         public static string BadUserPasswordCombo() => "User/password combination is wrong.";
-        public static string EmailTaken() => "User with this email already exists.";
+        public static string NameTaken() => "User with this username already exists.";
         #endregion
 
         #region Token_Related

@@ -13,6 +13,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace IotDash.Services.Domain {
+
+    /// <summary>
+    /// An abstract database entity manager.
+    /// It listens for changes of the database and keeps internal collection of <b>TManager</b> per <b>TEntity</b>.
+    /// </summary>
+    /// <typeparam name="TEntity">Type of the database entity.</typeparam>
+    /// <typeparam name="TManager">Type of the manager object.</typeparam>
     internal abstract class AEntityManagerService<TEntity, TManager> : IEntityManagementService<TEntity, TManager>
             where TEntity : class
             where TManager : IDisposable {
@@ -56,7 +63,7 @@ namespace IotDash.Services.Domain {
                     // re-instantiate each manager if needed
                     if (managerExists) {
                         message.Append(" discard");
-                        
+
                         if (BeforeManagerDown != null)
                             await BeforeManagerDown.Invoke(entry, managers.GetManager(entry));
 
@@ -65,9 +72,9 @@ namespace IotDash.Services.Domain {
                     if (managerExists && managerShouldExist) message.Append(",");
                     if (managerShouldExist) {
                         message.Append(" create");
-                        
+
                         var mgr = managers.Create(entry);
-                        
+
                         if (AfterManagerUp != null)
                             await AfterManagerUp.Invoke(entry, mgr);
                     }
@@ -80,17 +87,13 @@ namespace IotDash.Services.Domain {
         protected virtual void Dispose(bool disposing) {
             if (!disposedValue) {
                 if (disposing) {
-                    // TODO: dispose managed state (managed objects)
+                    managers.Dispose();
                 }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
                 disposedValue = true;
             }
         }
 
         public void Dispose() {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }

@@ -1,14 +1,9 @@
+using IotDash.Services.Auth;
 using IotDash.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Text;
 
 namespace IotDash.Installers {
@@ -45,6 +40,13 @@ namespace IotDash.Installers {
                 opt.TokenValidationParameters = validationParameters;
             });
 
+            // Add auth settings
+            var authSettings = Settings.AuthSettings.LoadFrom(configuration);
+            services.AddSingleton(authSettings);
+
+            // Add db preparation service
+            services.AddSingleton<HostedAuthPreparer>();
+            services.AddHostedService<HostedAuthPreparer>();
         }
     }
 

@@ -28,10 +28,14 @@ namespace IotDash.Data {
             this.mediator = provider.GetRequiredService<MessageMediator>();
             this.logger = provider.GetRequiredService<ILogger<DataContext>>();
 
+            
+
             if (staticInit) {
                 staticInit = false;
                 logger.LogInformation("Initialising database.");
             }
+
+            Database.Migrate();
         }
 
         public DbSet<IotInterface> Interfaces { get; set; }

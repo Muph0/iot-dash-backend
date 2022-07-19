@@ -23,25 +23,29 @@ using Z.EntityFramework.Plus;
 
 namespace IotDash.Services.Implementations____ {
     internal class IdentityService : IIdentityService {
-        //
+
         private readonly IUserStore users;
         internal readonly JwtSettings jwtSettings;
         private readonly TokenValidationParameters tokenValidationParameters;
         private readonly DataContext db;
 
+        /// <summary>
+        /// Instantiated by DI.
+        /// </summary>
         public IdentityService(IUserStore users,
                                 JwtSettings jwtSettings,
                                 TokenValidationParameters tokenValidationParameters,
-                                DataContext dataContext) {
+                                DataContext dataContext
+            ) {
             this.users = users;
             this.jwtSettings = jwtSettings;
             this.tokenValidationParameters = tokenValidationParameters;
             this.db = dataContext;
         }
 
-        public async Task<AuthResponse> LoginAsync(string email, string password) {
+        public async Task<AuthResponse> LoginAsync(string username, string password) {
 
-            var user = await users.GetByEmailAsync(email);
+            var user = await users.GetByNameAsync(username);
 
             var failBadPassword = AuthResponse.Fail(Error.BadUserPasswordCombo());
 
@@ -66,9 +70,9 @@ namespace IotDash.Services.Implementations____ {
             var expiryDateUtc = validatedToken.GetExpiryDate();
 
             // JWT must be expired
-            //if (expiryDateUtc > DateTime.UtcNow) {
-            //    return AuthResponse.Fail(Error.JwtIsNotExpired((DateTime)expiryDateUtc));
-            //}
+            if (expiryDateUtc > DateTime.UtcNow) {
+                return AuthResponse.Fail(Error.JwtIsNotExpired((DateTime)expiryDateUtc));
+            }
 
             var jti = validatedToken.GetClaim(JwtRegisteredClaimNames.Jti);
             var storedRefreshToken = await db.RefreshTokens.SingleOrDefaultAsync(t => t.Token == refreshToken);
@@ -102,22 +106,21 @@ namespace IotDash.Services.Implementations____ {
             return await GenerateTokenPairForUserAsync(user);
         }
 
-        public async Task<AuthResponse> RegisterAsync(string email, string password) {
+        public async Task<AuthResponse> RegisterAsync(string name, string password) {
 
-            var existingUser = await users.GetByEmailAsync(email);
+            var existingUser = await users.GetByNameAsync(name);
 
             if (existingUser != null) {
-                return AuthResponse.Fail(Error.EmailTaken());
+                return AuthResponse.Fail(Error.NameTaken());
             }
 
             var newUser = new IdentityUser {
-                Email = email,
-                UserName = email,
+                UserName = name,
             };
 
             var createUser = await users.CreateAsync(newUser, password);
             if (!createUser.Succeeded) {
-                return AuthResponse.Fail(createUser.Errors.Select(err => $"{err.Description}"));
+                return AuthResponse.Fail(createUser.Errors.Select(err => err.Description));
             }
 
             return await GenerateTokenPairForUserAsync(newUser);
@@ -148,9 +151,9 @@ namespace IotDash.Services.Implementations____ {
             var key = Encoding.ASCII.GetBytes(jwtSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor {
                 Subject = new ClaimsIdentity(new[] {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                    new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                    new Claim(JwtRegisteredClaimNames.Email, user.UserName),
                     new Claim(JwtCustomClaimNames.Id, user.Id)
                 }),
                 Expires = DateTime.UtcNow.Add(jwtSettings.TokenLifetime),
@@ -177,8 +180,8 @@ namespace IotDash.Services.Implementations____ {
             return await db.Users.AsNoTracking().SingleOrDefaultAsync(u => u.Id == userId.ToString());
         }
 
-        public async Task<IdentityUser?> GetUserByEmailAsync(string email) {
-            return await db.Users.AsNoTracking().SingleOrDefaultAsync(u => u.Email == email);
+        public async Task<IdentityUser?> GetUserByNameAsync(string name) {
+            return await db.Users.AsNoTracking().SingleOrDefaultAsync(u => u.UserName == name);
         }
 
         

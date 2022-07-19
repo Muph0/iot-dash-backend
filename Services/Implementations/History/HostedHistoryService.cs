@@ -18,6 +18,14 @@ using System.Threading.Tasks;
 
 namespace IotDash.Services.History {
 
+    /// <summary>
+    /// <para>
+    /// This hosted service is responsible for managing <see cref="HistoryWriter"/>s.
+    /// As the database changes, it updates an internal collection of them.
+    /// At all times there is exactly one <see cref="HistoryWriter"/> for each interface 
+    /// which returns true from <see cref="IotInterface.NeedsWriter()"/>.
+    /// </para>
+    /// </summary>
     internal sealed class HostedHistoryService : AEntityManagerService<IotInterface, HistoryWriter>, IHostedService, IServiceScope {
 
         private readonly MessageMediator mediator;

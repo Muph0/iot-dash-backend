@@ -9,6 +9,12 @@ using IotDash.Utils.Nullables;
 
 namespace IotDash.Settings {
 
+    /// <summary>
+    /// Base class for keys of <c>appsetings.json</c>.
+    /// In this project, settings objects (in namespace <see cref="IotDash.Settings"/>) are 
+    /// automatically created and populated during application startup.
+    /// </summary>
+    /// <typeparam name="TInherited"></typeparam>
     public abstract class Settings<TInherited> where TInherited : Settings<TInherited>, new() {
 
         public static TInherited LoadFrom(IConfiguration configuration, string? path = null) {

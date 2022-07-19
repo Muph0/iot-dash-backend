@@ -10,20 +10,23 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-
 namespace IotDash.Services.Mqtt.Implementation {
+
+    /// <summary>
+    /// A component of the <see cref="HostedMqttService"/>.
+    /// Responsible for queueing ready-to-send messages and pushing them to the MQTT client.
+    /// </summary>
     internal class MqttNet_Publisher : IMqttClientConnectedHandler {
         private readonly ILogger logger;
         private readonly IMqttClient client;
         Queue<MqttApplicationMessage> messagesToSendQueue = new();
 
         public MqttNet_Publisher(HostedMqttService serviceRoot, IServiceProvider provider) {
-            logger = provider.GetRequiredService<ILogger<MqttNet_Publisher>>();
-            
+            logger = provider.GetRequiredService<ILogger<MqttNet_Publisher>>();            
             client = serviceRoot.Client;
         }
 
-        public async Task HandleConnectedAsync(MqttClientConnectedEventArgs eventArgs) {
+        async Task IMqttClientConnectedHandler.HandleConnectedAsync(MqttClientConnectedEventArgs eventArgs) {
             while (messagesToSendQueue.Count != 0) {
                 await SendAsync(messagesToSendQueue.Dequeue());
             }

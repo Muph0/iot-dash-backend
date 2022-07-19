@@ -21,8 +21,8 @@ namespace IotDash.Installers {
                 .UseMySql(connection, ServerVersion.AutoDetect(connection));
             }, ServiceLifetime.Scoped);
 
-            services.AddDefaultIdentity<IdentityUser>()
-                .AddEntityFrameworkStores<DataContext>();
+            services.AddDefaultIdentity<IdentityUser>(options => {
+            }).AddEntityFrameworkStores<DataContext>();
 
             // Add model services
             services.AddScoped<IInterfaceStore, InterfaceEntityStore>();
@@ -30,7 +30,7 @@ namespace IotDash.Installers {
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IHistoryStore, HistoryEntryStore>();
 
-            // TODO: Add settings
+            // TODO: Add settings for history management
             //var historySettings = Settings.HistorySettings.LoadFrom(configuration);
             //services.AddSingleton(historySettings);
         }
