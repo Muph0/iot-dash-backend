@@ -93,6 +93,8 @@ These scoped services are registered in DI service container by IotDash.Installe
 
 All these stores depend on IotDash.Data.DataContext which is also registered in by same installer. It is a scoped service, which means it is created once per HTTP request.
 
+### Expression evaluation
+### History logging
 ### MQTT Client
 
 The MQTT client is realised via the MQTTnet library. It provides the following service
@@ -100,3 +102,5 @@ The MQTT client is realised via the MQTTnet library. It provides the following s
 
 The service is composed of classes in the IotDash.Services.Mqtt.Implementation namespace.
 
+### Messaging
+### Logging
