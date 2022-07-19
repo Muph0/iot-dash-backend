@@ -34,7 +34,7 @@ jobs:
         doxyfile-path: 'doxygen.conf'
 
     - name: OpenAPI Generator Action
-      uses: kpurdon/openapi-generator-action@[version]
+      uses: kpurdon/openapi-generator-action@v0.0.3
       with:
         args: "generate -i swagger.yaml -g html -o docs/rest --additional-properties=infoEmail=kytka.honza@gmail.com,infoUrl=https://muph0.github.io/iot-dash-backend/,licenseInfo=,licenseUrl="
         
