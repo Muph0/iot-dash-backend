@@ -26,7 +26,7 @@ namespace IotDash.Installers {
                 RequireExpirationTime = true,
                 ValidateLifetime = true,
                 ValidAlgorithms = new[] { jwtSettings.Algorithm },
-                ClockSkew = jwtSettings.ClockSkew,
+                ClockSkew = new System.TimeSpan(0, 0, 30),
             };
 
             // Register validation parameters as service

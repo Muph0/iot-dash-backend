@@ -10,7 +10,6 @@ namespace IotDash.Settings {
         public string Secret { get; set; }
         public TimeSpan TokenLifetime { get; set; }
         public TimeSpan RefreshTokenLifetime { get; set; }
-        public TimeSpan ClockSkew { get; set; }
         public string Algorithm { get; set; }
     }
 
