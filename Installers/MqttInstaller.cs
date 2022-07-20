@@ -8,6 +8,7 @@ using IotDash.Services.Messaging.Implementation;
 using IotDash.Services.Mqtt;
 using IotDash.Services.Mqtt.Implementation;
 using IotDash.Domain.Mediator;
+using System;
 
 namespace IotDash.Installers {
 
@@ -23,7 +24,7 @@ namespace IotDash.Installers {
             services.AddSingleton(provider => {
                 var options = new MqttClientOptionsBuilder();
 
-                options.WithClientId(settings.Client.Id);
+                options.WithClientId(new Guid().ToString());
                 options.WithTcpServer(settings.Broker.Host, settings.Broker.Port);
 
                 if (settings.Credentials != null) {
