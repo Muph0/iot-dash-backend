@@ -9,5 +9,6 @@ var searchData=
   ['getinterfaces_6',['GetInterfaces',['../classIotDash_1_1Controllers_1_1V1_1_1InterfaceController.html#a9b04e81f3a3597688abf61abc6fcac03',1,'IotDash::Controllers::V1::InterfaceController']]],
   ['getpagedhistoryasync_7',['GetPagedHistoryAsync',['../interfaceIotDash_1_1Services_1_1IHistoryStore.html#aab7d57fd17243eb41567f81e136eef01',1,'IotDash.Services.IHistoryStore.GetPagedHistoryAsync()'],['../classIotDash_1_1Services_1_1ModelStore_1_1HistoryEntryStore.html#a0544d401865f1367f451879e5546950b',1,'IotDash.Services.ModelStore.HistoryEntryStore.GetPagedHistoryAsync()']]],
   ['getretained_8',['GetRetained',['../classIotDash_1_1Services_1_1Mqtt_1_1MqttMediator.html#a886e28f28fdf3f8ebd75d5dd3afc53e9',1,'IotDash::Services::Mqtt::MqttMediator']]],
-  ['getuser_9',['GetUser',['../classIotDash_1_1Controllers_1_1V1_1_1IdentityController.html#aef89ec6f953eb4857da4290854342fdb',1,'IotDash::Controllers::V1::IdentityController']]]
+  ['getuser_9',['GetUser',['../classIotDash_1_1Controllers_1_1V1_1_1IdentityController.html#aef89ec6f953eb4857da4290854342fdb',1,'IotDash::Controllers::V1::IdentityController']]],
+  ['getvalue_10',['GetValue',['../interfaceIotDash_1_1Parsing_1_1IInterfaceEvaluationContext.html#a7e0fd079a06fcf09f8fe9938b61f1b23',1,'IotDash::Parsing::IInterfaceEvaluationContext']]]
 ];

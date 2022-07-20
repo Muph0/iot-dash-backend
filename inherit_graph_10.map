@@ -1,6 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="node1" title=" " alt="" coords="5,143,88,170"/>
-<area shape="rect" id="node2" href="$interfaceIotDash_1_1Parsing_1_1Expressions_1_1IExpr.html" title=" " alt="" coords="136,136,327,177"/>
+<area shape="rect" id="node2" href="$interfaceIotDash_1_1Parsing_1_1Expressions_1_1IExpr.html" title="A contract for all expression tree nodes." alt="" coords="136,136,327,177"/>
 <area shape="rect" id="node3" href="$classIotDash_1_1Parsing_1_1Expressions_1_1BinaryOp.html" title=" " alt="" coords="375,5,565,47"/>
 <area shape="rect" id="node4" href="$classIotDash_1_1Parsing_1_1Expressions_1_1FunctionCall.html" title=" " alt="" coords="375,71,565,112"/>
 <area shape="rect" id="node5" href="$classIotDash_1_1Parsing_1_1Expressions_1_1Literal.html" title=" " alt="" coords="375,136,565,177"/>

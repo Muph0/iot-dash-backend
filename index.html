@@ -83,20 +83,24 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md1">Application context</a></li>
-<li class="level1"><a href="#autotoc_md2">Conceptual model</a></li>
-<li class="level1"><a href="#autotoc_md3">Architecture</a><ul><li class="level2"><a href="#autotoc_md4">Web server pipeline</a><ul><li class="level3"><a href="#autotoc_md5">Authorization and Authentication</a></li>
-<li class="level3"><a href="#autotoc_md6">Controllers and Hubs</a></li>
+<ul><li class="level1"><a href="#autotoc_md1">Get source code &amp; build</a></li>
+<li class="level1"><a href="#autotoc_md2">Application context</a></li>
+<li class="level1"><a href="#autotoc_md3">Conceptual model</a></li>
+<li class="level1"><a href="#autotoc_md4">Architecture</a><ul><li class="level2"><a href="#autotoc_md5">Web server pipeline</a><ul><li class="level3"><a href="#autotoc_md6">Authorization and Authentication</a></li>
+<li class="level3"><a href="#autotoc_md7">Controllers and Hubs</a></li>
 </ul>
 </li>
-<li class="level2"><a href="#autotoc_md7">Services</a><ul><li class="level3"><a href="#autotoc_md8">Model stores</a></li>
-<li class="level3"><a href="#autotoc_md9">Expression evaluation</a></li>
-<li class="level3"><a href="#autotoc_md10">History logging</a></li>
-<li class="level3"><a href="#autotoc_md11">MQTT Client</a></li>
-<li class="level3"><a href="#autotoc_md12">Messaging</a></li>
-<li class="level3"><a href="#autotoc_md13">Logging</a></li>
 </ul>
 </li>
+<li class="level1"><a href="#autotoc_md8">Services</a><ul><li class="level2"><a href="#autotoc_md9">Database context</a></li>
+<li class="level2"><a href="#autotoc_md10">Model stores</a></li>
+<li class="level2"><a href="#autotoc_md11">Entity managers</a><ul><li class="level3"><a href="#autotoc_md12">Expression evaluation</a></li>
+<li class="level3"><a href="#autotoc_md13">History logging</a></li>
+</ul>
+</li>
+<li class="level2"><a href="#autotoc_md14">MQTT Client</a></li>
+<li class="level2"><a href="#autotoc_md15">Messaging</a></li>
+<li class="level2"><a href="#autotoc_md16">Logging</a></li>
 </ul>
 </li>
 </ul>
@@ -107,9 +111,13 @@ $(function() {
 <li><a href="rest.html">REST API and scheme documentation</a></li>
 </ul>
 <h1><a class="anchor" id="autotoc_md1"></a>
+Get source code &amp; build</h1>
+<p >For building, you need the <a href="https://dotnet.microsoft.com/en-us/download/dotnet/6.0">.NET 6 SDK</a> along with the dotnet CLI. After you pull the sources from <a href="https://github.com/Muph0/iot-dash-backend">the repository</a>, get all dependencies of the project by running</p>
+<div class="fragment"><div class="line">dotnet restore</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md2"></a>
 Application context</h1>
 <p >The backend is a middle man between the web application and the devices. It is responsible for managing devices and presenting data for users of front end application. See in the following component illustration.</p>
-<div class="fragment"><div class="line">                                                     devices</div>
+<div class="fragment"><div class="line">                                                devices</div>
 <div class="line">┌───────────────┐       ┌─────────────────┐          ┌─────┐</div>
 <div class="line">│ iot-dash-app  │       │                 │◄────┬────┤     │</div>
 <div class="line">└──────┬────────┘       │   MQTT Broker   │     │    ├─────┤</div>
@@ -126,17 +134,16 @@ Application context</h1>
 <div class="line">┌────────────────────┴────────────────────┐          │     │</div>
 <div class="line">│              MySQL database             │          │     │</div>
 <div class="line">└─────────────────────────────────────────┘          └─────┘</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md2"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md3"></a>
 Conceptual model</h1>
-<p >The conceptual model of the application is illustrated in the following UML diagram. Classes with relevant documentation are in the <a class="el" href="namespaceIotDash_1_1Data_1_1Model.html">IotDash.Data.Model</a> namespace. Application uses Entity Framework Core to generate SQL schema from C# classes.</p>
+<p >The following objects are the data entities of the application. All functionality is constructed around them. Classes with relevant documentation are in the <a class="el" href="namespaceIotDash_1_1Data_1_1Model.html">IotDash.Data.Model</a> namespace. Application uses Entity Framework Core to generate SQL schema from C# classes.</p>
 <p ><img src="model.png" alt="Conceptual model" class="inline"/></p>
-<h1><a class="anchor" id="autotoc_md3"></a>
+<h1><a class="anchor" id="autotoc_md4"></a>
 Architecture</h1>
 <p >Service-oriented architecture of the backend uses dependency injection provided by the ASP.NET Core library. The functionality is separated into coherent groups called <em>services</em> which exchange information through a mediator pattern (<a class="el" href="classIotDash_1_1Services_1_1Messaging_1_1MessageMediator.html" title="This class is a specialisation of the AbstractMediator&lt;TChannelKey, TMsg&gt; which mediates objects over...">IotDash.Services.Messaging.MessageMediator</a> class).</p>
-<p >Services are registered by scanning the assembly for implementations of the <a class="el" href="interfaceIotDash_1_1Installers_1_1IInstaller.html" title="Represents a contract for service installer. Assembly-wide scan for implementations of this interface...">IotDash.Installers.IInstaller</a> interface, which are located in the <a class="el" href="namespaceIotDash_1_1Installers.html">IotDash.Installers</a> namespace. Then the installers are instantiated and their <code>Install()</code> methods are called.</p>
-<p ><img src="inherit_graph_47.png" alt="IInstallers" class="inline"/></p>
+<p >During startup, services are registered by scanning the assembly for implementations of the <a class="el" href="interfaceIotDash_1_1Installers_1_1IInstaller.html" title="Represents a contract for service installer. Assembly-wide scan for implementations of this interface...">IotDash.Installers.IInstaller</a> interface, which are located in the <a class="el" href="namespaceIotDash_1_1Installers.html">IotDash.Installers</a> namespace. Then the installers are instantiated and their <code>Install()</code> methods are called.</p>
 <p >The dependency container registers services by Type, but not directly by the service type. The services are registered by an interface or an abstract type to allow easy swap of implementation of different services.</p>
-<h2><a class="anchor" id="autotoc_md4"></a>
+<h2><a class="anchor" id="autotoc_md5"></a>
 Web server pipeline</h2>
 <p >The web server uses the middleware pattern to realize the server pipeline. Each request is passed through the pipeline call stack. The pipeline is configured in the <a class="el" href="classIotDash_1_1Startup.html" title="This class is responsible for configuring all service and installing them into the container....">IotDash.Startup</a> class.</p>
 <p ><img src="pipeline.svg" alt="Web server pipeline" style="pointer-events: none;" class="inline"/></p>
@@ -149,11 +156,11 @@ Web server pipeline</h2>
 <li>Different endpoints are registered by providing appropriate implementation of Microsoft.AspNetCore.Routing.IEndpointRouteBuilder to the Microsoft.AspNetCore.Routing.EndpointMiddleware on top of the pipeline.</li>
 </ul>
 <p >Static files hosted by this backend application are the files of the frontend application.</p>
-<h3><a class="anchor" id="autotoc_md5"></a>
+<h3><a class="anchor" id="autotoc_md6"></a>
 Authorization and Authentication</h3>
 <p >Authentication is realised via standard ASP.NET authenticator service with the JWT extension. The ASP.NET authenticators are configured and registered in the AuthenticationInstaller.</p>
 <p >Authorization is realised via <a class="el" href="classIotDash_1_1Authorization_1_1Policies.html" title="Contains static generator methods for different policies.">IotDash.Authorization.Policies</a> registering different <a class="el" href="namespaceIotDash_1_1Authorization_1_1Requirements.html">IotDash.Authorization.Requirements</a> onto various controller routes. The requirements are realised by their relevant AuthorizationHandlers.</p>
-<h3><a class="anchor" id="autotoc_md6"></a>
+<h3><a class="anchor" id="autotoc_md7"></a>
 Controllers and Hubs</h3>
 <p >Controllers provide endpoints for HTTP routes. They are registered automatically on the <a class="el" href="classIotDash_1_1Startup.html#ad3b4c11fdc5028d24e1fbb707fe76b56" title="This method gets called by the runtime. HTTP request pipeline is configured in this method.">IotDash.Startup.Configure</a>.</p><ul>
 <li><a class="el" href="classIotDash_1_1Controllers_1_1V1_1_1IdentityController.html" title="The IotDash.Controllers.V1.IdentityController provides route endpoints for user account management.">IotDash.Controllers.V1.IdentityController</a></li>
@@ -162,33 +169,58 @@ Controllers and Hubs</h3>
 <p >Hubs provide endpoints for SignalR clients, which enable two-way real-time communication with the clients. In this application, this functionality is only used for providing real-time MQTT data to the clients.</p><ul>
 <li><a class="el" href="classIotDash_1_1Controllers_1_1V1_1_1EventHub.html">IotDash.Controllers.V1.EventHub</a></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md7"></a>
-Services</h2>
-<p >The most of the application's functionality is wrapped in services (see <a class="el" href="index.html#autotoc_md3">Architecture</a>). This section contains their complete list.</p>
-<h3><a class="anchor" id="autotoc_md8"></a>
-Model stores</h3>
-<p >Model store classes provide abstraction over the database. Other services instead of directly accessing the database depend on these <a class="el" href="interfaceIotDash_1_1Services_1_1IModelStore.html" title="Represents a contract for a store object which provides CRUD operations on TEntity  indexed by TKey .">IotDash.Services.IModelStore</a> objects, which provide basic CRUD functionality over the database, plus some additional features like change detection.</p>
-<p >These scoped services are registered in DI service container by <a class="el" href="classIotDash_1_1Installers_1_1DataInstaller.html">IotDash.Installers.DataInstaller</a>. The following interfaces represent the API of these services. Open them and check their inheritance diagrams to find the relevant implementations.</p><ul>
+<p >For exact route and scheme documentation, check out the <a href="rest.html">generated REST API reference</a>.</p>
+<p >If you make any changes to the routes, get the up-to-date OpenAPI specification via Swagger. Run the application locally in <em>Debug</em> mode and get the the specification from the app by fetching the <code>GET /swagger/v1/swagger.yaml</code> route either by your browser or from command line.</p>
+<h1><a class="anchor" id="autotoc_md8"></a>
+Services</h1>
+<p >The most of the application's functionality is wrapped up in services (see <a class="el" href="index.html#autotoc_md3">Architecture</a>). This section contains their complete list.</p>
+<h2><a class="anchor" id="autotoc_md9"></a>
+Database context</h2>
+<p >The database context is the API of Entity Framework Core which is the ORM library this app is using.</p>
+<p >It is implemented by the <a class="el" href="classIotDash_1_1Data_1_1DataContext.html" title="Represents a connection to database">IotDash.Data.DataContext</a> class, which provides all database functionality. It is registered by the <a class="el" href="classIotDash_1_1Installers_1_1DataInstaller.html">IotDash.Installers.DataInstaller</a>. It is a scoped service, which means it is created once per HTTP request.</p>
+<h2><a class="anchor" id="autotoc_md10"></a>
+Model stores</h2>
+<p >Model store classes provide abstraction over the database context. Ïnstead of directly accessing the database, other services depend on these <a class="el" href="interfaceIotDash_1_1Services_1_1IModelStore.html" title="Represents a contract for a store object which provides CRUD operations on TEntity  indexed by TKey .">IotDash.Services.IModelStore</a> objects. They provide basic CRUD functionality over the database, plus some additional features like change detection, user authentication etc.</p>
+<p >These scoped services are registered in DI service container by the <a class="el" href="classIotDash_1_1Installers_1_1DataInstaller.html">IotDash.Installers.DataInstaller</a>. The following interfaces represent the API of these services. Open them and check their inheritance diagrams to find the relevant implementations.</p><ul>
 <li><a class="el" href="interfaceIotDash_1_1Services_1_1IInterfaceStore.html" title="This service provides CRUD operations on interfaces.">IotDash.Services.IInterfaceStore</a></li>
 <li><a class="el" href="interfaceIotDash_1_1Services_1_1IUserStore.html" title="This service provides CRUD operations on IdentityUser indexed by their ids.">IotDash.Services.IUserStore</a></li>
 <li><a class="el" href="interfaceIotDash_1_1Services_1_1IIdentityService.html" title="This service provides basic user account functionality.">IotDash.Services.IIdentityService</a></li>
 <li><a class="el" href="interfaceIotDash_1_1Services_1_1IHistoryStore.html" title="This service provides database operations on HistoryEntrys.">IotDash.Services.IHistoryStore</a></li>
 </ul>
-<p >All these stores depend on <a class="el" href="classIotDash_1_1Data_1_1DataContext.html" title="Represents a connection to database">IotDash.Data.DataContext</a> which is also registered in by same installer. It is a scoped service, which means it is created once per HTTP request.</p>
-<h3><a class="anchor" id="autotoc_md9"></a>
+<p >All these stores depend on <a class="el" href="classIotDash_1_1Data_1_1DataContext.html" title="Represents a connection to database">IotDash.Data.DataContext</a>.</p>
+<h2><a class="anchor" id="autotoc_md11"></a>
+Entity managers</h2>
+<p >A servise extending IotDash.Services.IEntityManagementService interface is an entity manager. Such services are hosted and their responsibility is to monitor the database and keep one-to-one mapping between one type of entity and their TManager, which is a disposable service which performs some actions related to its entity.</p>
+<p >All implementations of IotDash.Services.IEntityManagementService are installed by the <a class="el" href="classIotDash_1_1Installers_1_1MiscServiceInstaller.html">IotDash.Installers.MiscServiceInstaller</a>.</p>
+<p >Such managers are:</p><ul>
+<li><a class="el" href="classIotDash_1_1Services_1_1Evaluation_1_1HostedEvaluationService.html">IotDash.Services.Evaluation.HostedEvaluationService</a></li>
+<li><a class="el" href="classIotDash_1_1Services_1_1History_1_1HostedHistoryService.html">IotDash.Services.History.HostedHistoryService</a></li>
+</ul>
+<p >They services connected to them are described in the following two sections.</p>
+<h3><a class="anchor" id="autotoc_md12"></a>
 Expression evaluation</h3>
-<h3><a class="anchor" id="autotoc_md10"></a>
+<p >The core of expression evaluation service is the <a class="el" href="classIotDash_1_1Services_1_1Evaluation_1_1HostedEvaluationService.html">IotDash.Services.Evaluation.HostedEvaluationService</a>. This hosted service is installed by <a class="el" href="classIotDash_1_1Installers_1_1MiscServiceInstaller.html">IotDash.Installers.MiscServiceInstaller</a> (see <a class="el" href="index.html#autotoc_md10">Entity managers</a>).</p>
+<p >Classes of this service are in the <a class="el" href="namespaceIotDash_1_1Services_1_1Evaluation.html">IotDash.Services.Evaluation</a> namespace. For more information, read their class reference documentation.</p>
+<p >The expression parsing grammar and the evaluator are defined in the <a class="el" href="namespaceIotDash_1_1Parsing.html">IotDash.Parsing</a> namespace. The <a class="el" href="namespaceIotDash_1_1Parsing_1_1Expressions.html">IotDash.Parsing.Expressions</a> namespace contains the individual expression objects. The parser and evaluators are implemented using a visitor pattern over the <a class="el" href="interfaceIotDash_1_1Parsing_1_1Expressions_1_1IExpr.html" title="A contract for all expression tree nodes.">IotDash.Parsing.Expressions.IExpr</a> interface. The <a class="el" href="namespaceIotDash_1_1Parsing_1_1Expressions.html">IotDash.Parsing.Expressions</a> namespace contains various nodes of the syntax tree.</p>
+<h3><a class="anchor" id="autotoc_md13"></a>
 History logging</h3>
-<h3><a class="anchor" id="autotoc_md11"></a>
-MQTT Client</h3>
+<p >History logging service is implemented by <a class="el" href="classIotDash_1_1Services_1_1History_1_1HostedHistoryService.html">IotDash.Services.History.HostedHistoryService</a>. This hosted service is installed by <a class="el" href="classIotDash_1_1Installers_1_1MiscServiceInstaller.html">IotDash.Installers.MiscServiceInstaller</a> (see <a class="el" href="index.html#autotoc_md10">Entity managers</a>).</p>
+<p >Classes of this service are in the <a class="el" href="namespaceIotDash_1_1Services_1_1History.html">IotDash.Services.History</a> namespace. For more information, read their class reference documentation.</p>
+<h2><a class="anchor" id="autotoc_md14"></a>
+MQTT Client</h2>
+<p >The MQTT Client allows the app to connect to a MQTT Broker and to delegate MQTT messages between its components.</p>
 <p >The MQTT client is realised via the MQTTnet library. It provides the following service</p><ul>
 <li><a class="el" href="classIotDash_1_1Services_1_1Mqtt_1_1MqttMediator.html" title="Specialisation of the AbstractMediator&lt;TChannelKey, TMsg&gt; where the channel key is of type string and...">IotDash.Services.Mqtt.MqttMediator</a> implemented by <a class="el" href="classIotDash_1_1Services_1_1Mqtt_1_1Implementation_1_1MqttNet__Mediator.html" title="A component of the HostedMqttService. Specialisation of MqttMediator designed to work with the MQTTne...">IotDash.Services.Mqtt.Implementation.MqttNet_Mediator</a></li>
 </ul>
-<p >The service is composed of classes in the <a class="el" href="namespaceIotDash_1_1Services_1_1Mqtt_1_1Implementation.html">IotDash.Services.Mqtt.Implementation</a> namespace.</p>
-<h3><a class="anchor" id="autotoc_md12"></a>
-Messaging</h3>
-<h3><a class="anchor" id="autotoc_md13"></a>
-Logging</h3>
+<p >Classes of this service are the <a class="el" href="namespaceIotDash_1_1Services_1_1Mqtt_1_1Implementation.html">IotDash.Services.Mqtt.Implementation</a> namespace.</p>
+<h2><a class="anchor" id="autotoc_md15"></a>
+Messaging</h2>
+<p >Messaging is the communication between application services.</p>
+<p >Messaging is realised by the mediator pattern on two levels. There is the <a class="el" href="classIotDash_1_1Services_1_1Messaging_1_1MessageMediator.html" title="This class is a specialisation of the AbstractMediator&lt;TChannelKey, TMsg&gt; which mediates objects over...">IotDash.Services.Messaging.MessageMediator</a> which provides application-level messages. For MQTT there is a separate mediator service provided by the <a class="el" href="index.html#autotoc_md13">MQTT Client</a>.</p>
+<h2><a class="anchor" id="autotoc_md16"></a>
+Logging</h2>
+<p >Logging is writing information about the ongoing processes into the terminal.</p>
+<p >Logging is provided via the ASP.NET Core application Host through the Microsoft.Extension.Logging interfaces. The logger provider <a class="el" href="classIotDash_1_1Services_1_1MyConsoleLoggerProvider.html">IotDash.Services.MyConsoleLoggerProvider</a> is registered in the host building process all the way up at the entry point (<a class="el" href="classIotDash_1_1Program.html">IotDash.Program</a>). </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->

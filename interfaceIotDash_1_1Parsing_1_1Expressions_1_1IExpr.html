@@ -94,7 +94,7 @@ Inheritance diagram for IotDash.Parsing.Expressions.IExpr:</div>
 <div class="dyncontent">
 <div class="center"><img src="interfaceIotDash_1_1Parsing_1_1Expressions_1_1IExpr__inherit__graph.png" border="0" usemap="#aIotDash_8Parsing_8Expressions_8IExpr_inherit__map" alt="Inheritance graph"/></div>
 <map name="aIotDash_8Parsing_8Expressions_8IExpr_inherit__map" id="aIotDash_8Parsing_8Expressions_8IExpr_inherit__map">
-<area shape="rect" title=" " alt="" coords="188,136,379,177"/>
+<area shape="rect" title="A contract for all expression tree nodes." alt="" coords="188,136,379,177"/>
 <area shape="rect" href="classIotDash_1_1Parsing_1_1Expressions_1_1BinaryOp.html" title=" " alt="" coords="427,5,617,47"/>
 <area shape="rect" href="classIotDash_1_1Parsing_1_1Expressions_1_1FunctionCall.html" title=" " alt="" coords="427,71,617,112"/>
 <area shape="rect" href="classIotDash_1_1Parsing_1_1Expressions_1_1Literal.html" title=" " alt="" coords="427,136,617,177"/>
@@ -108,23 +108,112 @@ Collaboration diagram for IotDash.Parsing.Expressions.IExpr:</div>
 <div class="dyncontent">
 <div class="center"><img src="interfaceIotDash_1_1Parsing_1_1Expressions_1_1IExpr__coll__graph.png" border="0" usemap="#aIotDash_8Parsing_8Expressions_8IExpr_coll__map" alt="Collaboration graph"/></div>
 <map name="aIotDash_8Parsing_8Expressions_8IExpr_coll__map" id="aIotDash_8Parsing_8Expressions_8IExpr_coll__map">
-<area shape="rect" title=" " alt="" coords="5,80,196,121"/>
+<area shape="rect" title="A contract for all expression tree nodes." alt="" coords="5,80,196,121"/>
 <area shape="rect" title=" " alt="" coords="33,5,168,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a354f46be8e62908a1ff464b97152050b"><td class="memItemLeft" align="right" valign="top"><a id="a354f46be8e62908a1ff464b97152050b" name="a354f46be8e62908a1ff464b97152050b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Traverse</b> (<a class="el" href="interfaceIotDash_1_1Parsing_1_1IVisitor.html">IVisitor</a> visitor)</td></tr>
+<tr class="memitem:a354f46be8e62908a1ff464b97152050b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceIotDash_1_1Parsing_1_1Expressions_1_1IExpr.html#a354f46be8e62908a1ff464b97152050b">Traverse</a> (<a class="el" href="interfaceIotDash_1_1Parsing_1_1IVisitor.html">IVisitor</a> visitor)</td></tr>
 <tr class="separator:a354f46be8e62908a1ff464b97152050b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa73b65fd08f11a39a53fcab1fcb4862a"><td class="memItemLeft" align="right" valign="top"><a id="aa73b65fd08f11a39a53fcab1fcb4862a" name="aa73b65fd08f11a39a53fcab1fcb4862a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Traverse</b> (Action&lt; <a class="el" href="interfaceIotDash_1_1Parsing_1_1Expressions_1_1IExpr.html">IExpr</a> &gt; visitor)</td></tr>
+<tr class="memitem:aa73b65fd08f11a39a53fcab1fcb4862a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceIotDash_1_1Parsing_1_1Expressions_1_1IExpr.html#aa73b65fd08f11a39a53fcab1fcb4862a">Traverse</a> (Action&lt; <a class="el" href="interfaceIotDash_1_1Parsing_1_1Expressions_1_1IExpr.html">IExpr</a> &gt; visitor)</td></tr>
 <tr class="separator:aa73b65fd08f11a39a53fcab1fcb4862a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a842533cddf5a5e29aca5e9d0d3264a3f"><td class="memItemLeft" align="right" valign="top"><a id="a842533cddf5a5e29aca5e9d0d3264a3f" name="a842533cddf5a5e29aca5e9d0d3264a3f"></a>
-TValue&#160;</td><td class="memItemRight" valign="bottom"><b>Evaluate</b> (<a class="el" href="interfaceIotDash_1_1Parsing_1_1IInterfaceEvaluationContext.html">IInterfaceEvaluationContext</a> context)</td></tr>
+<tr class="memitem:a842533cddf5a5e29aca5e9d0d3264a3f"><td class="memItemLeft" align="right" valign="top">TValue&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceIotDash_1_1Parsing_1_1Expressions_1_1IExpr.html#a842533cddf5a5e29aca5e9d0d3264a3f">Evaluate</a> (<a class="el" href="interfaceIotDash_1_1Parsing_1_1IInterfaceEvaluationContext.html">IInterfaceEvaluationContext</a> context)</td></tr>
 <tr class="separator:a842533cddf5a5e29aca5e9d0d3264a3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >A contract for all expression tree nodes. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a842533cddf5a5e29aca5e9d0d3264a3f" name="a842533cddf5a5e29aca5e9d0d3264a3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a842533cddf5a5e29aca5e9d0d3264a3f">&#9670;&nbsp;</a></span>Evaluate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TValue IotDash.Parsing.Expressions.IExpr.Evaluate </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interfaceIotDash_1_1Parsing_1_1IInterfaceEvaluationContext.html">IInterfaceEvaluationContext</a>&#160;</td>
+          <td class="paramname"><em>context</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Traverse the tree with an <a class="el" href="classIotDash_1_1Parsing_1_1EvaluatingVisitor.html">EvaluatingVisitor</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">context</td><td>Context for this evaluation.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Value of the expression.</dd></dl>
+
+</div>
+</div>
+<a id="aa73b65fd08f11a39a53fcab1fcb4862a" name="aa73b65fd08f11a39a53fcab1fcb4862a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa73b65fd08f11a39a53fcab1fcb4862a">&#9670;&nbsp;</a></span>Traverse() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void IotDash.Parsing.Expressions.IExpr.Traverse </td>
+          <td>(</td>
+          <td class="paramtype">Action&lt; <a class="el" href="interfaceIotDash_1_1Parsing_1_1Expressions_1_1IExpr.html">IExpr</a> &gt;&#160;</td>
+          <td class="paramname"><em>visitor</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Traverse in preorder from this node down. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">visitor</td><td>An action that is called with all encountered nodes in preorder.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a354f46be8e62908a1ff464b97152050b" name="a354f46be8e62908a1ff464b97152050b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a354f46be8e62908a1ff464b97152050b">&#9670;&nbsp;</a></span>Traverse() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void IotDash.Parsing.Expressions.IExpr.Traverse </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interfaceIotDash_1_1Parsing_1_1IVisitor.html">IVisitor</a>&#160;</td>
+          <td class="paramname"><em>visitor</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Accept a <em>visitor</em>  to this node. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">visitor</td><td>The visitor to accept.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="classIotDash_1_1Parsing_1_1Expressions_1_1Literal.html#a124e42f342e9089abcc77c266940e8f3">IotDash.Parsing.Expressions.Literal</a>, <a class="el" href="classIotDash_1_1Parsing_1_1Expressions_1_1UnaryOp.html#a29db4e518a7e077df752bc4ffa8532fc">IotDash.Parsing.Expressions.UnaryOp</a>, <a class="el" href="classIotDash_1_1Parsing_1_1Expressions_1_1BinaryOp.html#afbec013123ba93b519c6f88e00ec75e0">IotDash.Parsing.Expressions.BinaryOp</a>, <a class="el" href="classIotDash_1_1Parsing_1_1Expressions_1_1FunctionCall.html#a4c2e2e0441c99409d44ffb1c149cefdc">IotDash.Parsing.Expressions.FunctionCall</a>, and <a class="el" href="classIotDash_1_1Parsing_1_1Expressions_1_1TopicRef.html#a18511f127cca0ef03104a7d86d100978">IotDash.Parsing.Expressions.TopicRef</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this interface was generated from the following file:<ul>
 <li>Parsing/Expressions.cs</li>
 </ul>
