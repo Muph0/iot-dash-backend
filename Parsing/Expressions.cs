@@ -9,11 +9,29 @@ using TValue = System.Double;
 
 namespace IotDash.Parsing.Expressions {
 
+    /// <summary>
+    /// A contract for all expression tree nodes.
+    /// </summary>
     interface IExpr : IEquatable<IExpr> {
+
+        /// <summary>
+        /// Accept a <paramref name="visitor"/> to this node.
+        /// </summary>
+        /// <param name="visitor">The visitor to accept.</param>
         void Traverse(IVisitor visitor);
+
+        /// <summary>
+        /// Traverse in preorder from this node down.
+        /// </summary>
+        /// <param name="visitor">An action that is called with all encountered nodes in preorder.</param>
         void Traverse(Action<IExpr> visitor)
             => Traverse(new PreorderVisitor(visitor));
 
+        /// <summary>
+        /// Traverse the tree with an <see cref="EvaluatingVisitor"/>.
+        /// </summary>
+        /// <param name="context">Context for this evaluation.</param>
+        /// <returns>Value of the expression.</returns>
         TValue Evaluate(IInterfaceEvaluationContext context) {
             var visitor = new EvaluatingVisitor(context);
             Traverse(visitor);

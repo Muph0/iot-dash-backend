@@ -33,8 +33,10 @@ namespace IotDash.Services.History {
 
         public IServiceProvider ServiceProvider => scope.ServiceProvider;
         private readonly IServiceScope scope;
-        public override HistoryWriter ManagerFactory(IotInterface entry) => new HistoryWriter(entry, this);
-        public override bool NeedsManager(IotInterface entry) => entry.NeedsWriter();
+        public override HistoryWriter ManagerFactory(IotInterface entry) 
+            => new HistoryWriter(entry, this);
+        public override bool NeedsManager(IotInterface entry) 
+            => entry.NeedsWriter();
         public override object GetKey(IotInterface entity) => entity.Id;
 
         public HostedHistoryService(IServiceProvider provider) : base(

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.SignalR;
 namespace IotDash.Services.History {
 
     /// <summary>
+    /// Writes changes of one <see cref="IotInterface"/> to the database.
     /// <para>
     /// Part of the history writing service <see cref="HostedHistoryService"/>. 
     /// Takes the responsibility for storing <see cref="HistoryEntry"/>s of one

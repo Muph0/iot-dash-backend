@@ -1,6 +1,7 @@
 # Programmer's manual
 
-This is an in depth manual about the architecture and individual components' implementation of the IOT-Dash application backend.
+This is an in depth manual about the architecture and individual components' 
+implementation of the IOT-Dash application backend.
 
 Related documents:
 - [README](https://github.com/Muph0/iot-dash-backend)
@@ -8,44 +9,67 @@ Related documents:
 
 [TOC]
 
+## Get source code & build
+
+For building, you need the 
+[.NET 6 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) along with the 
+dotnet CLI.
+After you pull the sources from 
+[the repository](https://github.com/Muph0/iot-dash-backend), get all dependencies 
+of the project by running
+
+```
+dotnet restore
+```
+
 # Application context
-The backend is a middle man between the web application and the devices. It is responsible for managing devices and presenting data for users of front end application. See in the following component illustration.
+The backend is a middle man between the web application and the devices. It is 
+responsible for managing devices and presenting data for users of front end 
+application. See in the following component illustration.
 
 ```
                                                          devices
-    ┌───────────────┐       ┌─────────────────┐          ┌─────┐
-    │ iot-dash-app  │       │                 │◄────┬────┤     │
-    └──────┬────────┘       │   MQTT Broker   │     │    ├─────┤
-           │                │                 │     ├────┤     │
-           │ http           └───┬─────────────┘     │    ├─────┤
-           │                  ▲ │                   ├────┤     │
-           │                  │ │ publish &         │    ├─────┤
-           ▼                  │ │ subscribe         └────┤     │
-       REST api               │ ▼                        ├─────┤
-    ┌─────────────────────────┴───────────────┐          │  .  │
-    │            iot-dash-backend             │          │  .  │
-    └────────────────────┬────────────────────┘          │  .  │
-                         │                               │     │
-    ┌────────────────────┴────────────────────┐          │     │
-    │              MySQL database             │          │     │
-    └─────────────────────────────────────────┘          └─────┘
+         ┌───────────────┐       ┌─────────────────┐          ┌─────┐
+         │ iot-dash-app  │       │                 │◄────┬────┤     │
+         └──────┬────────┘       │   MQTT Broker   │     │    ├─────┤
+                │                │                 │     ├────┤     │
+                │ http           └───┬─────────────┘     │    ├─────┤
+                │                  ▲ │                   ├────┤     │
+                │                  │ │ publish &         │    ├─────┤
+                ▼                  │ │ subscribe         └────┤     │
+            REST api               │ ▼                        ├─────┤
+         ┌─────────────────────────┴───────────────┐          │  .  │
+         │            iot-dash-backend             │          │  .  │
+         └────────────────────┬────────────────────┘          │  .  │
+                              │                               │     │
+         ┌────────────────────┴────────────────────┐          │     │
+         │              MySQL database             │          │     │
+         └─────────────────────────────────────────┘          └─────┘
 ```
 # Conceptual model
 
-The conceptual model of the application is illustrated in the following UML diagram. Classes with relevant documentation are in the IotDash.Data.Model namespace. Application uses Entity Framework Core to generate SQL schema from C# classes.
+The following objects are the data entities of the application. All functionality
+is constructed around them.
+Classes with relevant documentation are in the IotDash.Data.Model namespace.
+Application uses Entity Framework Core to generate SQL schema from C# classes.
 
 ![Conceptual model](model.png)
 
 # Architecture
 
-Service-oriented architecture of the backend uses dependency injection provided by the ASP.NET Core library. The functionality is separated into coherent groups called *services* which exchange information through a mediator pattern (IotDash.Services.Messaging.MessageMediator class).
+Service-oriented architecture of the backend uses dependency injection provided by 
+the ASP.NET Core library. The functionality is separated into coherent groups called 
+*services* which exchange information through a mediator pattern 
+(IotDash.Services.Messaging.MessageMediator class).
 
-Services are registered by scanning the assembly for implementations of the IotDash.Installers.IInstaller interface, which are located in the IotDash.Installers namespace.
-Then the installers are instantiated and their `Install()` methods are called.
+During startup, services are registered by scanning the assembly for implementations
+of the IotDash.Installers.IInstaller interface, which are located in the 
+IotDash.Installers namespace. Then the installers are instantiated and their
+`Install()` methods are called.
 
-![IInstallers](inherit_graph_47.png)
-
-The dependency container registers services by Type, but not directly by the service type. The services are registered by an interface or an abstract type to allow easy swap of implementation of different services.
+The dependency container registers services by Type, but not directly by the service 
+type. The services are registered by an interface or an abstract type to allow easy 
+swap of implementation of different services.
 
 ## Web server pipeline
 
@@ -80,31 +104,107 @@ Controllers provide endpoints for HTTP routes. They are registered automatically
 Hubs provide endpoints for SignalR clients, which enable two-way real-time communication with the clients. In this application, this functionality is only used for providing real-time MQTT data to the clients.
     - IotDash.Controllers.V1.EventHub
 
-## Services
+For exact route and scheme documentation, check out the
+[generated REST API reference](rest.html).
 
-The most of the application's functionality is wrapped in services (see [Architecture](#autotoc_md3)). This section contains their complete list.
+If you make any changes to the routes, get the up-to-date OpenAPI specification via
+Swagger. Run the application locally in *Debug* mode and get the the specification from
+the app by fetching the `GET /swagger/v1/swagger.yaml` route either by your browser or
+from command line.
 
-### Model stores
+# Services
 
-Model store classes provide abstraction over the database. Other services instead of directly accessing the database depend on these IotDash.Services.IModelStore objects, which provide basic CRUD functionality over the database, plus some additional features like change detection.
+The most of the application's functionality is wrapped up in services
+(see [Architecture](#autotoc_md3)). This section contains their complete list.
 
-These scoped services are registered in DI service container by IotDash.Installers.DataInstaller. The following interfaces represent the API of these services.
+## Database context
+
+The database context is the API of Entity Framework Core which is the ORM library this
+app is using.
+
+It is implemented by the IotDash.Data.DataContext class, which provides all database
+functionality. It is registered by the IotDash.Installers.DataInstaller. It is a scoped
+service, which means it is created once per HTTP request.
+
+## Model stores
+
+Model store classes provide abstraction over the database context. Ïnstead of directly
+accessing the database, other services depend on these IotDash.Services.IModelStore 
+objects. They provide basic CRUD functionality over the database, plus some additional
+features like change detection, user authentication etc.
+
+These scoped services are registered in DI service container by the
+IotDash.Installers.DataInstaller. The following interfaces represent the API of these services.
 Open them and check their inheritance diagrams to find the relevant implementations.
     - IotDash.Services.IInterfaceStore
     - IotDash.Services.IUserStore
     - IotDash.Services.IIdentityService
     - IotDash.Services.IHistoryStore
 
-All these stores depend on IotDash.Data.DataContext which is also registered in by same installer. It is a scoped service, which means it is created once per HTTP request.
+All these stores depend on IotDash.Data.DataContext.
+
+## Entity managers
+
+A servise extending IotDash.Services.IEntityManagementService interface is an entity 
+manager. Such services are hosted and their responsibility is to monitor the database
+and keep one-to-one mapping between one type of entity and their TManager, which is
+a disposable service which performs some actions related to its entity.
+
+All implementations of IotDash.Services.IEntityManagementService are installed by the 
+IotDash.Installers.MiscServiceInstaller.
+
+Such managers are:
+ - IotDash.Services.Evaluation.HostedEvaluationService
+ - IotDash.Services.History.HostedHistoryService
+
+They services connected to them are described in the following two sections.
 
 ### Expression evaluation
+
+The core of expression evaluation service is the 
+IotDash.Services.Evaluation.HostedEvaluationService. This hosted service is installed
+by IotDash.Installers.MiscServiceInstaller (see [Entity managers](#autotoc_md10)).
+
+Classes of this service are in the IotDash.Services.Evaluation namespace.
+For more information, read their class reference documentation.
+
+The expression parsing grammar and the evaluator are defined in the IotDash.Parsing namespace. The IotDash.Parsing.Expressions namespace contains the individual expression objects. The parser and evaluators are implemented using a visitor pattern over the IotDash.Parsing.Expressions.IExpr interface.
+The IotDash.Parsing.Expressions namespace contains various nodes of the syntax tree.
+
 ### History logging
-### MQTT Client
+
+History logging service is implemented by IotDash.Services.History.HostedHistoryService.
+This hosted service is installed by IotDash.Installers.MiscServiceInstaller (see
+[Entity managers](#autotoc_md10)).
+
+Classes of this service are in the IotDash.Services.History namespace.
+For more information, read their class reference documentation.
+
+## MQTT Client
+
+The MQTT Client allows the app to connect to a MQTT Broker and to delegate MQTT messages
+between its components.
 
 The MQTT client is realised via the MQTTnet library. It provides the following service
     - IotDash.Services.Mqtt.MqttMediator implemented by IotDash.Services.Mqtt.Implementation.MqttNet_Mediator
 
-The service is composed of classes in the IotDash.Services.Mqtt.Implementation namespace.
+Classes of this service are the IotDash.Services.Mqtt.Implementation namespace.
 
-### Messaging
-### Logging
+## Messaging
+
+Messaging is the communication between application services.
+
+Messaging is realised by the mediator pattern on two levels. There is the 
+IotDash.Services.Messaging.MessageMediator which provides application-level messages.
+For MQTT there is a separate mediator service provided by the
+[MQTT Client](#autotoc_md13).
+
+## Logging
+
+Logging is writing information about the ongoing processes into the terminal.
+
+Logging is provided via the ASP.NET Core application Host through the 
+Microsoft.Extension.Logging interfaces. The logger provider 
+IotDash.Services.MyConsoleLoggerProvider is registered in the host building process
+all the way up at the entry point (IotDash.Program).
+

@@ -10,7 +10,19 @@ using TValue = System.Double;
 
 namespace IotDash.Parsing {
 
+    /// <summary>
+    /// Represents a context of a single evaluation.
+    /// The context stores values of various MQTT topics.
+    /// Evaluation must be a fast, synchronous operation, so waiting
+    /// for MQTT messages is no feasible.
+    /// </summary>
     interface IInterfaceEvaluationContext {
+
+        /// <summary>
+        /// Get last value on given <paramref name="topic"/>.
+        /// </summary>
+        /// <param name="topic">The topic to inspect.</param>
+        /// <returns>The value of the topic.</returns>
         TValue GetValue(string topic);
     }
 

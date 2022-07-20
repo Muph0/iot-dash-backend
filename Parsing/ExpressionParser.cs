@@ -9,6 +9,13 @@ using static Pidgin.Parser;
 using static Pidgin.Parser<char>;
 
 namespace IotDash.Parsing {
+
+    /// <summary>
+    /// Static implementation of the expression grammar parser.
+    /// <para>
+    /// Implemented using a parser combinator library Pidgin.
+    /// </para>
+    /// </summary>
     static class ExpressionsParser {
 
         private static readonly Parser<char, double> Double
@@ -99,9 +106,21 @@ namespace IotDash.Parsing {
             )
         ).Labelled("expression");
 
+        /// <summary>
+        /// Parse <paramref name="input"/> into an expression.
+        /// Throws on failure.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <returns>Parsed expression.</returns>
+        /// <exception cref="ParseException"></exception>
         public static IExpr ParseOrThrow(string input)
             => Expr.ParseOrThrow(input);
 
+        /// <summary>
+        /// Parse <paramref name="input"/> into an expression.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <returns>Parsed expression.</returns>
         public static Result<char, IExpr> Parse(string input)
             => Expr.Parse(input);
 

@@ -16,7 +16,9 @@ namespace IotDash.Services.Domain {
 
     /// <summary>
     /// An abstract database entity manager.
-    /// It listens for changes of the database and keeps internal collection of <b>TManager</b> per <b>TEntity</b>.
+    /// It listens for changes of the database and keeps internal collection of 
+    /// <typeparamref name="TManager"/>s. One per each <typeparamref name="TEntity"/>
+    /// in the database.
     /// </summary>
     /// <typeparam name="TEntity">Type of the database entity.</typeparam>
     /// <typeparam name="TManager">Type of the manager object.</typeparam>
