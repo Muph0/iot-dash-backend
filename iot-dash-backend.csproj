@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <UserSecretsId>aspnet-iot_dash_backend-591F71F8-BE43-478D-96E3-2E44BEBA329D</UserSecretsId>
     <RootNamespace>IotDash</RootNamespace>
     <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
