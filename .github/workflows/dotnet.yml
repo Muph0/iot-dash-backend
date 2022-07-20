@@ -13,12 +13,14 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 6.0.x
     - name: Restore dependencies
       run: dotnet restore
+
     - name: Build
       run: dotnet build --no-restore
 
@@ -37,7 +39,7 @@ jobs:
       uses: kpurdon/openapi-generator-action@v0.0.3
       with:
         args: "generate -i swagger.yaml -g html -o docs/rest --additional-properties=infoEmail=kytka.honza@gmail.com,infoUrl=https://muph0.github.io/iot-dash-backend/,licenseInfo=,licenseUrl="
-        
+
     - name: Transfer docs to runner
       run: sudo chown -R runner docs
 
