@@ -99,7 +99,7 @@ namespace IotDash.Parsing {
                     Operator.Prefix(Neg),
                     Operator.InfixL(Mul).And(Operator.InfixL(Div)).And(Operator.InfixL(Mod)),
                     Operator.InfixL(Add).And(Operator.InfixL(Sub)),
-                    Operator.InfixL(Equal).And(Operator.InfixL(Less)).And(Operator.InfixL(Greater)).And(Operator.InfixL(LessEq)).And(Operator.InfixL(GreaterEq)),
+                    Operator.InfixL(Equal).And(Operator.InfixL(LessEq)).And(Operator.InfixL(GreaterEq)).And(Operator.InfixL(Less)).And(Operator.InfixL(Greater)),
                     Operator.InfixL(LAnd),
                     Operator.InfixL(LOr),
                 }
@@ -112,19 +112,19 @@ namespace IotDash.Parsing {
         /// </summary>
         /// <param name="input">The input string.</param>
         /// <returns>Parsed expression.</returns>
-        /// <exception cref="ParseException"></exception>
-        public static IExpr ParseOrThrow(string input)
-            => Expr.ParseOrThrow(input);
+        /// <exception cref="ParsingFailedException"></exception>
+        public static IExpr ParseOrThrow(string input) {
+            try {
+                return Expr.ParseOrThrow(input);
+            } catch (Exception e) {
+                throw new ParsingFailedException(e.Message, e);
+            }
+        }
 
-        /// <summary>
-        /// Parse <paramref name="input"/> into an expression.
-        /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <returns>Parsed expression.</returns>
-        public static Result<char, IExpr> Parse(string input)
-            => Expr.Parse(input);
-
-
+        public class ParsingFailedException : Exception {
+            public ParsingFailedException(string? message = null, Exception? inner = null)
+                : base(message, inner) { }
+        }
 
     }
 }

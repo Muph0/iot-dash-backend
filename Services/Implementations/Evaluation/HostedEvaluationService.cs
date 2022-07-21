@@ -55,11 +55,14 @@ namespace IotDash.Services.Evaluation {
         public override Task OnReceive(object? sender, SaveChangesEventArgs<IotInterface> msg) {
             logger.LogTrace($"Received {msg}.");
 
-            return Refresh(msg.Entries
+            var modified = msg.Entries
                 .Where(e => e.Property(nameof(IotInterface.Expression)).IsModified
-                         || e.Property(nameof(IotInterface.Kind)).IsModified)
-                .Select(e => e.Entity)
-            );
+                         || e.Property(nameof(IotInterface.Kind)).IsModified);
+
+            if (modified.Any())
+                return Refresh(modified.Select(e => e.Entity));
+            else
+                return Task.CompletedTask;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken) {

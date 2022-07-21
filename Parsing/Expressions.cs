@@ -51,6 +51,10 @@ namespace IotDash.Parsing.Expressions {
         public void Traverse(IVisitor visitor) {
             visitor.Visit(this, 0);
         }
+
+        public override string ToString() {
+            return Value.ToString();
+        }
     }
 
     class UnaryOp : IExpr {
@@ -72,6 +76,10 @@ namespace IotDash.Parsing.Expressions {
             visitor.Visit(this, 0);
             Expr.Traverse(visitor);
             visitor.Visit(this, 1);
+        }
+
+        public override string ToString() {
+            return $"'{Type}' {Expr}";
         }
     }
 
@@ -104,6 +112,10 @@ namespace IotDash.Parsing.Expressions {
             Right.Traverse(visitor);
             visitor.Visit(this, 2);
         }
+
+        public override string ToString() {
+            return $"({Left} '{Type}' {Right})";
+        }
     }
 
     class FunctionCall : IExpr {
@@ -111,6 +123,10 @@ namespace IotDash.Parsing.Expressions {
         public ImmutableArray<IExpr> Arguments { get; }
 
         public FunctionCall(string function, IEnumerable<IExpr> arguments) {
+            if (!FunctionDefinition.All.ContainsKey((function, arguments.Count()))) {
+                throw new FunctionNotDefinedException(function, arguments.Count());
+            }
+
             FunctionName = function;
             Arguments = arguments.ToImmutableArray();
         }
@@ -129,6 +145,11 @@ namespace IotDash.Parsing.Expressions {
             }
             visitor.Visit(this, i++);
         }
+
+        public override string ToString() {
+            return $"{FunctionName}({string.Join(",", Arguments.Select(arg => arg.ToString()))})";
+        }
+
     }
 
     class TopicRef : IExpr {
@@ -144,6 +165,10 @@ namespace IotDash.Parsing.Expressions {
 
         public void Traverse(IVisitor visitor) {
             visitor.Visit(this, 0);
+        }
+
+        public override string ToString() {
+            return $"[\"{Topic}\"]";
         }
     }
 }

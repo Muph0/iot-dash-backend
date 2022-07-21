@@ -68,4 +68,10 @@ namespace IotDash.Parsing {
             FunctionDefinition.Initialize();
         }
     }
+
+    public class FunctionNotDefinedException : Exception {
+        public FunctionNotDefinedException(string name, int argCount) 
+            : base($"Function {name} with {argCount} parameters is not defined.") {
+        }
+    }
 }

@@ -13,10 +13,15 @@ namespace IotDash.Contracts.V1 {
                 return ValidationResult.Success;
             }
             if (value is string expressionString) {
-                var result = ExpressionsParser.Parse(expressionString);
-                return result.Success
-                    ? ValidationResult.Success
-                    : new ValidationResult(result.Error.RenderErrorMessage());
+                try {
+                    var result = ExpressionsParser.ParseOrThrow(expressionString);
+                } catch (Pidgin.ParseException e) {
+                    return new ValidationResult(e.Message);
+                } catch (Exception e) {
+                    return new ValidationResult(e.Message);
+                }
+
+                return ValidationResult.Success;
             }
 
             return new ValidationResult("Expression must be a string");

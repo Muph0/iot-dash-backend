@@ -11,7 +11,7 @@ namespace IotDash.Domain.Mediator {
     }
 
     /// <summary>
-    /// Shim inserted before a subscription target, that casts all messages from TMsgIn to TMsgOut.
+    /// A shim inserted before a subscription target, that casts all messages from TMsgIn to TMsgOut.
     /// </summary>
     /// <typeparam name="TChannelKey"></typeparam>
     /// <typeparam name="TMsgIn"></typeparam>

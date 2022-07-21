@@ -82,7 +82,13 @@ namespace IotDash.Services.Evaluation {
         /// </summary>
         /// <returns>True if value has changed.</returns>
         private bool Evaluate() {
-            var newValue = expressionTree.Evaluate(this);
+            double newValue = double.NaN;
+            try {
+                newValue = expressionTree.Evaluate(this);
+            } finally {
+                logger.LogTrace($"Evaluating expression tree {expressionTree}\n   => {newValue}");
+                newValue = 0;
+            }
 
             if (Value != newValue) {
                 Value = newValue;

@@ -1,21 +1,23 @@
 # Programmer's manual
 
-This is an in depth manual about the architecture and individual components' 
+This is an in depth manual about the architecture and individual components'
 implementation of the IOT-Dash application backend.
 
-Related documents:
+Related:
 - [README](https://github.com/Muph0/iot-dash-backend)
 - [REST API and scheme documentation](rest.html)
+- [REST API specification in OpenAPI format](swagger.yaml)
+- [Frontend web app](https://github.com/Muph0/iot-dash-app)
 
 [TOC]
 
 ## Get source code & build
 
-For building, you need the 
-[.NET 6 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) along with the 
+For building, you need the
+[.NET 6 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) along with the
 dotnet CLI.
-After you pull the sources from 
-[the repository](https://github.com/Muph0/iot-dash-backend), get all dependencies 
+After you pull the sources from
+[the repository](https://github.com/Muph0/iot-dash-backend), get all dependencies
 of the project by running
 
 ```
@@ -23,8 +25,8 @@ dotnet restore
 ```
 
 # Application context
-The backend is a middle man between the web application and the devices. It is 
-responsible for managing devices and presenting data for users of front end 
+The backend is a middle man between the web application and the devices. It is
+responsible for managing devices and presenting data for users of front end
 application. See in the following component illustration.
 
 ```
@@ -46,6 +48,11 @@ application. See in the following component illustration.
          │              MySQL database             │          │     │
          └─────────────────────────────────────────┘          └─────┘
 ```
+
+In production, the frontend webapp is hosted via backend HTTP server.
+Place the built web app into the `wwwroot` directory in root of the backend repository.
+Obtain it from the repository [iot-dash-app](https://github.com/Muph0/iot-dash-app).
+
 # Conceptual model
 
 The following objects are the data entities of the application. All functionality
@@ -57,18 +64,18 @@ Application uses Entity Framework Core to generate SQL schema from C# classes.
 
 # Architecture
 
-Service-oriented architecture of the backend uses dependency injection provided by 
-the ASP.NET Core library. The functionality is separated into coherent groups called 
-*services* which exchange information through a mediator pattern 
+Service-oriented architecture of the backend uses dependency injection provided by
+the ASP.NET Core library. The functionality is separated into coherent groups called
+*services* which exchange information through a mediator pattern
 (IotDash.Services.Messaging.MessageMediator class).
 
 During startup, services are registered by scanning the assembly for implementations
-of the IotDash.Installers.IInstaller interface, which are located in the 
+of the IotDash.Installers.IInstaller interface, which are located in the
 IotDash.Installers namespace. Then the installers are instantiated and their
 `Install()` methods are called.
 
-The dependency container registers services by Type, but not directly by the service 
-type. The services are registered by an interface or an abstract type to allow easy 
+The dependency container registers services by Type, but not directly by the service
+type. The services are registered by an interface or an abstract type to allow easy
 swap of implementation of different services.
 
 ## Web server pipeline
@@ -129,7 +136,7 @@ service, which means it is created once per HTTP request.
 ## Model stores
 
 Model store classes provide abstraction over the database context. Ïnstead of directly
-accessing the database, other services depend on these IotDash.Services.IModelStore 
+accessing the database, other services depend on these IotDash.Services.IModelStore
 objects. They provide basic CRUD functionality over the database, plus some additional
 features like change detection, user authentication etc.
 
@@ -145,12 +152,12 @@ All these stores depend on IotDash.Data.DataContext.
 
 ## Entity managers
 
-A servise extending IotDash.Services.IEntityManagementService interface is an entity 
+A servise extending IotDash.Services.IEntityManagementService interface is an entity
 manager. Such services are hosted and their responsibility is to monitor the database
 and keep one-to-one mapping between one type of entity and their TManager, which is
 a disposable service which performs some actions related to its entity.
 
-All implementations of IotDash.Services.IEntityManagementService are installed by the 
+All implementations of IotDash.Services.IEntityManagementService are installed by the
 IotDash.Installers.MiscServiceInstaller.
 
 Such managers are:
@@ -161,7 +168,7 @@ They services connected to them are described in the following two sections.
 
 ### Expression evaluation
 
-The core of expression evaluation service is the 
+The core of expression evaluation service is the
 IotDash.Services.Evaluation.HostedEvaluationService. This hosted service is installed
 by IotDash.Installers.MiscServiceInstaller (see [Entity managers](#autotoc_md10)).
 
@@ -194,7 +201,7 @@ Classes of this service are the IotDash.Services.Mqtt.Implementation namespace.
 
 Messaging is the communication between application services.
 
-Messaging is realised by the mediator pattern on two levels. There is the 
+Messaging is realised by the mediator pattern on two levels. There is the
 IotDash.Services.Messaging.MessageMediator which provides application-level messages.
 For MQTT there is a separate mediator service provided by the
 [MQTT Client](#autotoc_md13).
@@ -203,8 +210,11 @@ For MQTT there is a separate mediator service provided by the
 
 Logging is writing information about the ongoing processes into the terminal.
 
-Logging is provided via the ASP.NET Core application Host through the 
-Microsoft.Extension.Logging interfaces. The logger provider 
+Logging is provided via the ASP.NET Core application Host through the
+Microsoft.Extension.Logging interfaces. The logger provider
 IotDash.Services.MyConsoleLoggerProvider is registered in the host building process
 all the way up at the entry point (IotDash.Program).
+
+# Settings
+
 

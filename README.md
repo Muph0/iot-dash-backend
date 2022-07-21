@@ -11,7 +11,6 @@ For detailed information, check out:
  - [Programmer's manual](https://muph0.github.io/iot-dash-backend/)
  - [REST API documentation](https://muph0.github.io/iot-dash-backend/rest.html)
 
-
 # Install & Run
 
 To get download the latest release, locate a `run` script in the root of the archive and execute it.
@@ -32,70 +31,70 @@ This is a default configuration file with commentary
   "Kestrel": {
     "Endpoints": {
       "Http": {
-        // This is the url the server will be listening on
+        // This is the url endpoint the server will listen on
         "Url": "http://*:8080"
       }
     }
   },
-
   "ConnectionStrings": {
-    // The MySQL connection string with user credentials
-    "DefaultConnection": "server=localhost;port=3306;database=iot-dash-backend;uid=iot-dash;password=iot-dash"
+    // The MySQL connection string with connection info and credentials
+    "DefaultConnection": "server=localhost;port=3306;database=iot-dash-test;uid=iot-dash;password=iot-dash"
   },
-
+  "Auth": {
+    // The credentials used to authenticate the webapp user
+    "Username": "admin",
+    "Password": "Admin+1"
+  },
   "Jwt": {
     // The JWT secret that is used to verify and sign all issued JWT tokens
-    "Secret": "kOxuIYF4o6-NN0bVnVgPcpNm0tT3-ZlZ",
-
-    // Algorithm used for token signing
-    "Algorithm": "HS256",
+    "Secret": "my-secret",
 
     // Time after which will JWT expire (format: days.hh:mm:ss)
-    "TokenLifetime": "00:15:30",
-
-    // Time for which will be expired token still accepted
-    "ClockSkew": "00:00:30",
+    "TokenLifetime": "00:14:30",
 
     // Time after which a refresh token validity will expire
-    "RefreshTokenLifetime": "180.00:00:00"
-  },
+    "RefreshTokenLifetime": "180.00:00:00",
 
+    // Algorithm used for token signing
+    "Algorithm": "HS256"
+  },
   "Mqtt": {
     "Broker": {
       // Host name of the MQTT broker
-      "Host": "192.168.7.7",
+      "Host": "localhost",
 
       // Port on which the MQTT broker is listening
       "Port": 1883,
 
       // If the program fails to reconnect to broker this many times in a row
-      // it will terminate with an error. -1 will never terminate.
-      "MaxReconnectionAttempts": 5,
+      // it will terminate with an error. Use 0 for unlimited attempts.
+      "MaxReconnectionAttempts": 3
     },
 
-    "Client": {
-      "Id": "5eb020f043ba8930506acbdd"
-    },
+    // Uncomment this to use secured MQTT connection
+    //"Credentials": {
+    //  "UserName": "my-username",
+    //  "Password": "my-password",
+    //}
   },
-
+  
   // Configuration for Microsoft logging
   "Logging": {
 
+    // Log levels for different namespaces. Key is a namespace,
+    // value is logging level. All messages from and above given
+    // level will be logged.
+    //
+    // Valid levels are: 'Trace', 'Debug', 'Information',
+    //                   'Warning', 'Error', 'Critical'
+    // (in ascending order)
     "LogLevel": {
-      // Log levels for different namespaces. Key is a namespace,
-      // value is logging level. All messages from and above given
-      // level will be logged.
-      //
-      // Valid levels are: 'Trace', 'Debug', 'Information',
-      //                   'Warning', 'Error', 'Critical'
-      // (in ascending order)
-      "Default": "Information",
-      "Microsoft": "Warning",
+      "Default": "Warning",
+      "IotDash.*": "Information",
       "Microsoft.Hosting.Lifetime": "Information",
+      "Microsoft.*": "Warning"
     }
-  },
-  "AllowedHosts": "*"
+  }
 }
-
 ```
 
