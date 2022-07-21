@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['parse_0',['Parse',['../classIotDash_1_1Parsing_1_1ExpressionsParser.html#a68d111869a2602deaeb648d407e6b3b1',1,'IotDash::Parsing::ExpressionsParser']]],
-  ['parseorthrow_1',['ParseOrThrow',['../classIotDash_1_1Parsing_1_1ExpressionsParser.html#a03ce7d629aebb2c09837ab7085d3d640',1,'IotDash::Parsing::ExpressionsParser']]],
+  ['parseorthrow_0',['ParseOrThrow',['../classIotDash_1_1Parsing_1_1ExpressionsParser.html#a03ce7d629aebb2c09837ab7085d3d640',1,'IotDash::Parsing::ExpressionsParser']]],
+  ['parsingfailedexception_1',['ParsingFailedException',['../classIotDash_1_1Parsing_1_1ExpressionsParser_1_1ParsingFailedException.html',1,'IotDash::Parsing::ExpressionsParser']]],
   ['pointcount_2',['PointCount',['../classIotDash_1_1Contracts_1_1V1_1_1HistoryRequest.html#aacb25050d55dc4744d29ec6454928f9e',1,'IotDash::Contracts::V1::HistoryRequest']]],
   ['policies_3',['Policies',['../classIotDash_1_1Authorization_1_1Policies.html',1,'IotDash::Authorization']]],
   ['polymorphismdocumentfilter_4',['PolymorphismDocumentFilter',['../classIotDash_1_1Utils_1_1SwaggerGen_1_1PolymorphismDocumentFilter.html',1,'IotDash::Utils::SwaggerGen']]],

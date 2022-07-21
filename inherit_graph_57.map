@@ -1,5 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$interfaceIotDash_1_1Parsing_1_1IVisitor.html" title=" " alt="" coords="5,46,164,73"/>
-<area shape="rect" id="node2" href="$interfaceIotDash_1_1Parsing_1_1IRecursiveVisitor.html" title=" " alt="" coords="212,5,391,47"/>
-<area shape="rect" id="node3" href="$classIotDash_1_1Parsing_1_1PreorderVisitor.html" title=" " alt="" coords="218,71,385,112"/>
+<area shape="rect" id="node1" href="$interfaceIotDash_1_1Parsing_1_1IRecursiveVisitor.html" title=" " alt="" coords="5,5,184,47"/>
+<area shape="rect" id="node2" href="$classIotDash_1_1Parsing_1_1EvaluatingVisitor.html" title=" " alt="" coords="232,5,409,47"/>
 </map>

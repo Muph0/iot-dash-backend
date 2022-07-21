@@ -103,12 +103,15 @@ $(function() {
 <li class="level2"><a href="#autotoc_md16">Logging</a></li>
 </ul>
 </li>
+<li class="level1"><a href="#autotoc_md17">Settings</a></li>
 </ul>
 </div>
 <div class="textblock"><p ><a class="anchor" id="md_docs_main"></a> This is an in depth manual about the architecture and individual components' implementation of the IOT-Dash application backend.</p>
-<p >Related documents:</p><ul>
+<p >Related:</p><ul>
 <li><a href="https://github.com/Muph0/iot-dash-backend">README</a></li>
 <li><a href="rest.html">REST API and scheme documentation</a></li>
+<li><a href="swagger.yaml">REST API specification in OpenAPI format</a></li>
+<li><a href="https://github.com/Muph0/iot-dash-app">Frontend web app</a></li>
 </ul>
 <h1><a class="anchor" id="autotoc_md1"></a>
 Get source code &amp; build</h1>
@@ -134,7 +137,8 @@ Application context</h1>
 <div class="line">┌────────────────────┴────────────────────┐          │     │</div>
 <div class="line">│              MySQL database             │          │     │</div>
 <div class="line">└─────────────────────────────────────────┘          └─────┘</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md3"></a>
+</div><!-- fragment --><p >In production, the frontend webapp is hosted via backend HTTP server. Place the built web app into the <code>wwwroot</code> directory in root of the backend repository. Obtain it from the repository <a href="https://github.com/Muph0/iot-dash-app">iot-dash-app</a>.</p>
+<h1><a class="anchor" id="autotoc_md3"></a>
 Conceptual model</h1>
 <p >The following objects are the data entities of the application. All functionality is constructed around them. Classes with relevant documentation are in the <a class="el" href="namespaceIotDash_1_1Data_1_1Model.html">IotDash.Data.Model</a> namespace. Application uses Entity Framework Core to generate SQL schema from C# classes.</p>
 <p ><img src="model.png" alt="Conceptual model" class="inline"/></p>
@@ -220,7 +224,9 @@ Messaging</h2>
 <h2><a class="anchor" id="autotoc_md16"></a>
 Logging</h2>
 <p >Logging is writing information about the ongoing processes into the terminal.</p>
-<p >Logging is provided via the ASP.NET Core application Host through the Microsoft.Extension.Logging interfaces. The logger provider <a class="el" href="classIotDash_1_1Services_1_1MyConsoleLoggerProvider.html">IotDash.Services.MyConsoleLoggerProvider</a> is registered in the host building process all the way up at the entry point (<a class="el" href="classIotDash_1_1Program.html">IotDash.Program</a>). </p>
+<p >Logging is provided via the ASP.NET Core application Host through the Microsoft.Extension.Logging interfaces. The logger provider <a class="el" href="classIotDash_1_1Services_1_1MyConsoleLoggerProvider.html">IotDash.Services.MyConsoleLoggerProvider</a> is registered in the host building process all the way up at the entry point (<a class="el" href="classIotDash_1_1Program.html">IotDash.Program</a>).</p>
+<h1><a class="anchor" id="autotoc_md17"></a>
+Settings</h1>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->

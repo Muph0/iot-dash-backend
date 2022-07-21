@@ -1,4 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,129,32"/>
-<area shape="rect" id="node2" href="$classIotDash_1_1Data_1_1DataContext.html" title="Represents a connection to database" alt="" coords="177,5,348,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,78,180,105"/>
+<area shape="rect" id="node2" href="$classIotDash_1_1Authorization_1_1Requirements_1_1JwtAuthorized.html" title="Authorization requirement that checks succeeds if JWT subject is a valid user." alt="" coords="228,5,459,47"/>
+<area shape="rect" id="node3" href="$classIotDash_1_1Authorization_1_1Requirements_1_1RouteInterfaceExists.html" title="IAuthorizationRequirement that succeeds if the Http route contains a valid interface." alt="" coords="228,71,459,112"/>
+<area shape="rect" id="node4" href="$classIotDash_1_1Authorization_1_1Requirements_1_1UserOwnsInterface.html" title="IAuthorizationRequirement that succeeds if user in HttpContext.Features owns the device in the same I..." alt="" coords="228,136,459,177"/>
 </map>

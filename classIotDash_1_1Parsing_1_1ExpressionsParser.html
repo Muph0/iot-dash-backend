@@ -84,58 +84,27 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classIotDash_1_1Parsing_1_1ExpressionsParser-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">IotDash.Parsing.ExpressionsParser Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIotDash_1_1Parsing_1_1ExpressionsParser_1_1ParsingFailedException.html">ParsingFailedException</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a03ce7d629aebb2c09837ab7085d3d640"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="interfaceIotDash_1_1Parsing_1_1Expressions_1_1IExpr.html">IExpr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIotDash_1_1Parsing_1_1ExpressionsParser.html#a03ce7d629aebb2c09837ab7085d3d640">ParseOrThrow</a> (string input)</td></tr>
 <tr class="separator:a03ce7d629aebb2c09837ab7085d3d640"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68d111869a2602deaeb648d407e6b3b1"><td class="memItemLeft" align="right" valign="top">static Result&lt; char, <a class="el" href="interfaceIotDash_1_1Parsing_1_1Expressions_1_1IExpr.html">IExpr</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIotDash_1_1Parsing_1_1ExpressionsParser.html#a68d111869a2602deaeb648d407e6b3b1">Parse</a> (string input)</td></tr>
-<tr class="separator:a68d111869a2602deaeb648d407e6b3b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Static implementation of the expression grammar parser. </p>
 <p >Implemented using a parser combinator library Pidgin. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a68d111869a2602deaeb648d407e6b3b1" name="a68d111869a2602deaeb648d407e6b3b1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a68d111869a2602deaeb648d407e6b3b1">&#9670;&nbsp;</a></span>Parse()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static Result&lt; char, <a class="el" href="interfaceIotDash_1_1Parsing_1_1Expressions_1_1IExpr.html">IExpr</a> &gt; IotDash.Parsing.ExpressionsParser.Parse </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>input</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Parse <em>input</em>  into an expression. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">input</td><td>The input string.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Parsed expression.</dd></dl>
-
-</div>
-</div>
 <a id="a03ce7d629aebb2c09837ab7085d3d640" name="a03ce7d629aebb2c09837ab7085d3d640"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a03ce7d629aebb2c09837ab7085d3d640">&#9670;&nbsp;</a></span>ParseOrThrow()</h2>
 
@@ -155,7 +124,7 @@ Static Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -170,7 +139,7 @@ Static Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Parsed expression.</dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">ParseException</td><td></td></tr>
+    <tr><td class="paramname"><a class="el" href="classIotDash_1_1Parsing_1_1ExpressionsParser_1_1ParsingFailedException.html">ParsingFailedException</a></td><td></td></tr>
   </table>
   </dd>
 </dl>

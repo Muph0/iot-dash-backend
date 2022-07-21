@@ -1,4 +1,10 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$interfaceIotDash_1_1Services_1_1IIdentityService.html" title="This service provides basic user account functionality." alt="" coords="5,5,176,47"/>
-<area shape="rect" id="node2" href="$classIotDash_1_1Services_1_1Implementations_1_1IdentityService.html" title=" " alt="" coords="224,5,447,47"/>
+<area shape="rect" id="node1" href="$classIotDash_1_1Services_1_1Domain_1_1AEntityManagerService.html" title=" " alt="" coords="21,5,213,61"/>
+<area shape="rect" id="node2" href="$classIotDash_1_1Services_1_1History_1_1HostedHistoryService.html" title=" " alt="" coords="315,13,483,54"/>
+<area shape="rect" id="node3" href="$classIotDash_1_1Services_1_1Domain_1_1AEntityManagerService.html" title=" " alt="" coords="5,187,228,243"/>
+<area shape="rect" id="node4" href="$classIotDash_1_1Services_1_1Evaluation_1_1HostedEvaluationService.html" title=" " alt="" coords="305,143,492,185"/>
+<area shape="rect" id="node5" title=" " alt="" coords="61,136,173,163"/>
+<area shape="rect" id="node6" href="$classIotDash_1_1Services_1_1Auth_1_1HostedAuthPreparer.html" title="Makes sure that exactly one user account is available in the database with the correct credentials fr..." alt="" coords="301,209,497,250"/>
+<area shape="rect" id="node7" href="$classIotDash_1_1Services_1_1Mqtt_1_1Implementation_1_1HostedMqttService.html" title=" " alt="" coords="276,78,521,119"/>
+<area shape="rect" id="node8" title=" " alt="" coords="63,85,170,112"/>
 </map>

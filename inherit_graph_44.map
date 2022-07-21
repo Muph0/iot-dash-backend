@@ -1,5 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classIotDash_1_1Domain_1_1Mediator_1_1AbstractMediator.html" title=" " alt="" coords="5,5,176,61"/>
-<area shape="rect" id="node2" href="$classIotDash_1_1Services_1_1Messaging_1_1MessageMediator.html" title="This class is a specialisation of the AbstractMediator&lt;TChannelKey, TMsg&gt; which mediates objects over..." alt="" coords="224,13,415,54"/>
-<area shape="rect" id="node3" href="$classIotDash_1_1Services_1_1Messaging_1_1Implementation_1_1MessageSimpleMediatorService.html" title="Implements the application&#45;level mediator service." alt="" coords="463,5,720,61"/>
+<area shape="rect" id="node1" href="$classIotDash_1_1Domain_1_1Mediator_1_1AbstractMediator.html" title="This class implements part the mediator design pattern. Takes responsibility for managing subscriptio..." alt="" coords="5,5,219,61"/>
+<area shape="rect" id="node2" href="$classIotDash_1_1Domain_1_1Mediator_1_1SimpleMediator.html" title="Manages subscribers and mediates messages between them." alt="" coords="267,5,471,61"/>
 </map>
