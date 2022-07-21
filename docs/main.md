@@ -217,4 +217,6 @@ all the way up at the entry point (IotDash.Program).
 
 # Settings
 
+Settings are parsed from `appsettings.json` and stored by classes in the IotDash.Settings namespace.
 
+Settings objects are also registered as services in the DI.
