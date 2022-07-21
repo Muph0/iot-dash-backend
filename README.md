@@ -8,12 +8,12 @@ This repository contains only the backend part. Frontend application is located 
 ## Documentation
 
 For detailed information, check out:
- - [Programmer's manual](https://muph0.github.io/iot-dash-backend/)
+ - [Programmer's manual](https://muph0.github.io/iot-dash-backend/) - how to build + architecture of the project with class reference
  - [REST API documentation](https://muph0.github.io/iot-dash-backend/rest.html)
 
 # Install & Run
 
-To get download the latest release, locate a `run` script in the root of the archive and execute it.
+To run, download the latest release, locate a `run` script in the root of the archive and execute it.
 
 ## Requirements
 
@@ -97,4 +97,3 @@ This is a default configuration file with commentary
   }
 }
 ```
-
