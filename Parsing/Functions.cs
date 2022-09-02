@@ -17,12 +17,12 @@ namespace IotDash.Parsing {
         public string Name { get; }
         public int ArgCount { get; }
 
-        public delegate TValue EvalDelegate(ReadOnlySpan<TValue> args);
+        public delegate TValue EvalDelegate(ReadOnlySpan<TValue> args, IInterfaceEvaluationContext context);
         private EvalDelegate eval;
 
-        public static TValue Evaluate(string functionName, ReadOnlySpan<TValue> args) {
+        public static TValue Evaluate(string functionName, ReadOnlySpan<TValue> args, IInterfaceEvaluationContext context) {
             var func = All[(functionName, args.Length)];
-            return func.eval(args);
+            return func.eval(args, context);
         }
 
         public FunctionDefinition(string name, int argCount, EvalDelegate eval) {
@@ -38,34 +38,28 @@ namespace IotDash.Parsing {
         private static readonly Dictionary<(string, int), FunctionDefinition> all = new();
         public static IReadOnlyDictionary<(string, int), FunctionDefinition> All => all;
 
-        public static void Initialize() {
+        static FunctionDefinition() {
             if (all.Count > 0) {
                 return;
             }
 
             // analytic
-            Define(new("exp", 1, args => Math.Exp(args[0])));
-            Define(new("log", 1, args => Math.Log(args[0])));
-            Define(new("log", 2, args => Math.Log(args[0], args[1])));
-            Define(new("pow", 2, args => Math.Pow(args[0], args[1])));
+            Define(new("exp", 1, (args, ctx) => Math.Exp(args[0])));
+            Define(new("log", 1, (args, ctx) => Math.Log(args[0])));
+            Define(new("log", 2, (args, ctx) => Math.Log(args[0], args[1])));
+            Define(new("pow", 2, (args, ctx) => Math.Pow(args[0], args[1])));
 
             // date-time
-            Define(new("time_of_day", 0, args => DateTime.Now.TimeOfDay.TotalSeconds));
-            Define(new("day_of_week", 0, args => (int)DateTime.Now.DayOfWeek));
-            Define(new("day_of_year", 0, args => DateTime.Now.DayOfYear));
-            Define(new("month", 0, args => DateTime.Now.Month));
+            Define(new("time_of_day", 0, (args, ctx) => ctx.GetNow().TimeOfDay.TotalSeconds));
+            Define(new("day_of_week", 0, (args, ctx) => ((int)(ctx.GetNow().DayOfWeek) + 6) % 7 + 1));
+            Define(new("day_of_year", 0, (args, ctx) => ctx.GetNow().DayOfYear));
+            Define(new("month", 0, (args, ctx) => ctx.GetNow().Month));
 
             // steps
-            Define(new("floor", 1, args => Math.Floor(args[0])));
-            Define(new("ceil", 1, args => Math.Ceiling(args[0])));
-            Define(new("abs", 1, args => Math.Abs(args[0])));
-            Define(new("if", 3, args => EvaluatingVisitor.dbool(args[0]) ? args[1] : args[2]));
-        }
-    }
-
-    public class FunctionInstaller : IInstaller {
-        public void InstallServices(IServiceCollection services, IConfiguration configuration) {
-            FunctionDefinition.Initialize();
+            Define(new("floor", 1, (args, ctx) => Math.Floor(args[0])));
+            Define(new("ceil", 1, (args, ctx) => Math.Ceiling(args[0])));
+            Define(new("abs", 1, (args, ctx) => Math.Abs(args[0])));
+            Define(new("if", 3, (args, ctx) => EvaluatingVisitor.dbool(args[0]) ? args[1] : args[2]));
         }
     }
 

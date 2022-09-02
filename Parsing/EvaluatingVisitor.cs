@@ -24,6 +24,8 @@ namespace IotDash.Parsing {
         /// <param name="topic">The topic to inspect.</param>
         /// <returns>The value of the topic.</returns>
         TValue GetValue(string topic);
+
+        DateTime GetNow();
     }
 
     class InterfaceEvaluationContext : IInterfaceEvaluationContext {
@@ -36,6 +38,10 @@ namespace IotDash.Parsing {
 
         double IInterfaceEvaluationContext.GetValue(string topic) {
             return topics.ContainsKey(topic) ? topics[topic].Value ?? defaultValue : defaultValue;
+        }
+
+        public DateTime GetNow() {
+            return DateTime.Now;
         }
     }
 
@@ -89,7 +95,7 @@ namespace IotDash.Parsing {
         }
 
         TValue IRecursiveVisitor<TValue>.Visit(FunctionCall functionCall, ReadOnlySpan<TValue> args) {
-            return FunctionDefinition.Evaluate(functionCall.FunctionName, args);
+            return FunctionDefinition.Evaluate(functionCall.FunctionName, args, context);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace IotDash.Data {
     /// Represents a connection to database
     /// </summary>
     internal class DataContext : IdentityDbContext {
-        static bool staticInit = true;
+        static bool firstInit = true;
 
         private readonly IServiceProvider provider;
         private readonly MessageMediator mediator;
@@ -32,12 +32,11 @@ namespace IotDash.Data {
             this.mediator = provider.GetRequiredService<MessageMediator>();
             this.logger = provider.GetRequiredService<ILogger<DataContext>>();
 
-            if (staticInit) {
-                staticInit = false;
+            if (firstInit) {
+                firstInit = false;
                 logger.LogInformation("Initialising database.");
+                Database.Migrate();
             }
-
-            Database.Migrate();
         }
 
         public DbSet<IotInterface> Interfaces { get; set; }

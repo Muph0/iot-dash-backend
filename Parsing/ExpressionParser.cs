@@ -18,11 +18,6 @@ namespace IotDash.Parsing {
     /// </summary>
     static class ExpressionsParser {
 
-        private static readonly Parser<char, double> Double
-            = Num.Select(whole => (double)whole).Or(
-                Num.Then(Char('.'), (l, r) => l)
-                .Then(Digit.AtLeastOnceString(), (ints, digits) => ints + double.Parse("0." + digits)));
-
         private static Parser<char, T> Tok<T>(Parser<char, T> token)
             => Try(token).Before(SkipWhitespaces);
         private static Parser<char, string> Tok(string token)
@@ -69,7 +64,7 @@ namespace IotDash.Parsing {
             = Binary(Tok("or").ThenReturn(BinaryOp.Types.LOr));
 
         private static readonly Parser<char, IExpr> Literal
-            = Tok(Num)
+            = Tok(Real)
                 .Select<IExpr>(value => new Literal(value))
                 .Labelled("integer literal");
 
@@ -79,7 +74,7 @@ namespace IotDash.Parsing {
             .Labelled("topic reference");
 
         private static Parser<char, IExpr> FunctionCall(Parser<char, IExpr> expr)
-            => Tok(Letter.Then(LetterOrDigit.ManyString(), (l, r) => l + r))
+            => Tok(Letter.Or(Char('_')).Then(LetterOrDigit.Or(Char('_')).ManyString(), (l, r) => l + r))
             .Then(
                 Parenthesised(expr.Separated(Tok(","))),
                 (l, r) => (IExpr)new FunctionCall(l, r)
@@ -93,18 +88,15 @@ namespace IotDash.Parsing {
                     TopicRef,
                     FunctionCall(expr),
                     Parenthesised(expr).Labelled("parenthesised expression")
-                ),
-                new[]
-                {
+                ), new[] {
                     Operator.Prefix(Neg),
                     Operator.InfixL(Mul).And(Operator.InfixL(Div)).And(Operator.InfixL(Mod)),
                     Operator.InfixL(Add).And(Operator.InfixL(Sub)),
                     Operator.InfixL(Equal).And(Operator.InfixL(LessEq)).And(Operator.InfixL(GreaterEq)).And(Operator.InfixL(Less)).And(Operator.InfixL(Greater)),
                     Operator.InfixL(LAnd),
                     Operator.InfixL(LOr),
-                }
-            )
-        ).Labelled("expression");
+                })
+            ).Labelled("expression");
 
         /// <summary>
         /// Parse <paramref name="input"/> into an expression.

@@ -26,8 +26,7 @@ namespace IotDash.Domain.Mediator {
         /// <param name="subscription">Subscription object. Dispose it to cancel the subscription.</param>
         public virtual void Subscribe(TChannelKey msgChannel, ITarget<TChannelKey, TMsg> target, out ISubscription subscription) {
             SubscribeInternal(msgChannel, target);
-            var sub = new Subscription(msgChannel, this, target);
-            subscription = sub;
+            subscription = new Subscription(msgChannel, this, target);
         }
 
         /// <summary>
@@ -38,8 +37,7 @@ namespace IotDash.Domain.Mediator {
         /// <param name="target">The message target.</param>
         /// <param name="guard">Subscription guard to manage the created subscription.</param>
         public virtual void Subscribe(TChannelKey msgChannel, ITarget<TChannelKey, TMsg> target, SubscriptionGuard guard) {
-            SubscribeInternal(msgChannel, target);
-            var sub = new Subscription(msgChannel, this, target);
+            Subscribe(msgChannel, target, out var sub);
             guard.Add(sub);
         }
 

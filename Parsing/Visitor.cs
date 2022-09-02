@@ -52,8 +52,12 @@ namespace IotDash.Parsing {
                 ReadOnlySpan<TResult> args = CollectionsMarshal.AsSpan(stack)
                     .Slice(stack.Count - argCount);
 
-                stack[^argCount] = Visit(functionCall, args);
-                stack.RemoveRange(stack.Count - argCount + 1, argCount - 1);
+                if (argCount > 0) {
+                    stack[^argCount] = Visit(functionCall, args);
+                    stack.RemoveRange(stack.Count - argCount + 1, argCount - 1);
+                } else {
+                    stack.Add(Visit(functionCall, args));
+                }
             }
         }
     }

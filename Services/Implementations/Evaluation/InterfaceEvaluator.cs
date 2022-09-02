@@ -13,6 +13,8 @@ using Microsoft.Extensions.Logging;
 using MQTTnet;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -63,16 +65,20 @@ namespace IotDash.Services.Evaluation {
         public async Task Update() {
             bool changed = Evaluate();
             if (changed) {
+                Debug.Assert(Value.HasValue);
+                entity.Value = (double)Value;
                 await Publish();
             }
         }
 
-
+        DateTime IInterfaceEvaluationContext.GetNow() => DateTime.Now;
         double IInterfaceEvaluationContext.GetValue(string topic) {
             var lastMsg = mqtt.GetRetained(topic);
             double value = 0;
-            if (lastMsg != null)
-                double.TryParse(lastMsg.ConvertPayloadToString(), out value);
+            if (lastMsg != null) {
+                string payload = lastMsg.ConvertPayloadToString();
+                double.TryParse(payload, out value);
+            }
 
             return value;
         }
@@ -81,16 +87,21 @@ namespace IotDash.Services.Evaluation {
         /// Evaluate the interface and store the result in <see cref="Value"/>.
         /// </summary>
         /// <returns>True if value has changed.</returns>
-        private bool Evaluate() {
+        internal bool Evaluate() => this.Evaluate(this);
+
+        /// <summary>
+        /// Evaluate the interface and store the result in <see cref="Value"/>.
+        /// </summary>
+        /// <returns>True if value has changed.</returns>
+        internal bool Evaluate(IInterfaceEvaluationContext context) {
             double newValue = double.NaN;
             try {
-                newValue = expressionTree.Evaluate(this);
+                newValue = expressionTree.Evaluate(context);
             } finally {
                 logger.LogTrace($"Evaluating expression tree {expressionTree}\n   => {newValue}");
-                newValue = 0;
             }
 
-            if (Value != newValue) {
+            if (Value != newValue && !double.IsNaN(newValue)) {
                 Value = newValue;
                 return true;
             }
@@ -103,7 +114,8 @@ namespace IotDash.Services.Evaluation {
         /// <returns></returns>
         private Task Publish() {
             if (Value == null) throw new InvalidOperationException("There is no value to publish.");
-            return mqtt.Send(this.entity.GetTopicName(), this, this.Value.ToString());
+            Debug.Assert(Value.HasValue);
+            return mqtt.Send(this.entity.GetTopicName(), this, Value.Value.ToString());
         }
 
         public void Dispose() {
