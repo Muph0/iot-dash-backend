@@ -1,5 +1,6 @@
 <map id="IotDash.Parsing.IInterfaceEvaluationContext" name="IotDash.Parsing.IInterfaceEvaluationContext">
-<area shape="rect" id="node1" title="Represents a context of a single evaluation. The context stores values of various MQTT topics...." alt="" coords="5,39,177,80"/>
-<area shape="rect" id="node2" href="$classIotDash_1_1Parsing_1_1InterfaceEvaluationContext.html" title=" " alt="" coords="235,5,403,47"/>
-<area shape="rect" id="node3" href="$classIotDash_1_1Services_1_1Evaluation_1_1InterfaceEvaluator.html" title=" " alt="" coords="225,71,412,112"/>
+<area shape="rect" id="node1" title="Represents a context of a single evaluation. The context stores values of various MQTT topics...." alt="" coords="5,71,177,112"/>
+<area shape="rect" id="node2" href="$classIotDash_1_1Parsing_1_1InterfaceEvaluationContext.html" title=" " alt="" coords="241,5,409,47"/>
+<area shape="rect" id="node3" href="$classIotDash_1_1Services_1_1Evaluation_1_1InterfaceEvaluator.html" title=" " alt="" coords="231,71,418,112"/>
+<area shape="rect" id="node4" href="$classTests_1_1Adapters_1_1TestEvaluationContext.html" title=" " alt="" coords="225,136,424,177"/>
 </map>

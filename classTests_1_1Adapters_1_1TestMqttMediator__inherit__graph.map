@@ -1,0 +1,5 @@
+<map id="Tests.Adapters.TestMqttMediator" name="Tests.Adapters.TestMqttMediator">
+<area shape="rect" id="node1" title=" " alt="" coords="5,169,220,196"/>
+<area shape="rect" id="node2" href="$classIotDash_1_1Services_1_1Mqtt_1_1MqttMediator.html" title="Specialisation of the AbstractMediator&lt;TChannelKey, TMsg&gt; where the channel key is of type string and..." alt="" coords="63,95,162,121"/>
+<area shape="rect" id="node3" href="$classIotDash_1_1Domain_1_1Mediator_1_1AbstractMediator.html" title=" " alt="" coords="23,5,202,47"/>
+</map>

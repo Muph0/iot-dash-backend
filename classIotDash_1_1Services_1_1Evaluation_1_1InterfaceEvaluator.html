@@ -85,6 +85,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pac-methods">Package Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="classIotDash_1_1Services_1_1Evaluation_1_1InterfaceEvaluator-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">IotDash.Services.Evaluation.InterfaceEvaluator Class Reference</div></div>
@@ -131,6 +132,16 @@ Task&#160;</td><td class="memItemRight" valign="bottom"><b>OnReceive</b> (object
 <tr class="separator:ab425561666fb55a9f076a9c8656f7b06 inherit pub_methods_interfaceIotDash_1_1Domain_1_1Mediator_1_1ITarget"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e0fd079a06fcf09f8fe9938b61f1b23"><td class="memItemLeft" align="right" valign="top">TValue&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceIotDash_1_1Parsing_1_1IInterfaceEvaluationContext.html#a7e0fd079a06fcf09f8fe9938b61f1b23">GetValue</a> (string topic)</td></tr>
 <tr class="separator:a7e0fd079a06fcf09f8fe9938b61f1b23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a11d159f494794711bdf5902c2cdd8d"><td class="memItemLeft" align="right" valign="top"><a id="a2a11d159f494794711bdf5902c2cdd8d" name="a2a11d159f494794711bdf5902c2cdd8d"></a>
+DateTime&#160;</td><td class="memItemRight" valign="bottom"><b>GetNow</b> ()</td></tr>
+<tr class="separator:a2a11d159f494794711bdf5902c2cdd8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pac-methods" name="pac-methods"></a>
+Package Functions</h2></td></tr>
+<tr class="memitem:a52fbf7c93c2355a55b91d2807c97ff41"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIotDash_1_1Services_1_1Evaluation_1_1InterfaceEvaluator.html#a52fbf7c93c2355a55b91d2807c97ff41">Evaluate</a> ()</td></tr>
+<tr class="separator:a52fbf7c93c2355a55b91d2807c97ff41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88756706d45061506053721e55c39b81"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIotDash_1_1Services_1_1Evaluation_1_1InterfaceEvaluator.html#a88756706d45061506053721e55c39b81">Evaluate</a> (<a class="el" href="interfaceIotDash_1_1Parsing_1_1IInterfaceEvaluationContext.html">IInterfaceEvaluationContext</a> context)</td></tr>
+<tr class="separator:a88756706d45061506053721e55c39b81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -139,6 +150,63 @@ double?&#160;</td><td class="memItemRight" valign="bottom"><b>Value</b> = null<c
 <tr class="separator:a8abd0e57834df540246aa9a724211c67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a52fbf7c93c2355a55b91d2807c97ff41" name="a52fbf7c93c2355a55b91d2807c97ff41"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52fbf7c93c2355a55b91d2807c97ff41">&#9670;&nbsp;</a></span>Evaluate() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool IotDash.Services.Evaluation.InterfaceEvaluator.Evaluate </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">package</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Evaluate the interface and store the result in Value. </p>
+<dl class="section return"><dt>Returns</dt><dd>True if value has changed.</dd></dl>
+
+</div>
+</div>
+<a id="a88756706d45061506053721e55c39b81" name="a88756706d45061506053721e55c39b81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88756706d45061506053721e55c39b81">&#9670;&nbsp;</a></span>Evaluate() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool IotDash.Services.Evaluation.InterfaceEvaluator.Evaluate </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interfaceIotDash_1_1Parsing_1_1IInterfaceEvaluationContext.html">IInterfaceEvaluationContext</a>&#160;</td>
+          <td class="paramname"><em>context</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">package</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Evaluate the interface and store the result in Value. </p>
+<dl class="section return"><dt>Returns</dt><dd>True if value has changed.</dd></dl>
+
+</div>
+</div>
 <a id="a76d9fa8cea68d620fe1a4dba2f4fe9c6" name="a76d9fa8cea68d620fe1a4dba2f4fe9c6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a76d9fa8cea68d620fe1a4dba2f4fe9c6">&#9670;&nbsp;</a></span>Update()</h2>
 
